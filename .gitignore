@@ -77,5 +77,6 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 # Not upload data files but the doler
-/Data/*
+/Data/
 !/Data/.gitkeep
+!/Data/original_data/integrity_check.py
