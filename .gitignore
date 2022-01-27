@@ -76,7 +76,10 @@ fabric.properties
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
 
-# Not upload data files but the doler
-/Data/
+# Not upload data files but the doler and some python
+/Data/*
 !/Data/.gitkeep
-!/Data/original_data/integrity_check.py
+
+!/Data/Original_Data/
+/Data/Original_Data/*
+!/Data/Original_Data/integrity_check.py
