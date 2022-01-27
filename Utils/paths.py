@@ -7,10 +7,13 @@ import os
 PROJECT_PATH: str = os.path.abspath(os.path.dirname(__file__))
 PROJECT_PATH = '/'.join(PROJECT_PATH.split('\\')[:-1])
 
-
 # Paths for Data
 DATA_PATH: str = f"{PROJECT_PATH}/Data"
 ORIGINAL_DATA_PATH: str = f"{DATA_PATH}/Original_Data"
+
+# Path for Plots
+PLOTS_PATH: str = f"{PROJECT_PATH}/Plots"
+ORIGINAL_DATA_PLOTS: str = f"{PLOTS_PATH}/Original_Data"
 
 
 def _print_paths() -> None:
@@ -22,8 +25,11 @@ def _print_paths() -> None:
 
     print(f"{DATA_PATH=}")
     print(f"{ORIGINAL_DATA_PATH=}")
+    print()
+
+    print(f"{PLOTS_PATH=}")
+    print(f"{ORIGINAL_DATA_PLOTS=}")
 
 
 if __name__ == '__main__':
     _print_paths()
-    print()
