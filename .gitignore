@@ -91,3 +91,7 @@ fabric.properties
 !/Data/cc_Data/
 /Data/cc_Data/*.csv
 /Data/cc_Data/*.pickle
+
+!/Data/cdcor_Data/
+/Data/cdcor_Data/*.csv
+/Data/cdcor_Data/*.pickle
