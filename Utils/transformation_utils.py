@@ -4,6 +4,7 @@ Functions to transformate the original data (cleaned) to data that we pass to th
 """
 from typing import List
 
+import joblib
 import numpy as np
 import pandas as pd
 from dcor import distance_correlation, DistanceCovarianceMethod
@@ -84,15 +85,7 @@ def get_freqs(N: int, sample_freq: float = 4) -> np.ndarray:
     return np.fft.rfftfreq(N, d=1. / sample_freq)
 
 
-def nan_save_fft(signal: np.ndarray, freqs: np.ndarray) -> np.ndarray:
-    """
-
-    Calculate NaN save implementation of fft for the given freqs
-
-    :param signal: signal in time domain
-    :param freqs: array of freqs to sample the fft
-    :return: DFT of the signal for the given freqs
-    """
+def nan_save_fft(signal, freqs):
     N = len(signal)
 
     fft = np.zeros_like(freqs, complex)
@@ -106,3 +99,4 @@ def nan_save_fft(signal: np.ndarray, freqs: np.ndarray) -> np.ndarray:
         fft[k] = np.sum(signal_nans * nan_exp)
 
     return (N / np.sum(~nan_signal)) * np.abs(fft)
+
