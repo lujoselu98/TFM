@@ -70,3 +70,39 @@ def dcor(x: np.ndarray, y: np.ndarray) -> float:
     _y = _y[~NaNs]
 
     return distance_correlation(_x, _y, method=DistanceCovarianceMethod.MERGESORT)
+
+
+def get_freqs(N: int, sample_freq: float = 4) -> np.ndarray:
+    """
+
+    Function to get the freq till nyquist limit
+
+    :param N: size of signal in data points
+    :param sample_freq: sample freq of the signal
+    :return: array of freqs
+    """
+    return np.fft.rfftfreq(N, d=1. / sample_freq)
+
+
+def nan_save_fft(signal: np.ndarray, freqs: np.ndarray) -> np.ndarray:
+    """
+
+    Calculate NaN save implementation of fft for the given freqs
+
+    :param signal: signal in time domain
+    :param freqs: array of freqs to sample the fft
+    :return: DFT of the signal for the given freqs
+    """
+    N = len(signal)
+
+    fft = np.zeros_like(freqs, complex)
+    n = np.arange(N)
+
+    nan_signal = np.isnan(signal)
+    signal_nans = signal[~nan_signal]
+
+    for k in range(len(freqs)):
+        nan_exp = np.exp(-2j * np.pi * k * n / N)[~nan_signal]
+        fft[k] = np.sum(signal_nans * nan_exp)
+
+    return (N / np.sum(~nan_signal)) * np.abs(fft)
