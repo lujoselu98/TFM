@@ -83,3 +83,6 @@ fabric.properties
 !/Data/Original_Data/
 /Data/Original_Data/*
 !/Data/Original_Data/integrity_check.py
+
+!/Data/Clean_Data/
+/Data/Clean_Data/*
