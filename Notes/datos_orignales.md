@@ -1,6 +1,6 @@
 ## Datos originales
 Originalmente hay 552 patrones de longitud 21620 para la frecuencia fetal y las contracciones uterinas [(552, 21620)]
-![Mean by class](..\Plots\Original_Data\Means_plots.png)
+![Mean by class](../Plots/Original_Data/Means_plots.png)
 
 Sobre estos datos usamos el siguiente criterio para detectar curvas de UC que no van a tener la suficiente información
 como para poder tener poder predictivo. Sumamos dos cantidades:
@@ -15,7 +15,7 @@ de clase cero 8 de clase 1.
 
 Después de esta primera limpieza tenemos 538 curvas con 21620 puntos cada una. Sobre las que además vamos a considerar 
 no válidos, y los marcamos como NaN los valores "extremos", esto son menores o iguales a cero para ambas y mayores de 250 para la FHR.
-![Mean by class clean data](..\Plots\Original_Data\Means_plots_clean.png)
+![Mean by class clean data](../Plots/Original_Data/Means_plots_clean.png)
 
 Ahora vamos a quedarnos con los últimos 40 min de cada señal (9600 puntos con muestreo a 4Hz). Hay varios argumentos 
 para justificar esta decision:
@@ -28,4 +28,4 @@ más corta un poco menos de 60.
 
 Tras esta siguiente limpieza tenemos 538 de 9600 puntos cada una.
 
-![Mean by class clean and cut data](..\Plots\Original_Data\Means_plots_clean_cut.png)
+![Mean by class clean and cut data](../Plots/Original_Data/Means_plots_clean_cut.png)
