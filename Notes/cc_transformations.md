@@ -4,7 +4,7 @@ calculamos la correlación cruzada (NaN save pandas) con la FHR sin desplazar, v
 correlación cruzada para cada curva que luego usaremos en el clasificador.
 
 
-![Data desc by class](../Plots/cc_data/Desc_plot.png)
-![Data correlation class](../Plots/cc_data/Class_correlation.png)
-![Class Distribution](../Plots/cc_data/Class_Distribution.png)
+![Data desc by class](../Plots/cc_Data/Desc_plot.png)
+![Data correlation class](../Plots/cc_Data/Class_correlation.png)
+![Class Distribution](../Plots/cc_Data/Class_Distribution.png)
 
