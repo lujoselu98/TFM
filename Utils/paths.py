@@ -10,6 +10,7 @@ PROJECT_PATH = '/'.join(PROJECT_PATH.split('\\')[:-1])
 # Paths for Data
 DATA_PATH: str = f"{PROJECT_PATH}/Data"
 ORIGINAL_DATA_PATH: str = f"{DATA_PATH}/Original_Data"
+CLEAN_CUT_PATH: str = f"{DATA_PATH}/Clean_Data"
 
 # Path for Plots
 PLOTS_PATH: str = f"{PROJECT_PATH}/Plots"
@@ -25,6 +26,7 @@ def _print_paths() -> None:
 
     print(f"{DATA_PATH=}")
     print(f"{ORIGINAL_DATA_PATH=}")
+    print(f"{CLEAN_CUT_PATH=}")
     print()
 
     print(f"{PLOTS_PATH=}")
