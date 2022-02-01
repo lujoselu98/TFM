@@ -23,7 +23,7 @@ para justificar esta decision:
 - Tenemos conocimiento experto que nos indica que la información más relevante contenida en las curvas se encuentra presente
 en los momentos más cercanos al parto.
 - Las señales están alineadas a la derecha (al momento del parto) y la UC más corta dura un poco más 41 minutos y la FHR 
-más corta un poco menos de 60.
+más corta también un poco más de 41 minutos.
 - Simplifica y acelera los cálculos al reducir a poco menos de la mitad.
 
 Tras esta siguiente limpieza tenemos 538 de 9600 puntos cada una.

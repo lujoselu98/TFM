@@ -15,9 +15,9 @@ def _integrity_checks() -> None:
     uc_pickle = pd.read_pickle(f"{paths.ORIGINAL_DATA_PATH}/uc_ctu-chb.pickle")
     clinical_pickle = pd.read_pickle(f"{paths.ORIGINAL_DATA_PATH}/clinical_ctu-chb.pickle")
 
-    print(f"{fhr_pickle.equals(fhr)=}")
-    print(f"{uc_pickle.equals(uc)=}")
-    print(f"{clinical_pickle.equals(clinical)=}")
+    print(f"{fhr_pickle.equals(fhr)}")
+    print(f"{uc_pickle.equals(uc)}")
+    print(f"{clinical_pickle.equals(clinical)}")
 
 
 if __name__ == '__main__':

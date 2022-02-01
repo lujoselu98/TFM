@@ -2,14 +2,14 @@
 <module type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Python" name="Python">
-      <configuration sdkName="Python 3.7 (FDA)" />
+      <configuration sdkName="Python 3.7 (DAHFI)" />
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.7 (DAHFI)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Python 3.7 (FDA) interpreter library" level="application" />
+    <orderEntry type="library" name="Python 3.7 (DAHFI) interpreter library" level="application" />
   </component>
 </module>

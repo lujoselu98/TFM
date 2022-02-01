@@ -27,22 +27,22 @@ def _print_paths() -> None:
     """
     Function just to print all paths
     """
-    print(f"{PROJECT_PATH=}")
+    print(f"PROJECT_PATH={PROJECT_PATH}")
     print()
 
-    print(f"{DATA_PATH=}")
-    print(f"{ORIGINAL_DATA_PATH=}")
-    print(f"{CLEAN_CUT_DATA_PATH=}")
-    print(f"{CC_DATA_PATH=}")
-    print(f"{CDCOR_DATA_PATH=}")
-    print(f"{FFT_DATA_PATH=}")
+    print(f"DATA_PATH={DATA_PATH}")
+    print(f"ORIGINAL_DATA_PATH={ORIGINAL_DATA_PATH}")
+    print(f"CLEAN_CUT_DATA_PATH={CLEAN_CUT_DATA_PATH}")
+    print(f"CC_DATA_PATH={CC_DATA_PATH}")
+    print(f"CDCOR_DATA_PATH={CDCOR_DATA_PATH}")
+    print(f"FFT_DATA_PATH={FFT_DATA_PATH}")
     print()
 
-    print(f"{PLOTS_PATH=}")
-    print(f"{ORIGINAL_DATA_PLOTS=}")
-    print(f"{CC_DATA_PLOTS=}")
-    print(f"{CDCOR_DATA_PLOTS=}")
-    print(f"{FFT_DATA_PLOTS=}")
+    print(f"PLOTS_PATH={PLOTS_PATH}")
+    print(f"ORIGINAL_DATA_PLOTS={ORIGINAL_DATA_PLOTS}")
+    print(f"CC_DATA_PLOTS={CC_DATA_PLOTS}")
+    print(f"CDCOR_DATA_PLOTS={CDCOR_DATA_PLOTS}")
+    print(f"FFT_DATA_PLOTS={FFT_DATA_PLOTS}")
 
 
 if __name__ == '__main__':
