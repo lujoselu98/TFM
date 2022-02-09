@@ -1,6 +1,8 @@
 """
     Used for utility functions for pandas dataframe
 """
+from typing import List
+
 import numpy as np
 
 
@@ -9,8 +11,8 @@ def constant_size(signal_values: np.array, threshold: int = 1) -> int:
 
     Calculate the total size of the constant part of the signal
 
-    :param threshold: param to set which size of the signal parts take into account
     :param signal_values: signal to calculate constant part size
+    :param threshold: param to set which size of the signal parts takes into account
     :return: the len of the sum of all constant parts on signal
     """
     # noinspection PyTypeChecker

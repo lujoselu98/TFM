@@ -10,7 +10,7 @@ PROJECT_PATH = '/'.join(PROJECT_PATH.split('\\')[:-1])
 # Paths for Data
 DATA_PATH: str = f"{PROJECT_PATH}/Data"
 ORIGINAL_DATA_PATH: str = f"{DATA_PATH}/Original_Data"
-CLEAN_CUT_DATA_PATH: str = f"{DATA_PATH}/Clean_Data"
+CLEAN_DATA_PATH: str = f"{DATA_PATH}/Clean_Data"
 CC_DATA_PATH: str = f"{DATA_PATH}/cc_data"
 CDCOR_DATA_PATH: str = f"{DATA_PATH}/cdcor_data"
 FFT_DATA_PATH: str = f"{DATA_PATH}/fft_Data"
