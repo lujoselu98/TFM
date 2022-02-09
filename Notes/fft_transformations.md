@@ -1,4 +1,5 @@
-Partimos de unos datos de FHR que consisten en 538 curvas con 9600 puntos (40 minutos a 4Hz).
+Partimos de unos datos de FHR que consisten en 538 curvas coon 21620 puntos (poco más de 90 minutos a 4Hz).
+
 Sobre estos datos vamos a calcular la DFT de cada curva, en el proceso perdemos resolución pues solo calculamos el valor
 de la transformada de Fourier para las frecuencias menores del límite de Nyquist (2Hz). La implementación es NaN save
 en el sentido de que los quita de la suma del cálculo y luego está ponderada por el número de puntos que no son nulos para 
