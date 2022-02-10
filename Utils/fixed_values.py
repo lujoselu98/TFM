@@ -2,6 +2,7 @@
     Common shared values
 """
 
+
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import balanced_accuracy_score, roc_auc_score
@@ -28,6 +29,7 @@ CLASSIFIERS = {
             'C': np.logspace(-3, 2, 6)
         },
         'evaluate_score': 'predict_proba',
+        'datasets': DATASETS
     },
     'LRSScaler': {
         'clf': make_pipeline(StandardScaler(), LogisticRegression(penalty='l1', solver='liblinear', random_state=0,
@@ -37,6 +39,7 @@ CLASSIFIERS = {
             'logisticregression__C': np.logspace(-3, 2, 6)
         },
         'evaluate_score': 'predict_proba',
+        'datasets': ['FFT']
     },
     'LRmMScaler': {
         'clf': make_pipeline(MinMaxScaler(), LogisticRegression(penalty='l1', solver='liblinear', random_state=0,
@@ -46,6 +49,7 @@ CLASSIFIERS = {
             'logisticregression__C': np.logspace(-3, 2, 6)
         },
         'evaluate_score': 'predict_proba',
+        'datasets': ['FFT']
     },
     'KNN': {
         'clf': KNeighborsClassifier(),
@@ -53,6 +57,7 @@ CLASSIFIERS = {
             'n_neighbors': np.arange(3, 30, 2),
         },
         'evaluate_score': 'predict_proba',
+        'datasets': DATASETS
     },
     'KNNSScaler': {
         'clf': make_pipeline(StandardScaler(), KNeighborsClassifier()),
@@ -60,6 +65,7 @@ CLASSIFIERS = {
             'kneighborsclassifier__n_neighbors': np.arange(3, 30, 2),
         },
         'evaluate_score': 'predict_proba',
+        'datasets': DATASETS
     },
     'KNNmMScaler': {
         'clf': make_pipeline(MinMaxScaler(), KNeighborsClassifier()),
@@ -67,6 +73,7 @@ CLASSIFIERS = {
             'kneighborsclassifier__n_neighbors': np.arange(3, 30, 2),
         },
         'evaluate_score': 'predict_proba',
+        'datasets': DATASETS
     },
     'SVC': {
         'clf': SVC(kernel='rbf', random_state=0, class_weight='balanced'),
@@ -75,6 +82,7 @@ CLASSIFIERS = {
             'C': np.logspace(-3, 3, 7),
         },
         'evaluate_score': 'decision_function',
+        'datasets': DATASETS
     },
     'SVCSScaler': {
         'clf': make_pipeline(StandardScaler(), SVC(kernel='rbf', random_state=0, class_weight='balanced')),
@@ -83,6 +91,7 @@ CLASSIFIERS = {
             'svc__C': np.logspace(-3, 3, 7),
         },
         'evaluate_score': 'decision_function',
+        'datasets': DATASETS
     },
     'SVCmMScaler': {
         'clf': make_pipeline(MinMaxScaler(), SVC(kernel='rbf', random_state=0, class_weight='balanced')),
@@ -91,6 +100,7 @@ CLASSIFIERS = {
             'svc__C': np.logspace(-3, 3, 7),
         },
         'evaluate_score': 'decision_function',
+        'datasets': DATASETS
     },
 }
 

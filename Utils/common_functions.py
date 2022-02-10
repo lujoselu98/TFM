@@ -1,11 +1,12 @@
-from typing import Tuple, Optional
+import itertools
+from typing import Tuple, Optional, Dict, List, Any
 
 import numpy as np
 import pandas as pd
 import sklearn.model_selection
 
-from Utils import paths
 from Utils import fixed_values
+from Utils import paths
 
 
 def load_data(dataset: str) -> Tuple[np.array, pd.DataFrame, pd.Series]:
@@ -62,12 +63,22 @@ def get_fold(X: pd.DataFrame, y: pd.Series, idx_external: int, idx_internal: Opt
         return X_int.iloc[index_train], X_int.iloc[index_test], y_int.iloc[index_train], y_int.iloc[index_test]
 
 
+def get_all_permutations(dictionary: Dict) -> List[Dict]:
+    """
+        Return all posible combinations of (key,value) from a dict
+
+    """
+    keys, values = zip(*dictionary.items())
+    return [dict(zip(keys, v)) for v in itertools.product(*values)]
+
+
 def _print_functions():
     """
         Just print defined functions docstring
     """
     print(load_data.__doc__)
     print(get_fold.__doc__)
+    print(get_all_permutations.__doc__)
 
 
 if __name__ == '__main__':

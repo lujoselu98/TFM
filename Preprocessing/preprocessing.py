@@ -9,7 +9,7 @@ import numpy as np
 from Utils import paths, fixed_values
 
 
-def load_preprocess(dataset: str, preprocess: str, idx_external: str, idx_internal: Optional[int] = None) -> Tuple[
+def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_internal: Optional[int] = None) -> Tuple[
         np.ndarray, np.ndarray]:
     """
 
