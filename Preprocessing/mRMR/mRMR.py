@@ -1,7 +1,8 @@
 """
     All the functions related to mRMR preprocessing
 """
-from typing import Optional, List
+import pickle
+from typing import Optional, List, Tuple
 
 import dcor
 import numpy as np
@@ -110,3 +111,102 @@ def save_mRMR_indexes(dataset: str) -> None:
             sel_features_file = f"{paths.MRMR_PATH}/{dataset}_sel_features_{idx_external}_{idx_internal}.txt"
             with open(sel_features_file, 'w') as f:
                 f.write(str(selected_features_index))
+
+
+def load_mRMR_indexes(dataset: str, idx_external: int, idx_internal: Optional[int] = None) -> List[int]:
+    """
+        Load indexes from .txt file, used to save the real values needed for experiments
+    :param dataset: Dataset to load
+    :param idx_external: External idx to load
+    :param idx_internal: Internal idx to load
+    :return: Read indexes
+    """
+    if idx_internal is None:
+        mRMR_indexes_file = f"{paths.MRMR_PATH}/{dataset}_sel_features_{idx_external}.txt"
+
+    else:  # idx_internal is not None
+        mRMR_indexes_file = f"{paths.MRMR_PATH}/{dataset}_sel_features_{idx_external}_{idx_internal}.txt"
+
+    with open(f'{mRMR_indexes_file}', 'r') as f:
+        line = f.readline()
+        mRMR_indexes = line.strip().replace("]", "").replace("[", "").replace("'", "").split(', ')
+        mRMR_indexes = [int(x) for x in mRMR_indexes]
+    return mRMR_indexes
+
+
+def save_mRMR(dataset: str) -> None:
+    """
+        Save the data of selected features to use in experiments
+    :param dataset: Dataset to use
+    """
+    tt, X, y = common_functions.load_data(dataset)
+    for idx_external in range(fixed_values.EXTERNAL_SPLITS):
+        X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external)
+        mRMR_indexes = load_mRMR_indexes(dataset, idx_external)
+
+        X_train_mRMR = X_train[mRMR_indexes].values
+        X_test_mRMR = X_test[mRMR_indexes].values
+
+        pickle_file = f"{paths.MRMR_PATH}/{dataset}_mRMR_{idx_external}"
+
+        with open(f"{pickle_file}_train.pickle", 'wb') as f:
+            pickle.dump(X_train_mRMR, f)
+
+        with open(f"{pickle_file}_test.pickle", 'wb') as f:
+            pickle.dump(X_test_mRMR, f)
+
+        for idx_internal in range(fixed_values.INTERNAL_SPLITS):
+            X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, idx_internal)
+
+            mRMR_indexes = load_mRMR_indexes(dataset, idx_external, idx_internal)
+
+            X_train_mRMR = X_train[mRMR_indexes].values
+            X_test_mRMR = X_test[mRMR_indexes].values
+
+            pickle_file = f"{paths.MRMR_PATH}/{dataset}_mRMR_{idx_external}_{idx_internal}"
+
+            with open(f"{pickle_file}_train.pickle", 'wb') as f:
+                pickle.dump(X_train_mRMR, f)
+
+            with open(f"{pickle_file}_test.pickle", 'wb') as f:
+                pickle.dump(X_test_mRMR, f)
+
+
+def load_mRMR(dataset: str, idx_external: int, idx_internal: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray]:
+    """
+
+        Function to encapsulate the load of mRMR selected features
+
+    :param dataset: Dataset to load
+    :param idx_external: idx of external division
+    :param idx_internal: idx of internal division
+    :return: X_train, X_test
+    """
+    if idx_internal is None:
+        pickle_file = f"{paths.MRMR_PATH}/{dataset}_mRMR_{idx_external}"
+
+    else:  # idx_external is not None
+        pickle_file = f"{paths.MRMR_PATH}/{dataset}_mRMR_{idx_external}_{idx_internal}"
+
+    with open(f"{pickle_file}_train.pickle", 'rb') as f:
+        X_train_mRMR = pickle.load(f)
+
+    with open(f"{pickle_file}_test.pickle", 'rb') as f:
+        X_test_mRMR = pickle.load(f)
+
+    return X_train_mRMR, X_test_mRMR
+    #      X_train     , X_test
+
+
+def get_features(X_train_mRMR: np.ndarray, X_test_mRMR: np.ndarray,
+                 features_number: Optional[int] = fixed_values.MAX_DIMENSION) -> Tuple[np.ndarray, np.ndarray]:
+    """
+
+    :param X_train_mRMR: Whole X_train
+    :param X_test_mRMR: Whole X_test
+    :param features_number: Feature to select (default to all)
+    :return: X_train, X_test of just first features_number of features
+    """
+    return X_train_mRMR[:, :features_number], X_test_mRMR[:, :features_number]
+    #      X_train                      , X_test
+
