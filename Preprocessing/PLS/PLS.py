@@ -9,9 +9,7 @@ import pandas as pd
 import sklearn.cross_decomposition
 from tqdm import tqdm
 
-from Utils import common_functions
-from Utils import fixed_values
-from Utils import paths
+from Utils import common_functions, fixed_values, paths
 
 
 def calculate_PLS(X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame, n_components: int) -> Tuple[

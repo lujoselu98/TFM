@@ -2,7 +2,7 @@
     All the functions related to mRMR preprocessing
 """
 import pickle
-from typing import Optional, List, Tuple
+from typing import Optional, List
 
 import dcor
 import numpy as np
@@ -10,9 +10,7 @@ import pandas as pd
 from tqdm import tqdm
 from tqdm.notebook import tqdm as nbtqdm
 
-from Utils import common_functions
-from Utils import fixed_values
-from Utils import paths
+from Utils import common_functions, fixed_values, paths
 
 
 def calculate_mRMR(X_train: pd.DataFrame, y_train: pd.Series, features_number: int, use_tqdm: Optional[bool] = False,
@@ -168,7 +166,6 @@ def save_mRMR(dataset: str) -> None:
 
             with open(f"{pickle_file}_test.pickle", 'wb') as f:
                 pickle.dump(X_test_mRMR, f)
-
 
 
 def main(dataset: str) -> None:
