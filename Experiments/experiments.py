@@ -21,7 +21,7 @@ def main_experiment() -> None:
 
     results_file = f"{paths.RESULTS_PATH}/results_{time.time()}_main_experiment.csv"
     with open(results_file, 'a') as f:
-        f.write("DATASET;PREPROCESSES;CLASSIFIER_NAME;"
+        f.write("DATASET;PREPROCESS;CLASSIFIER_NAME;"
                 "IDX_EXTERNAL;FEATURES_NUMBER;PARAMS;"
                 "METRICS_DICT\n")
     for dataset in progress_bar:
