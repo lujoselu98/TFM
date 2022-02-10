@@ -22,8 +22,7 @@ def main_experiment() -> None:
     results_file = f"{paths.RESULTS_PATH}/results_{time.time()}_main_experiment.csv"
     with open(results_file, 'a') as f:
         f.write("DATASET;PREPROCESSES;CLASSIFIER_NAME;"
-                "IDX_EXTERNAL;IDX_INTERNAL;"
-                "FEATURES_NAME;PARAMS;"
+                "IDX_EXTERNAL;FEATURES_NUMBER;PARAMS;"
                 "METRICS_DICT")
     for dataset in progress_bar:
         _, X, y = common_functions.load_data(dataset)
@@ -149,6 +148,16 @@ def main_experiment() -> None:
                     joblib.dump(clf,
                                 f'{paths.CLASSIFIERS_PATH}/{dataset}_{preprocess}_{classifier_name}'
                                 f'_{idx_external}.joblib')
+
+                    csv_string = f"{dataset};{preprocess};{classifier_name};{idx_external};" \
+                                 f"{best_features_number};{best_params};{metrics_dict}"
+                    with open(f'{results_file}', 'a') as f:
+                        f.write(f"{csv_string}\n")
+
+                    if progress_bar.last_print_n < progress_bar.total:
+                        progress_bar.update(1)
+                    else:
+                        progress_bar.close()
 
 
 if __name__ == '__main__':
