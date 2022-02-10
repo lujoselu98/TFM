@@ -7,6 +7,7 @@ from typing import Tuple
 import numpy as np
 import pandas as pd
 import sklearn.cross_decomposition
+from tqdm import tqdm
 
 from Utils import common_functions
 from Utils import fixed_values
@@ -25,6 +26,10 @@ def calculate_PLS(X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFram
     :param n_components: Number of components to project into
     :return: Projection of X_train and X_test
     """
+    if X_train.columns.dtype == 'float':
+        X_train.columns = X_train.columns.astype('str')
+        X_test.columns = X_train.columns.astype('str')
+
     pls_regressor = sklearn.cross_decomposition.PLSRegression(n_components=n_components)
     pls_regressor = pls_regressor.fit(X_train, y_train)
 
@@ -40,7 +45,7 @@ def save_PLS(dataset: str) -> None:
     :param dataset: Dataset to use
     """
     _, X, y = common_functions.load_data(dataset)
-    for idx_external in range(fixed_values.EXTERNAL_SPLITS):
+    for idx_external in tqdm(range(fixed_values.EXTERNAL_SPLITS)):
 
         X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external)
 
