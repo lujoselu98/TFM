@@ -29,3 +29,11 @@ Se puden ver todos representados junto con la media global en la siguiente grafi
 
 Vemos que todos los detectados por este método ya habían sido detectados por el outliergram que habia detectado un conjunto 
 mayor de curvas.
+
+### Basados en profundidad
+
+Vemos que este método no encuentra outliers para ninguna de las funciones de profundidad estudiadas.
+
+![CC ID Boxplot](../Plots/cc_Data/CC_ID_Boxplot.png)
+![CC MBD Boxplot](../Plots/cc_Data/CC_MBD_Boxplot.png)
+
