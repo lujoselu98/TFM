@@ -23,7 +23,7 @@ Vemos que hay unos cuantos outliers concretamente son [1007, 1035, 1055, 1197, 1
 
 ![CC MSPlot](../Plots/cc_Data/CC_MSPlot.png)
 
-Se puden ver todos representados junto con la media global en la siguiente gráfica.
+Se pueden ver todos representados junto con la media global en la siguiente gráfica.
 
 ![CC MSPlot outliers](../Plots/cc_Data/CC_MSPlot_outliers.png)
 
@@ -43,7 +43,7 @@ Vemos que hay unos cuantos outliers concretamente son [1022, 1024, 1070, 1091, 1
 
 ![CDCOR Outliergram](../Plots/cdcor_Data/CDCOR_Outliergram.png)
 
-Se pueden ver todos representados junto con la media global en la siguiente grafica.
+Se pueden ver todos representados junto con la media global en la siguiente gráfica.
 
 ![CDCOR Outliergram outliers](../Plots/cdcor_Data/CDCOR_Outliergram_outliers.png)
 
