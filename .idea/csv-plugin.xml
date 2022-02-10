@@ -38,6 +38,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Experiments\Results\results_1644522851.8010826_main_experiment.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Experiments\Results\results_1644523211.3935645_main_experiment.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

@@ -37,7 +37,7 @@ def main_experiment() -> None:
                                 f"({(list(fixed_values.CLASSIFIERS.keys())).index(classifier_name) + 1}" \
                                 f"/{len(fixed_values.CLASSIFIERS)}) " \
                                 f"Pre: {preprocess} " \
-                                f"({(['whole'] + fixed_values.PREPROCESSES).index(preprocess) + 1}" \
+                                f"({(fixed_values.PREPROCESSES + ['whole']).index(preprocess) + 1}" \
                                 f"/{len(fixed_values.PREPROCESSES) + 1}) " \
                                 f"Ext. fold: {idx_external + 1}/{fixed_values.EXTERNAL_SPLITS}"
                     progress_bar.set_description(tqdm_desc)
