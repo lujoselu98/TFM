@@ -135,7 +135,7 @@ def load_mRMR_indexes(dataset: str, idx_external: int, idx_internal: Optional[in
 
 def save_mRMR(dataset: str) -> None:
     """
-        Save the data of selected features to use in experiments
+        Save the data of selected features by mRMR to use in experiments
     :param dataset: Dataset to use
     """
     tt, X, y = common_functions.load_data(dataset)
@@ -169,44 +169,6 @@ def save_mRMR(dataset: str) -> None:
             with open(f"{pickle_file}_test.pickle", 'wb') as f:
                 pickle.dump(X_test_mRMR, f)
 
-
-def load_mRMR(dataset: str, idx_external: int, idx_internal: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray]:
-    """
-
-        Function to encapsulate the load of mRMR selected features
-
-    :param dataset: Dataset to load
-    :param idx_external: idx of external division
-    :param idx_internal: idx of internal division
-    :return: X_train, X_test
-    """
-    if idx_internal is None:
-        pickle_file = f"{paths.MRMR_PATH}/{dataset}_mRMR_{idx_external}"
-
-    else:  # idx_external is not None
-        pickle_file = f"{paths.MRMR_PATH}/{dataset}_mRMR_{idx_external}_{idx_internal}"
-
-    with open(f"{pickle_file}_train.pickle", 'rb') as f:
-        X_train_mRMR = pickle.load(f)
-
-    with open(f"{pickle_file}_test.pickle", 'rb') as f:
-        X_test_mRMR = pickle.load(f)
-
-    return X_train_mRMR, X_test_mRMR
-    #      X_train     , X_test
-
-
-def get_features(X_train_mRMR: np.ndarray, X_test_mRMR: np.ndarray,
-                 features_number: Optional[int] = fixed_values.MAX_DIMENSION) -> Tuple[np.ndarray, np.ndarray]:
-    """
-
-    :param X_train_mRMR: Whole X_train
-    :param X_test_mRMR: Whole X_test
-    :param features_number: Feature to select (default to all)
-    :return: X_train, X_test of just first features_number of features
-    """
-    return X_train_mRMR[:, :features_number], X_test_mRMR[:, :features_number]
-    #      X_train                      , X_test
 
 
 def main(dataset: str) -> None:
