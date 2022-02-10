@@ -220,4 +220,4 @@ def main(dataset: str) -> None:
 
 
 if __name__ == '__main__':
-    main(fixed_values.DATASETS[0])
+    main(fixed_values.DATASETS[2])

@@ -16,7 +16,7 @@ def load_data(dataset: str) -> Tuple[np.array, pd.DataFrame, pd.Series]:
     """
     if dataset == 'CC':
         data_path = paths.CC_DATA_PATH
-    elif dataset == 'CDCOR':
+    elif dataset == 'DCOR':
         data_path = paths.CDCOR_DATA_PATH
     elif dataset == 'FFT':
         data_path = paths.FFT_DATA_PATH
