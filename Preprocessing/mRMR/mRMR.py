@@ -93,7 +93,7 @@ def save_mRMR_indexes(dataset: str) -> None:
         X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external)
 
         tqdm_desc = f"External fold {idx_external + 1}/{fixed_values.EXTERNAL_SPLITS} "
-        selected_features_index = calculate_mRMR(X_train, y_train, features_number= fixed_values.MAX_DIMENSION,
+        selected_features_index = calculate_mRMR(X_train, y_train, features_number=fixed_values.MAX_DIMENSION,
                                                  use_tqdm=True, tqdm_desc=tqdm_desc)
 
         sel_features_file = f"{paths.MRMR_PATH}/{dataset}_sel_features_{idx_external}.txt"
@@ -104,14 +104,13 @@ def save_mRMR_indexes(dataset: str) -> None:
 
             tqdm_desc = f"External fold {idx_external + 1}/{fixed_values.EXTERNAL_SPLITS} " \
                         f"Internal fold {idx_internal + 1}/{fixed_values.INTERNAL_SPLITS}"
-            selected_features_index = calculate_mRMR(X_train, y_train, features_number= fixed_values.MAX_DIMENSION,
+            selected_features_index = calculate_mRMR(X_train, y_train, features_number=fixed_values.MAX_DIMENSION,
                                                      use_tqdm=True, tqdm_desc=tqdm_desc)
 
             sel_features_file = f"{paths.MRMR_PATH}/{dataset}_sel_features_{idx_external}_{idx_internal}.txt"
             with open(sel_features_file, 'w') as f:
                 f.write(str(selected_features_index))
-            break
-        break
+
 
 def load_mRMR_indexes(dataset: str, idx_external: int, idx_internal: Optional[int] = None) -> List[int]:
     """
@@ -169,8 +168,6 @@ def save_mRMR(dataset: str) -> None:
 
             with open(f"{pickle_file}_test.pickle", 'wb') as f:
                 pickle.dump(X_test_mRMR, f)
-            break
-        break
 
 
 def load_mRMR(dataset: str, idx_external: int, idx_internal: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray]:
