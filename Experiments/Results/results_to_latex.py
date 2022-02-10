@@ -1,6 +1,9 @@
 """
     Functions to parse results and to make Latex code
 """
+import os
+from typing import Optional
+
 import numpy as np
 import pandas as pd
 from tabulate import tabulate
@@ -8,8 +11,21 @@ from tabulate import tabulate
 from Utils import pandas_utils, fixed_values, paths, latex
 
 
-def create_latex_table(file, dataset, metric, mark_best_preprocess=False, mark_best_classifier=True,
-                       style_mark='textbf'):
+def create_latex_table(file: str, dataset: str, metric: str,
+                       mark_best_preprocess: Optional[bool] = False, mark_best_classifier: Optional[bool] = True,
+                       style_mark: Optional[str] = 'textbf') -> str:
+    """
+
+    Create a latex table from csv file for a dataset and metric set, params for different style
+
+    :param file: csv file with the results
+    :param dataset: dataset to use
+    :param metric: metric to calculate
+    :param mark_best_preprocess: mark by columns
+    :param mark_best_classifier: mark by rows
+    :param style_mark: latex style of the mark
+    :return: String of latex table
+    """
     if mark_best_preprocess and mark_best_classifier:
         mark_best_preprocess = False
 
@@ -57,9 +73,10 @@ def create_latex_table(file, dataset, metric, mark_best_preprocess=False, mark_b
     # Style
     table_lines = latex_table.split('\n')
     table_lines = ['\t' + line for line in table_lines]
-    table_lines[0] = '\\begin{adjustbox}{width=1.6\\textwidth}\n\\begin{tabular}{c|' + 'c' * len(preprocesses) + '}'
-    table_lines[-1] = '\\end{tabular}\n\\end{adjustbox}'
-    table_lines.append('\\caption{\\label{tab:' + metric.lower() + '_' + dataset + '} ' + metric + ' ' + dataset + '}')
+    table_lines[0] = '\\begin{tabular}{c|' + 'c' * len(preprocesses) + '}'
+    table_lines[-1] = '\\end{tabular}'
+    table_lines.append('\\caption{\\label{tab:' + metric.lower() + '_' + dataset + '} '
+                       + fixed_values.EVALUATION_METRICS[metric]['name'] + ' ' + dataset + '}')
 
     latex_table = '\n'.join(table_lines)
 
@@ -72,14 +89,35 @@ def create_latex_table(file, dataset, metric, mark_best_preprocess=False, mark_b
             latex_table = latex_table.replace(best_classifier_value, f"\\{style_mark}{{{best_classifier_value}}}")
 
     latex_table = latex_table.replace(latex.PM_STRING, latex.PM_LATEX)
-    print(latex_table)
+    return latex_table
+
+
+def compose_latex(file: str, metric: str) -> str:
+    """
+    Create whole latex document from a csv file with results for a metric
+
+    :param file: csv file with the results
+    :param metric: metric to use
+    :return: String with the latex document ready to compile
+    """
+    whole_latex = latex.LATEX_TABLE_BEGIN
+    for dataset in fixed_values.DATASETS:
+        whole_latex += '\n'.join(['\t\t' + line for line in create_latex_table(file, dataset, metric).split('\n')])
+        whole_latex += latex.SPACE_BETWEEN_TABLES
+
+    whole_latex += latex.LATEX_TABLE_END
+    whole_latex = '\n'.join([latex.LATEX_HEADER, latex.LATEX_MARGINS, latex.LATEX_BEGIN, whole_latex, latex.LATEX_END])
+
+    return whole_latex
 
 
 def main() -> None:
     """
         Main function
     """
-    create_latex_table(f"{paths.RESULTS_PATH}/fake_results.csv", 'CC', 'BAL_ACC')
+    for metric in fixed_values.EVALUATION_METRICS.keys():
+        latex.save_latex(compose_latex(f"{paths.RESULTS_PATH}/fake_results.csv", 'BAL_ACC'), f'{metric}_results',
+                         current_path=os.path.abspath(os.path.dirname(__file__)))
 
 
 if __name__ == '__main__':

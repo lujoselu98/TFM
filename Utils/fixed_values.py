@@ -109,11 +109,13 @@ VALIDATION_METRIC = balanced_accuracy_score
 EVALUATION_METRICS = {
     'AUC_SCORE': {
         'function': roc_auc_score,
-        'values': 'scores'
+        'values': 'scores',
+        'name': 'Area bajo la curva roc',
     },
     'BAL_ACC': {
         'function': balanced_accuracy_score,
-        'values': 'predictions'
+        'values': 'predictions',
+        'name': 'Balanced Accuracy',
     },
 
 }

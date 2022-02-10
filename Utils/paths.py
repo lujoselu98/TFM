@@ -27,9 +27,10 @@ MRMR_PATH = f"{PROJECT_PATH}/Preprocessing/mRMR/mRMR_files"
 FPCA_PATH = f"{PROJECT_PATH}/Preprocessing/FPCA/FPCA_files"
 PLS_PATH = f"{PROJECT_PATH}/Preprocessing/PLS/PLS_files"
 
-# Paths to save resulst
+# Paths to save results
 RESULTS_PATH = f"{PROJECT_PATH}/Experiments/Results"
 CLASSIFIERS_PATH = f"{PROJECT_PATH}/Experiments/Classifiers"
+LATEX_PATH = f"{PROJECT_PATH}/Experiments/Latex"
 
 
 def _print_paths() -> None:
@@ -57,6 +58,7 @@ def _print_paths() -> None:
     print(f"FPCA_PATH={FPCA_PATH}")
     print(f"PLS_PATH={PLS_PATH}")
     print(f"CLASSIFIERS_PATH={CLASSIFIERS_PATH}")
+    print(f"LATEX_PATH={LATEX_PATH}")
     print()
 
 
