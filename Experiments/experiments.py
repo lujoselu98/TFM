@@ -30,7 +30,7 @@ def main_experiment() -> None:
             if dataset not in classifier['datasets']:
                 continue
             clf_to_val = classifier['clf']
-            for preprocess in ['whole'] + fixed_values.PREPROCESSES:
+            for preprocess in fixed_values.PREPROCESSES + ['whole']:
                 for idx_external in range(fixed_values.EXTERNAL_SPLITS):
                     tqdm_desc = f"Dataset {dataset} " \
                                 f"Clf: {classifier_name} " \
@@ -93,7 +93,7 @@ def main_experiment() -> None:
                                 clf.set_params(**params)
 
                                 # Train
-                                clf.fit(X_test_pre_f, y_train)
+                                clf.fit(X_train_pre_f, y_train)
 
                                 # Evaluate
                                 y_pred = clf.predict(X_test_pre_f)
@@ -101,7 +101,7 @@ def main_experiment() -> None:
 
                                 # Save results
                                 internal_results.append(metric_test)
-
+                                break
                             # Compare and take best (model, params, features)
                             mean_score = np.mean(internal_results)
 
@@ -109,7 +109,8 @@ def main_experiment() -> None:
                                 best_score = mean_score
                                 best_params = params
                                 best_features_number = features_number
-
+                            break
+                        break
                     # End of param cross validation
 
                     X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external)
@@ -128,7 +129,7 @@ def main_experiment() -> None:
                     clf.set_params(**best_params)
 
                     # Train
-                    clf.fit(X_train_pre_f, X_test_pre_f)
+                    clf.fit(X_train_pre_f, y_train)
                     y_pred = clf.predict(X_test_pre_f)
 
                     # Evaluate and save

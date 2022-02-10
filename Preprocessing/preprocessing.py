@@ -37,7 +37,7 @@ def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_intern
     if idx_internal is not None:
         idx_internal_s = '_' + str(idx_internal)
 
-    pickle_path = file_f_string.format(PATH=path, data=dataset, preprocess=preprocess, idx_external=idx_external,
+    pickle_path = file_f_string.format(PATH=path, dataset=dataset, preprocess=preprocess, idx_external=idx_external,
                                        idx_internal=idx_internal_s)
 
     with open(f"{pickle_path}_train.pickle", 'rb') as f:
