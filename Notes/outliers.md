@@ -15,3 +15,17 @@ Vemos que hay unos cuantos outliers concretamente son [1007, 1009, 1010, 1027, 1
 Se puden ver todos representados junto con la media global en la siguiente grafica.
 
 ![CC Outliergram outliers](../Plots/cc_Data/CC_Outliergram_outliers.png)
+
+### Magnitude-shape plot
+
+Vemos que hay unos cuantos outliers concretamente son [1007, 1035, 1055, 1197, 1198, 1312, 1409, 1482, 2024] (9), 
+5 de clase 0 y 4 de clase 1.
+
+![CC MSPlot](../Plots/cc_Data/CC_MSPlot.png)
+
+Se puden ver todos representados junto con la media global en la siguiente grafica.
+
+![CC MSPlot outliers](../Plots/cc_Data/CC_MSPlot_outliers.png)
+
+Vemos que todos los detectados por este método ya habían sido detectados por el outliergram que habia detectado un conjunto 
+mayor de curvas.
