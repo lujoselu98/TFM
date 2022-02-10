@@ -101,7 +101,6 @@ def main_experiment() -> None:
 
                                 # Save results
                                 internal_results.append(metric_test)
-                                break
                             # Compare and take best (model, params, features)
                             mean_score = np.mean(internal_results)
 
@@ -109,8 +108,6 @@ def main_experiment() -> None:
                                 best_score = mean_score
                                 best_params = params
                                 best_features_number = features_number
-                            break
-                        break
                     # End of param cross validation
 
                     X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external)
