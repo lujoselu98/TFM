@@ -13,10 +13,10 @@ def make_fake_data() -> None:
         Make fake csv
     """
     results_file = f"{paths.RESULTS_PATH}/fake_results.csv"
-    with open(results_file, 'a') as f:
+    with open(results_file, 'w') as f:
         f.write("DATASET;PREPROCESSES;CLASSIFIER_NAME;"
                 "IDX_EXTERNAL;FEATURES_NUMBER;PARAMS;"
-                "METRICS_DICT")
+                "METRICS_DICT\n")
     for dataset in fixed_values.DATASETS:
         _, X, y = common_functions.load_data(dataset)
         for classifier_name, classifier in fixed_values.CLASSIFIERS.items():

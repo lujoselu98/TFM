@@ -23,7 +23,7 @@ def main_experiment() -> None:
     with open(results_file, 'a') as f:
         f.write("DATASET;PREPROCESSES;CLASSIFIER_NAME;"
                 "IDX_EXTERNAL;FEATURES_NUMBER;PARAMS;"
-                "METRICS_DICT")
+                "METRICS_DICT\n")
     for dataset in progress_bar:
         _, X, y = common_functions.load_data(dataset)
         for classifier_name, classifier in fixed_values.CLASSIFIERS.items():
