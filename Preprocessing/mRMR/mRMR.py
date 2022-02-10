@@ -9,6 +9,10 @@ import pandas as pd
 from tqdm import tqdm
 from tqdm.notebook import tqdm as nbtqdm
 
+from Utils import common_functions
+from Utils import fixed_values
+from Utils import paths
+
 
 def calculate_mRMR(X_train: pd.DataFrame, y_train: pd.Series, features_number: int, use_tqdm: Optional[bool] = False,
                    tqdm_desc: Optional[str] = '', is_notebook: Optional[bool] = False) -> List[int]:
@@ -76,3 +80,33 @@ def calculate_mRMR(X_train: pd.DataFrame, y_train: pd.Series, features_number: i
         pbar.close()
     # return X_train[selected_features_index], X_test[selected_features_index], selected_features_index
     return selected_features_index
+
+
+def save_mRMR_indexes(dataset: str) -> None:
+    """
+        Save mRMR indexes into .txt files
+    :param dataset: Dataset to calculate and save the indexes
+    """
+    tt, X, y = common_functions.load_data(dataset)
+    for idx_external in range(fixed_values.EXTERNAL_SPLITS):
+        X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external)
+
+        tqdm_desc = f"External fold {idx_external + 1}/{fixed_values.EXTERNAL_SPLITS} "
+        selected_features_index = calculate_mRMR(X_train, y_train, features_number=fixed_values.MAX_DIMENSION,
+                                                 use_tqdm=True, tqdm_desc=tqdm_desc)
+
+        sel_features_file = f"{paths.MRMR_PATH}/{dataset}_sel_features_{idx_external}.txt"
+        with open(sel_features_file, 'w') as f:
+            f.write(str(selected_features_index))
+
+        for idx_internal in range(fixed_values.INTERNAL_SPLITS):
+            X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, idx_internal)
+
+            tqdm_desc = f"External fold {idx_external + 1}/{fixed_values.EXTERNAL_SPLITS} " \
+                        f"Internal fold {idx_internal + 1}/{fixed_values.INTERNAL_SPLITS}"
+            selected_features_index = calculate_mRMR(X_train, y_train, features_number=fixed_values.MAX_DIMENSION,
+                                                     use_tqdm=True, tqdm_desc=tqdm_desc)
+
+            sel_features_file = f"{paths.MRMR_PATH}/{dataset}_sel_features_{idx_external}_{idx_internal}.txt"
+            with open(sel_features_file, 'w') as f:
+                f.write(str(selected_features_index))

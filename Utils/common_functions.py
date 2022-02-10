@@ -30,7 +30,7 @@ def load_data(dataset: str) -> Tuple[np.array, pd.DataFrame, pd.Series]:
 
 
 def get_fold(X: pd.DataFrame, y: pd.Series, idx_external: int, idx_internal: Optional[int] = None) -> Tuple[
-    pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """
 
     Get X_train, X_test, y_train, y_test corresponding to the fold
