@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import skfda
 from skfda.preprocessing.dim_reduction.projection import FPCA
+from tqdm import tqdm
 
 from Utils import paths, fixed_values, common_functions
 
@@ -36,7 +37,7 @@ def save_PCA(dataset: str) -> None:
     :param dataset: Dataset to use
     """
     tt, X, y = common_functions.load_data(dataset)
-    for idx_external in range(fixed_values.EXTERNAL_SPLITS):
+    for idx_external in tqdm(range(fixed_values.EXTERNAL_SPLITS)):
 
         X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external)
 
@@ -64,4 +65,14 @@ def save_PCA(dataset: str) -> None:
                 pickle.dump(X_test_pca, f)
 
 
+def main() -> None:
+    """
+        Main Function
+    """
+    for dataset in fixed_values.DATASETS:
+        print(dataset)
+        save_PCA(dataset)
 
+
+if __name__ == '__main__':
+    main()

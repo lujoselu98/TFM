@@ -25,7 +25,7 @@ def calculate_mRMR(X_train: pd.DataFrame, y_train: pd.Series, features_number: i
     :param use_tqdm: use of tqdm progress bar
     :param tqdm_desc: description of to set into tqdm progress bar
     :param is_notebook: use of tqdm in notebook to allow calls fron notebook in nice format
-    :return: Indexes of the selected features
+    :return: Selected features names
     """
     # Set types and shapes
     X_train_t = X_train.T
