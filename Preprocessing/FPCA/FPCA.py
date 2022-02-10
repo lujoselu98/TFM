@@ -31,7 +31,7 @@ def calculate_FPCA(X_train: pd.DataFrame, X_test: pd.DataFrame, tt: pd.Series, n
     return X_train_pca, X_test_pca
 
 
-def save_PCA(dataset: str) -> None:
+def save_FPCA(dataset: str) -> None:
     """
         Save the data of projected data by FPCA to use in experiments
     :param dataset: Dataset to use
@@ -71,7 +71,7 @@ def main() -> None:
     """
     for dataset in fixed_values.DATASETS:
         print(dataset)
-        save_PCA(dataset)
+        save_FPCA(dataset)
 
 
 if __name__ == '__main__':
