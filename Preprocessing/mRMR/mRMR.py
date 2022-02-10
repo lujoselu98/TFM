@@ -127,7 +127,10 @@ def load_mRMR_indexes(dataset: str, idx_external: int, idx_internal: Optional[in
     with open(f'{mRMR_indexes_file}', 'r') as f:
         line = f.readline()
         mRMR_indexes = line.strip().replace("]", "").replace("[", "").replace("'", "").split(', ')
-        mRMR_indexes = [int(x) for x in mRMR_indexes]
+        if dataset != 'FFT':
+            mRMR_indexes = [int(x) for x in mRMR_indexes]
+        else:
+            mRMR_indexes = [float(x) for x in  mRMR_indexes]
     return mRMR_indexes
 
 
@@ -174,7 +177,7 @@ def main(dataset: str) -> None:
     """
 
     print(dataset)
-    save_mRMR_indexes(dataset)
+    # save_mRMR_indexes(dataset)
     save_mRMR(dataset)
 
 
