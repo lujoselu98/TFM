@@ -2,15 +2,15 @@ from typing import Tuple, Optional
 
 import numpy as np
 import pandas as pd
-import sklearn
+import sklearn.model_selection
 
-import fixed_values
-import paths
+from Utils import paths
+from Utils import fixed_values
 
 
 def load_data(dataset: str) -> Tuple[np.array, pd.DataFrame, pd.Series]:
     """
-        Function to load data
+    Function to load data
     :param dataset: dataset identifier [CC, CDCOR, FFT]
     :return: features_names, data matrix, label vector
     """
@@ -32,9 +32,7 @@ def load_data(dataset: str) -> Tuple[np.array, pd.DataFrame, pd.Series]:
 def get_fold(X: pd.DataFrame, y: pd.Series, idx_external: int, idx_internal: Optional[int] = None) -> Tuple[
     pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """
-
     Get X_train, X_test, y_train, y_test corresponding to the fold
-
     :param X: Whole data matrix
     :param y: Whole label vector
     :param idx_external: idx of the fold of external division
@@ -62,3 +60,15 @@ def get_fold(X: pd.DataFrame, y: pd.Series, idx_external: int, idx_internal: Opt
         index_train, index_test = splits[idx_internal]
 
         return X_int.iloc[index_train], X_int.iloc[index_test], y_int.iloc[index_train], y_int.iloc[index_test]
+
+
+def _print_functions():
+    """
+        Just print defined functions docstring
+    """
+    print(load_data.__doc__)
+    print(get_fold.__doc__)
+
+
+if __name__ == '__main__':
+    _print_functions()

@@ -2,6 +2,8 @@
     Common shared values
 """
 
+DATASETS = ['CC', 'DCOR', 'FFT']
+
 EXTERNAL_SPLITS = 10
 INTERNAL_SPLITS = 10
 
@@ -12,6 +14,8 @@ MAX_DIMENSION = max(DIMENSION_GRID)
 
 
 def _print_values() -> None:
+    print(f"DATASETS: {DATASETS}")
+
     print(f"EXTERNAL_SPLITS: {EXTERNAL_SPLITS}")
     print(f"INTERNAL_SPLITS: {INTERNAL_SPLITS}")
 
