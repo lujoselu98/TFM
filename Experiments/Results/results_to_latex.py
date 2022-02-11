@@ -12,7 +12,7 @@ from Utils import pandas_utils, fixed_values, paths, latex
 
 
 def create_latex_table(file: str, dataset: str, metric: str,
-                       mark_best_preprocess: Optional[bool] = False, mark_best_classifier: Optional[bool] = True,
+                       mark_best_preprocess: Optional[bool] = True, mark_best_classifier: Optional[bool] = False,
                        style_mark: Optional[str] = 'textbf') -> str:
     """
 
@@ -117,7 +117,7 @@ def main() -> None:
     """
     for metric in fixed_values.EVALUATION_METRICS.keys():
         latex.save_latex(compose_latex(f"{paths.RESULTS_PATH}/results_main_experiment.csv", metric),
-                         f'{metric}_results',
+                         f'{metric}_results_pre',
                          current_path=os.path.abspath(os.path.dirname(__file__)))
 
 
