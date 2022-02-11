@@ -116,7 +116,8 @@ def main() -> None:
         Main function
     """
     for metric in fixed_values.EVALUATION_METRICS.keys():
-        latex.save_latex(compose_latex(f"{paths.RESULTS_PATH}/fake_results.csv", 'BAL_ACC'), f'{metric}_results',
+        latex.save_latex(compose_latex(f"{paths.RESULTS_PATH}/results_main_experiment.csv", metric),
+                         f'{metric}_results',
                          current_path=os.path.abspath(os.path.dirname(__file__)))
 
 
