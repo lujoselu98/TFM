@@ -23,7 +23,7 @@ def calc_lags(minutes: int = 5) -> List[int]:
     return [k - N + 1 for k in range(0, 2 * N - 2 + 1)]
 
 
-def cc(x: pd.Series, y: pd.Series, lag: int) -> float:
+def cc(x: pd.Series, y: pd.Series, lag: int, min_num_points: int) -> float:
     """
 
     Nan save (pandas) lagged cross correlation between two signals
@@ -31,9 +31,10 @@ def cc(x: pd.Series, y: pd.Series, lag: int) -> float:
     :param x: first signal not lagged
     :param y: second signal lagged
     :param lag: lag to lag second signal
+    :param min_num_points: mínimo numero de puntos para considerar la correlación válida
     :return: lagged cross correlation
     """
-    return x.corr(y.shift(lag))
+    return x.corr(y.shift(lag), min_periods=min_num_points)
 
 
 def shift(signal: np.ndarray, lag: int) -> np.ndarray:
