@@ -2,18 +2,9 @@
 Originalmente hay 552 patrones de longitud 21620 para la frecuencia fetal y las contracciones uterinas [(552, 21620)]
 ![Mean by class](../Plots/Original_Data/Means_plots.png)
 
-Sobre estos datos usamos el siguiente criterio para detectar curvas de UC que no van a tener la suficiente información
-como para poder tener poder predictivo. Sumamos dos cantidades:
+Lo siguiente que hacemos independiente del dataset a utilizar es marcar en los datos aquellos valores que no queremos considerar
+coo válidos, estos son para la frecuencia cardiaca los que esten por encima de 250 y para los dos conjuntos los puntos en los que valga
+cero o menos y los tramos en los que la curva permanezca constante durante más de 5 segundos (20 puntos a 4Hz.)
 
-- La cantidad absoluta en número de puntos de la parte constante distinta de cero y  de  `np.nan`. Para este cálculo consideramos
-solo las partes constantes con una duración superior a 5 segundos (20 puntos a 4Hz)
-- La cantidad absoluta en número de puntos de ceros en la curva, independientemente de si son consecutivos.
-
-Ordenamos las curvas respecto a este criterio y retiramos el 5% superior, lo que corresponde a 14 curvas (redondeando).
-Las curvas eliminadas son [1104, 1119, 1130, 1134, 1149, 1155, 1158, 1186, 1188, 1258, 1327, 1376, 1451, 1477], siendo 6
-de clase cero 8 de clase 1.
-
-Después de esta primera limpieza tenemos 538 curvas con 21620 puntos cada una. Sobre las que además vamos a considerar 
-no válidos, y los marcamos como NaN los valores "extremos", esto son menores o iguales a cero para ambas y mayores de 250 para la FHR.
 ![Mean by class clean data](../Plots/Original_Data/Means_plots_clean.png)
 
