@@ -36,30 +36,14 @@ def cc(x: pd.Series, y: pd.Series, lag: int, min_num_points: int) -> float:
     return x.corr(y.shift(lag), min_periods=min_num_points)
 
 
-def shift(signal: np.ndarray, lag: int) -> np.ndarray:
-    """
-
-    Return the input signal lagged
-
-    :param signal: array of points of signal
-    :param lag: amount to shift the signal in points
-    :return: shifted signal by lag points
-    """
-    lagged_signal = np.roll(signal, lag)
-    if lag < 0:
-        lagged_signal[lag:] = np.nan
-    else:
-        lagged_signal[:lag] = np.nan
-    return lagged_signal
-
-
-def dcor(x: np.ndarray, y: np.ndarray) -> float:
+def dcor(x: np.ndarray, y: np.ndarray, min_num_points: int) -> float:
     """
 
     NaN save implementation of dcor.distance_correlation
 
     :param x: array of points of first signal
     :param y: array of points of second signal
+    :param min_num_points: mínimo numero de puntos para considerar la correlación válida
     :return: distance_correlation between x and y
     """
 
@@ -67,6 +51,9 @@ def dcor(x: np.ndarray, y: np.ndarray) -> float:
     _y = y.copy()
 
     NaNs = np.logical_or(np.isnan(_x), np.isnan(_y))
+    if sum(~NaNs) <= min_num_points:
+        return np.nan
+
     _x = _x[~NaNs]
     _y = _y[~NaNs]
 
@@ -99,4 +86,3 @@ def nan_save_fft(signal, freqs):
         fft[k] = np.sum(signal_nans * nan_exp)
 
     return (N / np.sum(~nan_signal)) * np.abs(fft)
-
