@@ -130,7 +130,7 @@ def load_mRMR_indexes(dataset: str, idx_external: int, idx_internal: Optional[in
         if dataset != 'FFT':
             mRMR_indexes = [int(x) for x in mRMR_indexes]
         else:
-            mRMR_indexes = [float(x) for x in  mRMR_indexes]
+            mRMR_indexes = [float(x) for x in mRMR_indexes]
     return mRMR_indexes
 
 
@@ -144,8 +144,8 @@ def save_mRMR(dataset: str) -> None:
         X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external)
         mRMR_indexes = load_mRMR_indexes(dataset, idx_external)
 
-        X_train_mRMR = X_train[mRMR_indexes].values
-        X_test_mRMR = X_test[mRMR_indexes].values
+        X_train_mRMR = X_train[map(str, mRMR_indexes)].values
+        X_test_mRMR = X_test[map(str, mRMR_indexes)].values
 
         pickle_file = f"{paths.MRMR_PATH}/{dataset}_mRMR_{idx_external}"
 
@@ -159,8 +159,8 @@ def save_mRMR(dataset: str) -> None:
 
             mRMR_indexes = load_mRMR_indexes(dataset, idx_external, idx_internal)
 
-            X_train_mRMR = X_train[mRMR_indexes].values
-            X_test_mRMR = X_test[mRMR_indexes].values
+            X_train_mRMR = X_train[map(str, mRMR_indexes)].values
+            X_test_mRMR = X_test[map(str, mRMR_indexes)].values
 
             pickle_file = f"{paths.MRMR_PATH}/{dataset}_mRMR_{idx_external}_{idx_internal}"
 
@@ -177,9 +177,9 @@ def main(dataset: str) -> None:
     """
 
     print(dataset)
-    # save_mRMR_indexes(dataset)
+    save_mRMR_indexes(dataset)
     save_mRMR(dataset)
 
 
 if __name__ == '__main__':
-    main(fixed_values.DATASETS[0])
+    main(fixed_values.DATASETS[2])
