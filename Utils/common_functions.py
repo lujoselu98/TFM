@@ -26,11 +26,12 @@ def load_data(dataset: str) -> Tuple[np.array, pd.DataFrame, pd.Series]:
 
     X = pd.read_pickle(f"{data_path}/X.pickle")
     y = pd.read_pickle(f"{data_path}/y.pickle")
+    tt = X.columns
 
     if dataset == 'FFT':
         X.columns = X.columns.astype('str')
 
-    return X.columns, X, y
+    return tt, X, y
 
 
 def get_fold(X: pd.DataFrame, y: pd.Series, idx_external: int, idx_internal: Optional[int] = None) -> Tuple[
