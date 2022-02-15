@@ -4,6 +4,7 @@ Functions to transformate the original data (cleaned) to data that we pass to th
 """
 from typing import List
 
+import joblib
 import numpy as np
 import pandas as pd
 from dcor import distance_correlation, DistanceCovarianceMethod
@@ -69,20 +70,34 @@ def get_freqs(N: int, sample_freq: float = 4) -> np.ndarray:
     :param sample_freq: sample freq of the signal
     :return: array of freqs
     """
+
     return np.fft.rfftfreq(N, d=1. / sample_freq)
 
 
-def nan_save_fft(signal, freqs):
+def nan_save_fft(signal: pd.Series, freqs: np.ndarray) -> List[float]:
+    """
+        Nan save fft implementation
+    :param signal: given signal data
+    :param freqs: freqs to calculate the fft
+    :return: NaN save fft of signal for the given freq
+    """
     N = len(signal)
 
-    fft = np.zeros_like(freqs, complex)
     n = np.arange(N)
 
     nan_signal = np.isnan(signal)
     signal_nans = signal[~nan_signal]
 
-    for k in range(len(freqs)):
-        nan_exp = np.exp(-2j * np.pi * k * n / N)[~nan_signal]
-        fft[k] = np.sum(signal_nans * nan_exp)
+    def parrallel_k(p_k: int, p_nan_signal: np.ndarray, p_signal_nans: pd.Series) -> np.ndarray:
+        """
+            parallel part of function
+        """
+        nan_exp = np.exp(-2j * np.pi * p_k * n / N)[~p_nan_signal]
+        return np.sum(p_signal_nans * nan_exp)
+
+    fft = joblib.Parallel(n_jobs=8)(
+        joblib.delayed(parrallel_k)(k, nan_signal, signal_nans)
+        for k in range(len(freqs))
+    )
 
     return (N / np.sum(~nan_signal)) * np.abs(fft)
