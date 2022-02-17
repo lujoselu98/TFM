@@ -21,47 +21,47 @@
 		\setlength{\belowrulesep}{0pt}
 		\begin{tabular}{c|cccc}
 			\hline
-			             & PCA             & PLS             & whole           & mRMR            \\
+			             & mRMR            & PCA             & PLS             & whole           \\
 			\hline
-			 LR          & \textbf{0.612 $\pm$ 0.086} & 0.584 $\pm$ 0.094 & 0.594 $\pm$ 0.073 & 0.598 $\pm$ 0.074 \\
-			 KNN         & 0.519 $\pm$ 0.066 & \textbf{0.548 $\pm$ 0.085} & 0.538 $\pm$ 0.074 & 0.544 $\pm$ 0.075 \\
-			 KNNSScaler  & 0.533 $\pm$ 0.080 & \textbf{0.551 $\pm$ 0.102} & 0.535 $\pm$ 0.073 & 0.519 $\pm$ 0.071 \\
-			 KNNmMScaler & 0.540 $\pm$ 0.051 & 0.525 $\pm$ 0.095 & 0.533 $\pm$ 0.065 & \textbf{0.568 $\pm$ 0.035} \\
-			 SVC         & 0.567 $\pm$ 0.072 & 0.590 $\pm$ 0.061 & 0.536 $\pm$ 0.066 & \textbf{0.600 $\pm$ 0.086} \\
-			 SVCSScaler  & 0.558 $\pm$ 0.110 & \textbf{0.578 $\pm$ 0.091} & 0.527 $\pm$ 0.050 & 0.556 $\pm$ 0.103 \\
-			 SVCmMScaler & 0.583 $\pm$ 0.110 & 0.576 $\pm$ 0.113 & 0.530 $\pm$ 0.063 & \textbf{0.597 $\pm$ 0.091} \\
+			 LR          & 0.581 $\pm$ 0.092 & \textbf{0.598 $\pm$ 0.065} & 0.578 $\pm$ 0.052 & 0.578 $\pm$ 0.086 \\
+			 KNN         & 0.514 $\pm$ 0.059 & \textbf{0.577 $\pm$ 0.079} & 0.515 $\pm$ 0.078 & 0.546 $\pm$ 0.090 \\
+			 KNNSScaler  & 0.553 $\pm$ 0.073 & 0.488 $\pm$ 0.062 & 0.525 $\pm$ 0.090 & \textbf{0.576 $\pm$ 0.072} \\
+			 KNNmMScaler & 0.536 $\pm$ 0.084 & 0.480 $\pm$ 0.093 & 0.492 $\pm$ 0.063 & \textbf{0.552 $\pm$ 0.081} \\
+			 SVC         & 0.529 $\pm$ 0.090 & 0.523 $\pm$ 0.076 & \textbf{0.557 $\pm$ 0.078} & 0.546 $\pm$ 0.067 \\
+			 SVCSScaler  & 0.528 $\pm$ 0.081 & 0.544 $\pm$ 0.064 & \textbf{0.564 $\pm$ 0.053} & 0.559 $\pm$ 0.067 \\
+			 SVCmMScaler & 0.553 $\pm$ 0.067 & \textbf{0.588 $\pm$ 0.053} & 0.565 $\pm$ 0.057 & 0.541 $\pm$ 0.076 \\
 			\hline
 		\end{tabular}
 		\caption{\label{tab:auc_score_CC} Area bajo la curva roc CC}
 		\vspace*{2cm}
 		\begin{tabular}{c|cccc}
 			\hline
-			             & PCA             & PLS             & whole           & mRMR            \\
+			             & mRMR            & PCA             & PLS             & whole           \\
 			\hline
-			 LR          & 0.526 $\pm$ 0.053 & 0.503 $\pm$ 0.047 & 0.539 $\pm$ 0.079 & \textbf{0.559 $\pm$ 0.093} \\
-			 KNN         & 0.470 $\pm$ 0.085 & 0.476 $\pm$ 0.103 & \textbf{0.503 $\pm$ 0.099} & 0.499 $\pm$ 0.111 \\
-			 KNNSScaler  & 0.470 $\pm$ 0.070 & 0.457 $\pm$ 0.055 & \textbf{0.498 $\pm$ 0.098} & 0.484 $\pm$ 0.112 \\
-			 KNNmMScaler & 0.463 $\pm$ 0.048 & 0.477 $\pm$ 0.084 & \textbf{0.520 $\pm$ 0.091} & 0.501 $\pm$ 0.089 \\
-			 SVC         & 0.527 $\pm$ 0.092 & 0.447 $\pm$ 0.088 & \textbf{0.530 $\pm$ 0.098} & 0.512 $\pm$ 0.084 \\
-			 SVCSScaler  & \textbf{0.509 $\pm$ 0.067} & 0.478 $\pm$ 0.103 & 0.494 $\pm$ 0.097 & 0.500 $\pm$ 0.072 \\
-			 SVCmMScaler & 0.521 $\pm$ 0.098 & 0.503 $\pm$ 0.054 & \textbf{0.526 $\pm$ 0.098} & 0.478 $\pm$ 0.064 \\
+			 LR          & 0.511 $\pm$ 0.073 & 0.473 $\pm$ 0.057 & \textbf{0.513 $\pm$ 0.099} & 0.504 $\pm$ 0.057 \\
+			 KNN         & 0.452 $\pm$ 0.078 & 0.477 $\pm$ 0.081 & \textbf{0.521 $\pm$ 0.087} & 0.447 $\pm$ 0.088 \\
+			 KNNSScaler  & 0.458 $\pm$ 0.055 & \textbf{0.501 $\pm$ 0.074} & 0.497 $\pm$ 0.104 & 0.454 $\pm$ 0.083 \\
+			 KNNmMScaler & 0.468 $\pm$ 0.031 & 0.466 $\pm$ 0.082 & \textbf{0.543 $\pm$ 0.093} & 0.467 $\pm$ 0.103 \\
+			 SVC         & 0.446 $\pm$ 0.082 & 0.426 $\pm$ 0.070 & \textbf{0.463 $\pm$ 0.112} & 0.438 $\pm$ 0.060 \\
+			 SVCSScaler  & 0.454 $\pm$ 0.086 & 0.466 $\pm$ 0.076 & \textbf{0.520 $\pm$ 0.106} & 0.469 $\pm$ 0.074 \\
+			 SVCmMScaler & 0.446 $\pm$ 0.101 & 0.463 $\pm$ 0.075 & \textbf{0.520 $\pm$ 0.119} & 0.446 $\pm$ 0.072 \\
 			\hline
 		\end{tabular}
 		\caption{\label{tab:auc_score_DCOR} Area bajo la curva roc DCOR}
 		\vspace*{2cm}
 		\begin{tabular}{c|cccc}
 			\hline
-			             & PCA             & PLS             & whole           & mRMR            \\
+			             & mRMR            & PCA             & PLS             & whole           \\
 			\hline
-			 LR          & 0.536 $\pm$ 0.110 & 0.570 $\pm$ 0.081 & 0.543 $\pm$ 0.062 & \textbf{0.609 $\pm$ 0.091} \\
-			 LRSScaler   & 0.564 $\pm$ 0.097 & 0.570 $\pm$ 0.110 & \textbf{0.611 $\pm$ 0.062} & 0.609 $\pm$ 0.090 \\
-			 LRmMScaler  & 0.560 $\pm$ 0.103 & 0.568 $\pm$ 0.125 & 0.578 $\pm$ 0.043 & \textbf{0.613 $\pm$ 0.092} \\
-			 KNN         & 0.501 $\pm$ 0.070 & \textbf{0.565 $\pm$ 0.069} & 0.553 $\pm$ 0.086 & 0.490 $\pm$ 0.084 \\
-			 KNNSScaler  & 0.540 $\pm$ 0.073 & 0.537 $\pm$ 0.064 & 0.565 $\pm$ 0.081 & \textbf{0.580 $\pm$ 0.105} \\
-			 KNNmMScaler & 0.526 $\pm$ 0.092 & 0.530 $\pm$ 0.063 & \textbf{0.580 $\pm$ 0.080} & 0.576 $\pm$ 0.108 \\
-			 SVC         & 0.489 $\pm$ 0.114 & \textbf{0.558 $\pm$ 0.091} & 0.500 $\pm$ 0.000 & 0.522 $\pm$ 0.058 \\
-			 SVCSScaler  & 0.520 $\pm$ 0.078 & 0.534 $\pm$ 0.069 & \textbf{0.607 $\pm$ 0.098} & 0.603 $\pm$ 0.113 \\
-			 SVCmMScaler & 0.528 $\pm$ 0.078 & 0.567 $\pm$ 0.106 & 0.586 $\pm$ 0.114 & \textbf{0.603 $\pm$ 0.122} \\
+			 LR          & \textbf{0.604 $\pm$ 0.082} & 0.574 $\pm$ 0.101 & 0.567 $\pm$ 0.043 & 0.479 $\pm$ 0.076 \\
+			 LRSScaler   & \textbf{0.586 $\pm$ 0.062} & 0.582 $\pm$ 0.091 & 0.558 $\pm$ 0.054 & 0.578 $\pm$ 0.061 \\
+			 LRmMScaler  & \textbf{0.595 $\pm$ 0.077} & 0.581 $\pm$ 0.090 & 0.551 $\pm$ 0.052 & 0.569 $\pm$ 0.055 \\
+			 KNN         & 0.509 $\pm$ 0.076 & 0.524 $\pm$ 0.075 & 0.485 $\pm$ 0.049 & \textbf{0.534 $\pm$ 0.102} \\
+			 KNNSScaler  & \textbf{0.542 $\pm$ 0.042} & 0.509 $\pm$ 0.087 & 0.513 $\pm$ 0.053 & 0.533 $\pm$ 0.067 \\
+			 KNNmMScaler & 0.535 $\pm$ 0.078 & \textbf{0.543 $\pm$ 0.088} & 0.513 $\pm$ 0.058 & 0.523 $\pm$ 0.059 \\
+			 SVC         & 0.541 $\pm$ 0.083 & 0.482 $\pm$ 0.096 & \textbf{0.552 $\pm$ 0.042} & 0.500 $\pm$ 0.000 \\
+			 SVCSScaler  & 0.563 $\pm$ 0.113 & \textbf{0.581 $\pm$ 0.091} & 0.536 $\pm$ 0.046 & 0.571 $\pm$ 0.047 \\
+			 SVCmMScaler & 0.564 $\pm$ 0.101 & \textbf{0.588 $\pm$ 0.102} & 0.554 $\pm$ 0.042 & 0.586 $\pm$ 0.044 \\
 			\hline
 		\end{tabular}
 		\caption{\label{tab:auc_score_FFT} Area bajo la curva roc FFT}

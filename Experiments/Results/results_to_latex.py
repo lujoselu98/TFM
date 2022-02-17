@@ -116,7 +116,7 @@ def main() -> None:
         Main function
     """
     for metric in fixed_values.EVALUATION_METRICS.keys():
-        latex.save_latex(compose_latex(f"{paths.RESULTS_PATH}/results_main_experiment.csv", metric),
+        latex.save_latex(compose_latex(f"{paths.RESULTS_PATH}/17_02_22_results_main_experiment.csv", metric),
                          f'{metric}_results_pre',
                          current_path=os.path.abspath(os.path.dirname(__file__)))
 
