@@ -57,6 +57,9 @@ def _print_paths() -> None:
     print(f"MRMR_PATH={MRMR_PATH}")
     print(f"FPCA_PATH={FPCA_PATH}")
     print(f"PLS_PATH={PLS_PATH}")
+    print()
+
+    print(f"RESULTS_PATH={RESULTS_PATH}")
     print(f"CLASSIFIERS_PATH={CLASSIFIERS_PATH}")
     print(f"LATEX_PATH={LATEX_PATH}")
     print()

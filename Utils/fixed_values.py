@@ -2,7 +2,6 @@
     Common shared values
 """
 
-
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import balanced_accuracy_score, roc_auc_score
@@ -107,17 +106,16 @@ CLASSIFIERS = {
 VALIDATION_METRIC = balanced_accuracy_score
 
 EVALUATION_METRICS = {
-    'AUC_SCORE': {
-        'function': roc_auc_score,
-        'values': 'scores',
-        'name': 'Area bajo la curva roc',
-    },
     'BAL_ACC': {
         'function': balanced_accuracy_score,
         'values': 'predictions',
         'name': 'Balanced Accuracy',
     },
-
+    'AUC_SCORE': {
+        'function': roc_auc_score,
+        'values': 'scores',
+        'name': 'Area bajo la curva roc',
+    },
 }
 
 

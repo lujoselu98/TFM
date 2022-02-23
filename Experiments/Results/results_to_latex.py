@@ -16,7 +16,7 @@ def create_latex_table(file: str, dataset: str, metric: str,
                        style_mark: Optional[str] = 'textbf') -> str:
     """
 
-    Create a latex table from csv file for a dataset and metric set, params for different style
+    Create a latex table from csv file for a metric for all data set, params for different style
 
     :param file: csv file with the results
     :param dataset: dataset to use
