@@ -1,124 +1,212 @@
 """
     Functions to parse results and to make Latex code
 """
-import os
-from typing import Optional
+from typing import Optional, List
 
-import numpy as np
 import pandas as pd
-from tabulate import tabulate
+from pylatex import Document, Command, Tabular, MultiColumn, MultiRow, Package, Table
+from pylatex.base_classes import ContainerCommand
+from pylatex.utils import NoEscape, bold
+from tqdm import tqdm
 
-from Utils import pandas_utils, fixed_values, paths, latex
-
-
-def create_latex_table(file: str, dataset: str, metric: str,
-                       mark_best_preprocess: Optional[bool] = True, mark_best_classifier: Optional[bool] = False,
-                       style_mark: Optional[str] = 'textbf') -> str:
-    """
-
-    Create a latex table from csv file for a metric for all data set, params for different style
-
-    :param file: csv file with the results
-    :param dataset: dataset to use
-    :param metric: metric to calculate
-    :param mark_best_preprocess: mark by columns
-    :param mark_best_classifier: mark by rows
-    :param style_mark: latex style of the mark
-    :return: String of latex table
-    """
-    if mark_best_preprocess and mark_best_classifier:
-        mark_best_preprocess = False
-
-    metrics = fixed_values.EVALUATION_METRICS.keys()
-    results_data = pd.read_csv(file, sep=';')
-    results_data[metric] = results_data['METRICS_DICT'].apply(lambda x: pandas_utils.extract_dict(x, metric))
-    results_data = results_data[['DATASET', 'CLASSIFIER_NAME', 'PREPROCESS', metric]]
-
-    dataset_results = results_data[results_data['DATASET'] == dataset]
-
-    preprocesses = dataset_results['PREPROCESS'].unique()
-    classifiers = dataset_results['CLASSIFIER_NAME'].unique()
-
-    p_table = pd.pivot_table(dataset_results, values=metric, index='CLASSIFIER_NAME', columns=['PREPROCESS'],
-                             aggfunc=['mean', 'std'])
-
-    table = []
-    for classifier in classifiers:
-        row = [classifier]
-        classifier_data = p_table.loc[classifier]
-        for preprocess in preprocesses:
-            row.append(f"{classifier_data[('mean', preprocess)]:.3f} "
-                       f"{latex.PM_STRING} "
-                       f"{classifier_data[('std', preprocess)]:.3f}")
-        table.append(row)
-
-    # Mark best preprocess (best by row)
-    best_preprocess = []
-    for row in table:
-        value_means = [float(value.split(f" {latex.PM_STRING} ")[0]) for value in row[1:]]
-        idx_max = np.argmax(value_means)
-        best_preprocess.append(row[idx_max + 1])
-
-    # Mark best classifier (best by column)
-    best_classifier = []
-    table_T = list(zip(*table))
-    for col in table_T[1:]:
-        values_means = [float(value.split(f' {latex.PM_STRING} ')[0]) for value in col]
-        idx_max = np.argmax(values_means)
-        # noinspection PyTypeChecker
-        best_classifier.append(col[idx_max])
-
-    latex_table = str(tabulate(table, headers=preprocesses, tablefmt='latex'))
-
-    # Style
-    table_lines = latex_table.split('\n')
-    table_lines = ['\t' + line for line in table_lines]
-    table_lines[0] = '\\begin{tabular}{c|' + 'c' * len(preprocesses) + '}'
-    table_lines[-1] = '\\end{tabular}'
-    table_lines.append('\\caption{\\label{tab:' + metric.lower() + '_' + dataset + '} '
-                       + fixed_values.EVALUATION_METRICS[metric]['name'] + ' ' + dataset + '}')
-
-    latex_table = '\n'.join(table_lines)
-
-    if mark_best_preprocess:
-        for best_preprocess_value in best_preprocess:
-            latex_table = latex_table.replace(best_preprocess_value, f"\\{style_mark}{{{best_preprocess_value}}}")
-
-    if mark_best_classifier:
-        for best_classifier_value in best_classifier:
-            latex_table = latex_table.replace(best_classifier_value, f"\\{style_mark}{{{best_classifier_value}}}")
-
-    latex_table = latex_table.replace(latex.PM_STRING, latex.PM_LATEX)
-    return latex_table
-
-
-def compose_latex(file: str, metric: str) -> str:
-    """
-    Create whole latex document from a csv file with results for a metric
-
-    :param file: csv file with the results
-    :param metric: metric to use
-    :return: String with the latex document ready to compile
-    """
-    whole_latex = latex.LATEX_TABLE_BEGIN
-    for dataset in fixed_values.DATASETS:
-        whole_latex += '\n'.join(['\t\t' + line for line in create_latex_table(file, dataset, metric).split('\n')])
-        whole_latex += latex.SPACE_BETWEEN_TABLES
-
-    whole_latex += latex.LATEX_TABLE_END
-    whole_latex = '\n'.join([latex.LATEX_HEADER, latex.LATEX_MARGINS, latex.LATEX_BEGIN, whole_latex, latex.LATEX_END])
-
-    return whole_latex
+from Utils import paths, pandas_utils, fixed_values
 
 
 def main() -> None:
     """
-        Main function
+        Main function to generate all posible exported latex documents formats
     """
-    for metric in fixed_values.EVALUATION_METRICS.keys():
-        latex.save_latex(compose_latex(f"{paths.RESULTS_PATH}/17_02_22_results_main_experiment.csv", metric),
-                         f'{metric}_results_pre',
-                         current_path=os.path.abspath(os.path.dirname(__file__)))
+    file = '22_02_22_results_main_experiment.csv'
+    progress_bar = tqdm(['classifiers', 'datasets'], total=4)
+    for out in progress_bar:
+        progress_bar.set_description(f"Generating latex by {out}")
+        for mark_rows in [True, False]:
+
+            progress_bar.set_postfix({'mark': f"{'row' if mark_rows else 'col'}"})
+
+            out_file = f"{paths.LATEX_PATH}/results_by_{out}_{'row' if mark_rows else 'col'}"
+            create_latex_document(csv_file=file, out_file=out_file, out=out, mark_rows=mark_rows)
+
+            if progress_bar.last_print_n < progress_bar.total:
+                progress_bar.update(1)
+            else:
+                progress_bar.close()
+
+
+def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers', mark_rows: Optional[bool] = True,
+                          clean_tex: Optional[bool] = False) -> None:
+    """
+
+    Export results from csv to Latex in different formats
+
+    :param csv_file: csv file with the experiments results
+    :param out_file: pdf file to generate
+    :param out: more outside values in table ['classifiers', 'datasets']
+    :param mark_rows: true to mark by rows, false to mark columns by block
+    :param clean_tex: true to clean tex after pdf generation, default is False
+    """
+    assert csv_file.endswith('csv')
+    assert out in ['classifiers', 'datasets']
+    doc = Document('multirow', documentclass='report')
+
+    doc.packages.append(Package('multirow'))
+    doc.packages.append(Package('adjustbox'))
+    doc.packages.append(Package('ctable'))
+
+    doc.preamble.append(Command('title', 'Resultados Experimentos DAHFI'))
+    doc.preamble.append(Command('author', 'Jose Luis Lavado'))
+    doc.preamble.append(Command('date', NoEscape(r'\today')))
+
+    doc.preamble.append(NoEscape(r"\textwidth = 16truecm"))
+    doc.preamble.append(NoEscape(r"\textheight = 25truecm"))
+    doc.preamble.append(NoEscape(r"\oddsidemargin = -20pt"))
+    doc.preamble.append(NoEscape(r"\evensidemargin = 5pt"))
+    doc.preamble.append(NoEscape(r"\topmargin = -2truecm"))
+
+    doc.append(NoEscape(r'\maketitle'))
+    doc.append(NoEscape(r'\renewcommand{\arraystretch}{1.2}'))
+
+    for metric in fixed_values.EVALUATION_METRICS:
+        data = _get_data_from_csv(f"{paths.RESULTS_PATH}/{csv_file}", metric)
+        preprocesses = data.columns.get_level_values(1).unique()
+        classifiers = data.index.get_level_values(0).unique()
+        datasets = data.index.get_level_values(1).unique()
+
+        size_box = ContainerCommand(arguments=[NoEscape(r'\textwidth'), '!'])
+        size_box.latex_name = 'resizebox'
+
+        table = Table()
+
+        tabular = Tabular('cc|c|c|c|c')
+        blank_columns = ['' for _ in range(tabular.width - len(preprocesses))]
+        tabular.add_row((*blank_columns, *preprocesses))
+        tabular.append(Command('specialrule', arguments=['.2em', '.1em', '.1em']))
+
+        if out == 'classifiers':
+            first_level = classifiers
+            second_level = datasets
+        else:
+            first_level = datasets
+            second_level = classifiers
+
+        best_datas = dict()
+        for classifier in classifiers:
+            classifier_results = data.loc[classifier]['mean']
+            best_datas[classifier] = classifier_results.idxmax()
+
+        best_classifiers = dict()
+        for dataset in datasets:
+            dataset_results = data.swaplevel(1, 0).loc[dataset]['mean']
+            best_classifiers[dataset] = dataset_results.idxmax()
+
+        for it_first_level in first_level:
+
+            if out == 'classifiers':
+                list_of_best = best_datas[it_first_level]
+            else:
+                list_of_best = best_classifiers[it_first_level]
+
+            for i, it_second_level in enumerate(second_level):
+                # it_first_level == datasets, it_second_level == classifier, list_of_best == best_classifiers
+                if (it_second_level, it_first_level) in data.index:
+                    row_data = data.loc[(it_second_level, it_first_level)]
+                    if mark_rows:
+                        row_data = _create_latex_row(row_data)
+                    else:
+                        row_data = _create_latex_row(row_data,
+                                                     list_of_best[list_of_best == it_second_level].index.to_list())
+
+                # it_first_level == datasets, it_second_level == classifier, list_of_best == best_datas
+                elif (it_first_level, it_second_level) in data.index:
+                    row_data = data.loc[(it_first_level, it_second_level)]
+                    if mark_rows:
+                        row_data = _create_latex_row(row_data)
+                    else:
+                        row_data = _create_latex_row(row_data,
+                                                     list_of_best[list_of_best == it_second_level].index.to_list())
+
+                else:
+                    if out == 'datasets':
+                        continue
+                    row_data = ['No converge' for _ in range(len(preprocesses))]
+                if i == 0:
+                    tabular.add_row(
+                        (
+                            MultiColumn(1, align='c|', data=MultiRow(3, data=it_first_level)),
+                            it_second_level, *row_data
+                        )
+                    )
+                else:
+                    tabular.add_row(
+                        (
+                            MultiColumn(1, align='c|', data=''),
+                            it_second_level, *row_data
+                        )
+                    )
+                if i != len(second_level) - 1:
+                    tabular.add_hline(start=2, end=len(preprocesses) + 2)
+                else:
+                    tabular.append(Command('specialrule', arguments=['.2em', '.1em', '.1em']))
+
+        caption = Command('caption', f"Tabla comparativa en {fixed_values.EVALUATION_METRICS[metric]['name']}")
+
+        size_box.append(tabular)
+        table.append(size_box)
+        table.append(caption)
+        doc.append(table)
+    doc.generate_pdf(out_file, compiler='pdflatex', clean_tex=clean_tex)
+    # doc.generate_tex(f"{paths.LATEX_PATH}/test_pyLatex")
+    # print(doc.dumps())
+
+
+def _create_latex_row(data: pd.DataFrame, mark_preprocess: Optional[List] = None) -> List:
+    """
+
+    Auxiliar function to create each row of latex table with the bold mark
+    :param data: data of the row
+    :param mark_preprocess: list tof wich data to mark,leave None to be the max of data
+    :return: list of formate data to pylatex to insert into a row
+    """
+    preprocesses = data.index.get_level_values(1).unique()
+
+    if mark_preprocess is None:
+        mark_preprocess = [data['mean'].idxmax()]
+
+    row_latex_data = []
+
+    for preprocess in preprocesses:
+        if preprocess in mark_preprocess:
+            row_latex_data.append(bold(NoEscape(
+                f"{data[('mean', preprocess)]:.3f} $\pm$ {data[('std', preprocess)]:.3f}")))
+        else:
+            row_latex_data.append(
+                NoEscape(f"{data[('mean', preprocess)]:.3f} $\pm$ {data[('std', preprocess)]:.3f}"))
+    return row_latex_data
+
+
+def _get_data_from_csv(csv_file: str, metric: str) -> pd.DataFrame:
+    """
+
+    Auxiliary function to get data from csv file into pivot table
+
+    :param csv_file: csv file with the results of experiments
+    :param metric: metric to give on the pivot table
+    :return: Pivot table with the data used to generate latex
+    """
+    assert csv_file.endswith(".csv")
+    assert metric in fixed_values.EVALUATION_METRICS
+
+    results_data = pd.read_csv(csv_file, sep=';')
+    results_data[metric] = results_data['METRICS_DICT'].apply(lambda x: pandas_utils.extract_dict(x, metric))
+    results_data = results_data[['DATASET', 'CLASSIFIER_NAME', 'PREPROCESS', metric]]
+
+    results_pivot_table = pd.pivot_table(
+        results_data,
+        values=metric, index=['CLASSIFIER_NAME', 'DATASET'], columns=['PREPROCESS'],
+        aggfunc=['mean', 'std']
+    )
+
+    return results_pivot_table
 
 
 if __name__ == '__main__':
