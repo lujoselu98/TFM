@@ -48,7 +48,7 @@ def main_test():
         tabular.add_row((*blank_columns, *preprocesses))
         tabular.append(Command('specialrule', arguments=['.2em', '.1em', '.1em']))
 
-        out = 'classifiers'
+        out = 'classifiers'  # 'datasets'
         if out == 'classifiers':
             first_level = classifiers
             second_level = datasets
@@ -56,16 +56,44 @@ def main_test():
             first_level = datasets
             second_level = classifiers
 
+        best_datas = dict()
+        for classifier in classifiers:
+            classifier_results = data.loc[classifier]['mean']
+            best_datas[classifier] = classifier_results.idxmax()
+
+        best_classifiers = dict()
+        for dataset in datasets:
+            dataset_results = data.swaplevel(1, 0).loc[dataset]['mean']
+            best_classifiers[dataset] = dataset_results.idxmax()
+
+        mark_rows = False
+
         for it_first_level in first_level:
-            counter = 0
+
+            if out == 'classifiers':
+                list_of_best = best_datas[it_first_level]
+            else:
+                list_of_best = best_classifiers[it_first_level]
+
             for i, it_second_level in enumerate(second_level):
+                # it_first_level == datasets, it_second_level == classifier, list_of_best == best_classifiers
                 if (it_second_level, it_first_level) in data.index:
                     row_data = data.loc[(it_second_level, it_first_level)]
-                    row_data = create_latex_row(row_data)
+                    if mark_rows:
+                        row_data = create_latex_row(row_data)
+                    else:
+                        row_data = create_latex_row(row_data,
+                                                    list_of_best[list_of_best == it_second_level].index.to_list())
 
+                # it_first_level == datasets, it_second_level == classifier, list_of_best == best_datas
                 elif (it_first_level, it_second_level) in data.index:
                     row_data = data.loc[(it_first_level, it_second_level)]
-                    row_data = create_latex_row(row_data)
+                    if mark_rows:
+                        row_data = create_latex_row(row_data)
+                    else:
+                        row_data = create_latex_row(row_data,
+                                                    list_of_best[list_of_best == it_second_level].index.to_list())
+
                 else:
                     if out == 'datasets':
                         continue
@@ -100,14 +128,16 @@ def main_test():
     # print(doc.dumps())
 
 
-def create_latex_row(data):
+def create_latex_row(data, mark_preprocess=None):
     preprocesses = data.index.get_level_values(1).unique()
 
-    best_preprocess = data['mean'].idxmax()
+    if mark_preprocess is None:
+        mark_preprocess = [data['mean'].idxmax()]
+
     row_latex_data = []
 
     for preprocess in preprocesses:
-        if preprocess == best_preprocess:
+        if preprocess in mark_preprocess:
             row_latex_data.append(bold(NoEscape(
                 f"{data[('mean', preprocess)]:.3f} $\pm$ {data[('std', preprocess)]:.3f}")))
         else:
