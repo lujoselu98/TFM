@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Python" name="Python">
+      <configuration sdkName="Python 3.7 (DAHFI)" />
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/Preprocessing/FPCA/FPCA_FILES" />
+      <excludeFolder url="file://$MODULE_DIR$/Preprocessing/mRMR/mRMR_FILES" />
+      <excludeFolder url="file://$MODULE_DIR$/Preprocessing/PLS/PLS_FILES" />
+      <excludeFolder url="file://$MODULE_DIR$/Experiments/Classifiers" />
+    </content>
+    <orderEntry type="jdk" jdkName="Python 3.7 (DAHFI)" jdkType="Python SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Python 3.7 (DAHFI) interpreter library" level="application" />
+  </component>
+</module>
