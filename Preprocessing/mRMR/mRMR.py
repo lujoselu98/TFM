@@ -6,6 +6,7 @@ import pickle
 from typing import Optional, List
 
 import dcor
+import joblib
 import numpy as np
 import pandas as pd
 import skfda
@@ -33,7 +34,7 @@ def calculate_mRMR_skfda(X_train: pd.DataFrame, tt: pd.Series, y_train: pd.Serie
         criterion=operator.sub,
     )
 
-    return mrmr.fit(X_train_fd, y_train).results_
+    return tt[mrmr.fit(X_train_fd, y_train).results_]
 
 
 def calculate_mRMR(X_train: pd.DataFrame, y_train: pd.Series, features_number: int, use_tqdm: Optional[bool] = False,
@@ -104,11 +105,27 @@ def calculate_mRMR(X_train: pd.DataFrame, y_train: pd.Series, features_number: i
     return selected_features_index
 
 
-def parallel_code(X: pd.DataFrame, tt: pd.Series, y: pd.Series, idx_external: int, idx_internal: int) -> List[int]:
+def parallel_external_code(X: pd.DataFrame, tt: pd.Series, y: pd.Series, idx_external: int,
+                           strategy: Optional[str] = 'kfold') -> List[int]:
     """
         Function to parallelize inner loop
     """
-    X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, idx_internal)
+    assert strategy in ['kfold', 'randomsplit']
+    X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy)
+
+    selected_features_index = calculate_mRMR_skfda(X_train, tt, y_train,
+                                                   features_number=fixed_values.MAX_DIMENSION)
+
+    return selected_features_index
+
+
+def parallel_internal_code(X: pd.DataFrame, tt: pd.Series, y: pd.Series, idx_external: int, idx_internal: int,
+                           strategy: Optional[str] = 'kfold') -> List[int]:
+    """
+        Function to parallelize outer loop
+    """
+    assert strategy in ['kfold', 'randomsplit']
+    X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, idx_internal, strategy=strategy)
 
     selected_features_index = calculate_mRMR_skfda(X_train, tt, y_train,
                                                    features_number=fixed_values.MAX_DIMENSION)
@@ -131,46 +148,30 @@ def save_mRMR_indexes(dataset: str, strategy: Optional[str] = 'kfold') -> None:
     else:
         EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS_SHUFFLE
 
-    progress_bar = tqdm(range(EXTERNAL_SPLITS),
-                        total=EXTERNAL_SPLITS + EXTERNAL_SPLITS * fixed_values.INTERNAL_SPLITS,
-                        desc=f'mRMR {dataset} {strategy}')
+    selected_features_indexes_ext = joblib.Parallel(n_jobs=8)(
+        joblib.delayed(parallel_external_code)(X, tt, y, idx_external, strategy)
+        for idx_external in tqdm(range(EXTERNAL_SPLITS), desc=f'mRMR {dataset}')
+    )
 
-    for idx_external in progress_bar:
-        X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external)
+    for i, idx_external in tqdm(enumerate(range(EXTERNAL_SPLITS)), desc=f'saving .txt {dataset}', total=EXTERNAL_SPLITS):
 
-        # tqdm_desc = f"External fold {idx_external + 1}/{fixed_values.EXTERNAL_SPLITS} "
-        # selected_features_index = calculate_mRMR(X_train, y_train, features_number=fixed_values.MAX_DIMENSION,
-        #                                          use_tqdm=True, tqdm_desc=tqdm_desc)
-        selected_features_index = calculate_mRMR_skfda(X_train, tt, y_train, features_number=fixed_values.MAX_DIMENSION)
+        selected_features_index = selected_features_indexes_ext[i]
 
         sel_features_file = f"{paths.MRMR_PATH}/{dataset}_sel_features_{idx_external}.txt"
         with open(sel_features_file, 'w') as f:
-            f.write(str(selected_features_index))
+            f.write(str(selected_features_index.tolist()))
 
-        if progress_bar.last_print_n < progress_bar.total:
-            progress_bar.update(1)
-        else:
-            progress_bar.close()
+        selected_features_indexes_int = joblib.Parallel(n_jobs=8)(
+            joblib.delayed(parallel_internal_code)(X, tt, y, idx_external, idx_internal, strategy)
+            for idx_internal in range(fixed_values.INTERNAL_SPLITS)
+        )
 
-        for idx_internal in range(fixed_values.INTERNAL_SPLITS):
-            X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, idx_internal)
-
-            # tqdm_desc = f"External fold {idx_external + 1}/{fixed_values.EXTERNAL_SPLITS} " \
-            #             f"Internal fold {idx_internal + 1}/{fixed_values.INTERNAL_SPLITS}"
-            # selected_features_index = calculate_mRMR(X_train, y_train, features_number=fixed_values.MAX_DIMENSION,
-            #                                          use_tqdm=True, tqdm_desc=tqdm_desc)
-
-            selected_features_index = calculate_mRMR_skfda(X_train, tt, y_train,
-                                                           features_number=fixed_values.MAX_DIMENSION)
+        for j, idx_internal in enumerate(range(fixed_values.INTERNAL_SPLITS)):
+            selected_features_index = selected_features_indexes_int[j]
 
             sel_features_file = f"{paths.MRMR_PATH}/{dataset}_sel_features_{idx_external}_{idx_internal}.txt"
             with open(sel_features_file, 'w') as f:
-                f.write(str(selected_features_index))
-
-            if progress_bar.last_print_n < progress_bar.total:
-                progress_bar.update(1)
-            else:
-                progress_bar.close()
+                f.write(str(selected_features_index.tolist()))
 
 
 def load_mRMR_indexes(dataset: str, idx_external: int, idx_internal: Optional[int] = None) -> List[int]:
@@ -213,7 +214,7 @@ def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold') -> None:
         EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS_SHUFFLE
 
     for idx_external in range(EXTERNAL_SPLITS):
-        X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external)
+        X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy)
         mRMR_indexes = load_mRMR_indexes(dataset, idx_external)
 
         X_train_mRMR = X_train[map(str, mRMR_indexes)].values
@@ -227,7 +228,8 @@ def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold') -> None:
         with open(f"{pickle_file}_test.pickle", 'wb') as f:
             pickle.dump(X_test_mRMR, f)
         for idx_internal in range(fixed_values.INTERNAL_SPLITS):
-            X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, idx_internal)
+            X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, idx_internal,
+                                                                         strategy=strategy)
 
             mRMR_indexes = load_mRMR_indexes(dataset, idx_external, idx_internal)
 
@@ -254,4 +256,4 @@ def main(dataset: str) -> None:
 
 
 if __name__ == '__main__':
-    main(fixed_values.DATASETS[0])
+    main(fixed_values.DATASETS[2])

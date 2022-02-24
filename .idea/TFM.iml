@@ -12,6 +12,7 @@
       <excludeFolder url="file://$MODULE_DIR$/Preprocessing/mRMR/mRMR_FILES" />
       <excludeFolder url="file://$MODULE_DIR$/Preprocessing/PLS/PLS_FILES" />
       <excludeFolder url="file://$MODULE_DIR$/Experiments/Classifiers" />
+      <excludeFolder url="file://$MODULE_DIR$/Plots" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.7 (DAHFI)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
