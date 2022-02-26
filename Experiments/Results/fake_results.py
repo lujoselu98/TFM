@@ -22,9 +22,8 @@ def make_fake_data() -> None:
         for classifier_name, classifier in fixed_values.CLASSIFIERS.items():
             if dataset not in classifier['datasets']:
                 continue
-            clf_to_val = classifier['clf']
             for preprocess in ['whole'] + fixed_values.PREPROCESSES:
-                for idx_external in range(fixed_values.EXTERNAL_SPLITS):
+                for idx_external in range(fixed_values.EXTERNAL_SPLITS_SHUFFLE):
                     best_params = random.choice(common_functions.get_all_permutations(classifier['param_grid']))
                     best_features_number = None if preprocess == 'whole' else random.choice(fixed_values.DIMENSION_GRID)
                     metrics_dict = {key: np.random.normal(loc=0.6, scale=0.2) for key in

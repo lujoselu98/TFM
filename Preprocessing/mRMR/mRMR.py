@@ -154,7 +154,8 @@ def save_mRMR_indexes(dataset: str, strategy: Optional[str] = 'kfold') -> None:
     )
 
     for i, idx_external in tqdm(enumerate(range(EXTERNAL_SPLITS)), desc=f'saving .txt {dataset}', total=EXTERNAL_SPLITS):
-
+        if idx_external < 60:
+            continue
         selected_features_index = selected_features_indexes_ext[i]
 
         sel_features_file = f"{paths.MRMR_PATH}/{dataset}_sel_features_{idx_external}.txt"
@@ -256,4 +257,4 @@ def main(dataset: str) -> None:
 
 
 if __name__ == '__main__':
-    main(fixed_values.DATASETS[2])
+    main(fixed_values.DATASETS[1])
