@@ -153,7 +153,7 @@ def save_mRMR_indexes(dataset: str, strategy: Optional[str] = 'kfold') -> None:
         for idx_external in tqdm(range(EXTERNAL_SPLITS), desc=f'mRMR {dataset}')
     )
 
-    for i, idx_external in tqdm(enumerate(range(EXTERNAL_SPLITS)), desc=f'saving .txt {dataset}', total=EXTERNAL_SPLITS):
+    for i, idx_external in tqdm(enumerate(range(EXTERNAL_SPLITS)), desc=f'Saving .txt {dataset}', total=EXTERNAL_SPLITS):
         if idx_external < 60:
             continue
         selected_features_index = selected_features_indexes_ext[i]
@@ -214,12 +214,15 @@ def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold') -> None:
     else:
         EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS_SHUFFLE
 
-    for idx_external in range(EXTERNAL_SPLITS):
+    for idx_external in tqdm(range(EXTERNAL_SPLITS), desc=f'Saving .pickle {dataset}'):
         X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy)
         mRMR_indexes = load_mRMR_indexes(dataset, idx_external)
 
-        X_train_mRMR = X_train[map(str, mRMR_indexes)].values
-        X_test_mRMR = X_test[map(str, mRMR_indexes)].values
+        if dataset == 'FFT':
+            mRMR_indexes = map(str, mRMR_indexes)
+
+        X_train_mRMR = X_train[mRMR_indexes].values
+        X_test_mRMR = X_test[mRMR_indexes].values
 
         pickle_file = f"{paths.MRMR_PATH}/{dataset}_mRMR_{idx_external}"
 
@@ -234,8 +237,11 @@ def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold') -> None:
 
             mRMR_indexes = load_mRMR_indexes(dataset, idx_external, idx_internal)
 
-            X_train_mRMR = X_train[map(str, mRMR_indexes)].values
-            X_test_mRMR = X_test[map(str, mRMR_indexes)].values
+            if dataset == 'FFT':
+                mRMR_indexes = map(str, mRMR_indexes)
+
+            X_train_mRMR = X_train[mRMR_indexes].values
+            X_test_mRMR = X_test[mRMR_indexes].values
 
             pickle_file = f"{paths.MRMR_PATH}/{dataset}_mRMR_{idx_external}_{idx_internal}"
 
@@ -257,4 +263,4 @@ def main(dataset: str) -> None:
 
 
 if __name__ == '__main__':
-    main(fixed_values.DATASETS[1])
+    main(fixed_values.DATASETS[0])
