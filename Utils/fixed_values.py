@@ -23,7 +23,27 @@ PREPROCESSES = ['mRMR', 'PCA', 'PLS']
 DIMENSION_GRID = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50, 75, 100]
 MAX_DIMENSION = max(DIMENSION_GRID)
 
+
+# Slower to faster
 CLASSIFIERS = {
+    'SVC': {
+        'clf': SVC(kernel='rbf', random_state=0, class_weight='balanced'),
+        'param_grid': {
+            'gamma': np.logspace(-3, 3, 7),
+            'C': np.logspace(-3, 3, 7),
+        },
+        'evaluate_score': 'decision_function',
+        'datasets': DATASETS
+    },
+    'SVCSScaler': {
+        'clf': make_pipeline(StandardScaler(), SVC(kernel='rbf', random_state=0, class_weight='balanced')),
+        'param_grid': {
+            'svc__gamma': np.logspace(-3, 3, 7),
+            'svc__C': np.logspace(-3, 3, 7),
+        },
+        'evaluate_score': 'decision_function',
+        'datasets': DATASETS
+    },
     'LR': {
         'clf': LogisticRegression(penalty='l1', solver='liblinear', random_state=0, class_weight='balanced',
                                   max_iter=1000),
@@ -43,16 +63,6 @@ CLASSIFIERS = {
         'evaluate_score': 'predict_proba',
         'datasets': ['FFT']
     },
-    # 'LRmMScaler': {
-    #     'clf': make_pipeline(MinMaxScaler(), LogisticRegression(penalty='l1', solver='liblinear', random_state=0,
-    #                                                             class_weight='balanced',
-    #                                                             max_iter=1000)),
-    #     'param_grid': {
-    #         'logisticregression__C': np.logspace(-3, 2, 6)
-    #     },
-    #     'evaluate_score': 'predict_proba',
-    #     'datasets': ['FFT']
-    # },
     'KNN': {
         'clf': KNeighborsClassifier(),
         'param_grid': {
@@ -69,41 +79,6 @@ CLASSIFIERS = {
         'evaluate_score': 'predict_proba',
         'datasets': DATASETS
     },
-    # 'KNNmMScaler': {
-    #     'clf': make_pipeline(MinMaxScaler(), KNeighborsClassifier()),
-    #     'param_grid': {
-    #         'kneighborsclassifier__n_neighbors': np.arange(3, 30, 2),
-    #     },
-    #     'evaluate_score': 'predict_proba',
-    #     'datasets': DATASETS
-    # },
-    'SVC': {
-        'clf': SVC(kernel='rbf', random_state=0, class_weight='balanced'),
-        'param_grid': {
-            'gamma': np.logspace(-3, 3, 7),
-            'C': np.logspace(-3, 3, 7),
-        },
-        'evaluate_score': 'decision_function',
-        'datasets': DATASETS
-    },
-    'SVCSScaler': {
-        'clf': make_pipeline(StandardScaler(), SVC(kernel='rbf', random_state=0, class_weight='balanced')),
-        'param_grid': {
-            'svc__gamma': np.logspace(-3, 3, 7),
-            'svc__C': np.logspace(-3, 3, 7),
-        },
-        'evaluate_score': 'decision_function',
-        'datasets': DATASETS
-    },
-    # 'SVCmMScaler': {
-    #     'clf': make_pipeline(MinMaxScaler(), SVC(kernel='rbf', random_state=0, class_weight='balanced')),
-    #     'param_grid': {
-    #         'svc__gamma': np.logspace(-3, 3, 7),
-    #         'svc__C': np.logspace(-3, 3, 7),
-    #     },
-    #     'evaluate_score': 'decision_function',
-    #     'datasets': DATASETS
-    # },
 }
 
 VALIDATION_METRIC = balanced_accuracy_score

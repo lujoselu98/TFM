@@ -2,9 +2,11 @@
     Main File to do Different Experiments and save the results
 """
 import time
+from typing import Optional
 
 import joblib
 import numpy as np
+import pandas as pd
 import sklearn
 from tqdm import tqdm
 
@@ -12,12 +14,50 @@ from Preprocessing import preprocessing
 from Utils import fixed_values, paths, common_functions
 
 
-def main_experiment() -> None:
+def parallel_param_validation(X_train: np.array, X_test: np.array, y_train: pd.Series, y_test: pd.Series,
+                              clf_to_val: sklearn.base.ClassifierMixin, preprocess: str,
+                              features_number: int, params: dict) -> float:
+    """
+
+    Parallel validation
+
+    """
+
+    if preprocess == 'whole':
+        X_train_pre_f, X_test_pre_f = X_train.copy(), X_test.copy()
+    else:
+        X_train_pre_f, X_test_pre_f = preprocessing.get_features(X_train, X_test, features_number)
+
+    # Reset
+    clf = sklearn.clone(clf_to_val)
+
+    # Set params
+    clf.set_params(**params)
+
+    # Train
+    clf.fit(X_train_pre_f, y_train)
+
+    # Evaluate
+    y_pred = clf.predict(X_test_pre_f)
+    metric_test = fixed_values.VALIDATION_METRIC(y_test, y_pred)
+
+    # Save results
+    return metric_test
+
+
+def main_experiment(strategy: Optional[str] = 'kfold') -> None:
     """Function to made the main experiment"""
+
+    assert strategy in ['kfold', 'randomsplit']
+
+    if strategy == 'kfold':
+        EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS
+    else:
+        EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS_SHUFFLE
 
     progress_bar = tqdm(fixed_values.DATASETS,
                         total=(2 * (len(fixed_values.CLASSIFIERS) - 2) + len(fixed_values.CLASSIFIERS)) *
-                              (len(fixed_values.PREPROCESSES) + 1) * fixed_values.EXTERNAL_SPLITS)
+                              (len(fixed_values.PREPROCESSES) + 1) * EXTERNAL_SPLITS)
 
     results_file = f"{paths.RESULTS_PATH}/results_{time.time()}_main_experiment.csv"
     with open(results_file, 'a') as f:
@@ -31,7 +71,7 @@ def main_experiment() -> None:
                 continue
             clf_to_val = classifier['clf']
             for preprocess in fixed_values.PREPROCESSES + ['whole']:
-                for idx_external in range(fixed_values.EXTERNAL_SPLITS):
+                for idx_external in range(EXTERNAL_SPLITS):
                     tqdm_desc = f"Dataset {dataset} " \
                                 f"Clf: {classifier_name} " \
                                 f"({(list(fixed_values.CLASSIFIERS.keys())).index(classifier_name) + 1}" \
@@ -39,7 +79,7 @@ def main_experiment() -> None:
                                 f"Pre: {preprocess} " \
                                 f"({(fixed_values.PREPROCESSES + ['whole']).index(preprocess) + 1}" \
                                 f"/{len(fixed_values.PREPROCESSES) + 1}) " \
-                                f"Ext. fold: {idx_external + 1}/{fixed_values.EXTERNAL_SPLITS}"
+                                f"Ext. fold: {idx_external + 1}/{EXTERNAL_SPLITS}"
                     progress_bar.set_description(tqdm_desc)
 
                     # Params internal validation
@@ -48,12 +88,11 @@ def main_experiment() -> None:
                     best_params = -1
                     best_features_number = -1
 
-                    param_permutatios = common_functions.get_all_permutations(param_grid)
-
                     y_train_save, y_test_save = [], []
                     X_train_pre_save, X_test_pre_save = [], []
                     for idx_internal in range(fixed_values.INTERNAL_SPLITS):
-                        X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, idx_internal)
+                        X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, idx_internal,
+                                                                                     strategy=strategy)
                         y_train_save.append(y_train)
                         y_test_save.append(y_test)
 
@@ -71,36 +110,25 @@ def main_experiment() -> None:
                     else:
                         dimension_grid = fixed_values.DIMENSION_GRID
 
+                    param_permutations = common_functions.get_all_permutations(param_grid)
+
                     for features_number in dimension_grid:
-                        for params in param_permutatios:
-                            internal_results = []
-                            for idx_internal in range(fixed_values.INTERNAL_SPLITS):
-                                progress_bar.set_postfix(
-                                    {'feat': features_number, 'params': params, 'idx_int': idx_internal}
+                        for params in param_permutations:
+
+                            progress_bar.set_postfix(
+                                {'feat': features_number, 'params': params}
+                            )
+
+                            internal_results = joblib.Parallel(n_jobs=8)(
+                                joblib.delayed(parallel_param_validation)(
+                                    X_train_pre_save[idx_internal], X_test_pre_save[idx_internal],
+                                    y_train_save[idx_internal], y_test_save[idx_internal],
+                                    clf_to_val, preprocess,
+                                    features_number, params
                                 )
-                                y_train, y_test = y_train_save[idx_internal], y_test_save[idx_internal]
-                                X_train_pre, X_test_pre = X_train_pre_save[idx_internal], X_test_pre_save[idx_internal]
+                                for idx_internal in range(fixed_values.INTERNAL_SPLITS)
+                            )
 
-                                if preprocess == 'whole':
-                                    X_train_pre_f, X_test_pre_f = X_train_pre.copy(), X_test_pre.copy()
-                                else:
-                                    X_train_pre_f, X_test_pre_f = preprocessing.get_features(X_train_pre, X_test_pre,
-                                                                                             features_number)
-                                # Reset
-                                clf = sklearn.clone(clf_to_val)
-
-                                # Set params
-                                clf.set_params(**params)
-
-                                # Train
-                                clf.fit(X_train_pre_f, y_train)
-
-                                # Evaluate
-                                y_pred = clf.predict(X_test_pre_f)
-                                metric_test = fixed_values.VALIDATION_METRIC(y_test, y_pred)
-
-                                # Save results
-                                internal_results.append(metric_test)
                             # Compare and take best (model, params, features)
                             mean_score = np.mean(internal_results)
 
@@ -110,7 +138,7 @@ def main_experiment() -> None:
                                 best_features_number = features_number
                     # End of param cross validation
 
-                    X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external)
+                    X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy)
 
                     if preprocess == 'whole':
                         X_train_pre_f, X_test_pre_f = X_train.copy(), X_test.copy()
@@ -143,9 +171,9 @@ def main_experiment() -> None:
 
                         if ev_metric['values'] == 'predictions':
                             metrics_dict[ev_name] = ev_metric['function'](y_test, y_pred)
-                    joblib.dump(clf,
-                                f'{paths.CLASSIFIERS_PATH}/{dataset}_{preprocess}_{classifier_name}'
-                                f'_{idx_external}.joblib')
+                    # joblib.dump(clf,
+                    #             f'{paths.CLASSIFIERS_PATH}/{dataset}_{preprocess}_{classifier_name}'
+                    #             f'_{idx_external}.joblib')
 
                     csv_string = f"{dataset};{preprocess};{classifier_name};{idx_external};" \
                                  f"{best_features_number};{best_params};{metrics_dict}"
@@ -159,4 +187,4 @@ def main_experiment() -> None:
 
 
 if __name__ == '__main__':
-    main_experiment()
+    main_experiment(strategy='randomsplit')
