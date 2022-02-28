@@ -40,9 +40,9 @@ def main() -> None:
         Main function to export latex colors
     """
     file = '28_02_22_results_main_experiment.csv'
-    out_file = f"{paths.LATEX_PATH}/testing"
+    out_file = f"{paths.LATEX_PATH}/color_map_results"
 
-    create_latex_color_document(file, out_file)
+    create_latex_color_document(file, out_file, color_map='YlOrRd')
 
 
 def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers', mark_rows: Optional[bool] = True,
@@ -155,11 +155,13 @@ def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers'
     # print(doc.dumps())
 
 
-def create_latex_color_document(csv_file: str, out_file: str, clean_tex: Optional[bool] = False) -> None:
+def create_latex_color_document(csv_file: str, out_file: str, clean_tex: Optional[bool] = False,
+                                color_map: Optional[str] = 'YlGn') -> None:
     """
 
     Export results from csv to Latex in different formats
 
+    :param color_map: color map of the table
     :param csv_file: csv file with the experiments results
     :param out_file: pdf file to generate
     :param clean_tex: true to clean tex after pdf generation, default is False
@@ -168,9 +170,11 @@ def create_latex_color_document(csv_file: str, out_file: str, clean_tex: Optiona
 
     doc = _latex_preamble()
 
-    cmap = matplotlib.cm.get_cmap('YlGn')
-    rgb_colors_24 = cmap([i / 24 for i in range(24)])  # 24 for FFT 4 pre x 6 clf
-    rgb_colors_20 = cmap([i / 20 for i in range(20)])  # 12 for CC and DCOR 4 pre x 6 clf
+    cmap = matplotlib.cm.get_cmap(color_map)
+    # rgb_colors_24 = cmap([i / 24 for i in range(24)])  # 24 for FFT 4 pre x 6 clf
+    rgb_colors_24 = cmap([i * (0.9 - 0.1) / 24 for i in range(24)])  # 24 for FFT 4 pre x 6 clf
+    # rgb_colors_20 = cmap([i / 20 for i in range(20)])  # 12 for CC and DCOR 4 pre x 6 clf
+    rgb_colors_20 = cmap([i * (0.9 - 0.1) / 20 for i in range(20)])  # 12 for CC and DCOR 4 pre x 6 clf
 
     for i, color in enumerate(rgb_colors_24[::-1]):
         doc.preamble.append(NoEscape(r"\definecolor{green_" + str(i) + "}{rgb}{"
@@ -185,7 +189,7 @@ def create_latex_color_document(csv_file: str, out_file: str, clean_tex: Optiona
     for metric in fixed_values.EVALUATION_METRICS:
         data = _get_data_from_csv(f"{paths.RESULTS_PATH}/{csv_file}", metric)
         preprocesses = data.columns.get_level_values(1).unique()
-        datasets =  data.index.get_level_values(1).unique()
+        datasets = data.index.get_level_values(1).unique()
 
         classifiers = dict()
         for dataset in datasets:
@@ -211,8 +215,6 @@ def create_latex_color_document(csv_file: str, out_file: str, clean_tex: Optiona
                     (len(classifiers[dataset]), len(preprocesses)))
             colors_order[dataset] = _get_color_matrix(data.loc[pd.IndexSlice[:, dataset], :]['mean'], colors)
         for block, dataset in enumerate(datasets):
-            print(dataset, colors_order[dataset])
-
             for row, classifier in enumerate(classifiers[dataset]):
                 # Hay classifiers que no se usan para todos los classifiers
                 if (classifier, dataset) in data.index:
@@ -226,32 +228,6 @@ def create_latex_color_document(csv_file: str, out_file: str, clean_tex: Optiona
                         NoEscape(f" \cellcolor{start_brace}{row_colors[i]}{end_brace}"
                                  f"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}")
                         for i, preprocess in enumerate(preprocesses)]
-
-                    # if dataset == 'CC':
-                    #     row_colors = CC_colors[row]
-                    #     row_data = [
-                    #         NoEscape(f" \cellcolor{start_brace}{row_colors[i]}{end_brace}"
-                    #                  f"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}")
-                    #         for i, preprocess in enumerate(preprocesses)]
-                    # elif dataset == 'DCOR':
-                    #     row_colors = DCOR_colors[row]
-                    #     row_data = [
-                    #         NoEscape(f" \cellcolor{start_brace}{row_colors[i]}{end_brace}"
-                    #                  f"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}")
-                    #         for i, preprocess in enumerate(preprocesses)]
-                    #
-                    # elif dataset == 'FFT':
-                    #     row_colors = FFT_colors[row]
-                    #
-                    #     row_data = [
-                    #         NoEscape(f" \cellcolor{start_brace}{row_colors[i]}{end_brace}"
-                    #                  f"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}")
-                    #         for i, preprocess in enumerate(preprocesses)]
-                    #     print(row_data)
-                    # else:
-                    #     row_data = [
-                    #         NoEscape(f"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}")
-                    #         for preprocess in preprocesses]
                 else:
                     continue
 
