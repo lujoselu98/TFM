@@ -219,7 +219,7 @@ def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold') -> None:
         mRMR_indexes = load_mRMR_indexes(dataset, idx_external)
 
         if dataset == 'FFT':
-            mRMR_indexes = map(str, mRMR_indexes)
+            mRMR_indexes = list(map(str, mRMR_indexes))
 
         X_train_mRMR = X_train[mRMR_indexes].values
         X_test_mRMR = X_test[mRMR_indexes].values
@@ -238,7 +238,7 @@ def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold') -> None:
             mRMR_indexes = load_mRMR_indexes(dataset, idx_external, idx_internal)
 
             if dataset == 'FFT':
-                mRMR_indexes = map(str, mRMR_indexes)
+                mRMR_indexes = list(map(str, mRMR_indexes))
 
             X_train_mRMR = X_train[mRMR_indexes].values
             X_test_mRMR = X_test[mRMR_indexes].values
@@ -258,9 +258,9 @@ def main(dataset: str) -> None:
     """
 
     # print(dataset)
-    save_mRMR_indexes(dataset, strategy='randomsplit')
+    # save_mRMR_indexes(dataset, strategy='randomsplit')
     save_mRMR(dataset, strategy='randomsplit')
 
 
 if __name__ == '__main__':
-    main(fixed_values.DATASETS[0])
+    main(fixed_values.DATASETS[2])

@@ -1,69 +1,26 @@
 """
-    Main File to do Different Experiments and save the results
+    Experiments to choose perfect number of njobs
 """
 import time
-from typing import Optional
 
 import joblib
 import numpy as np
-import pandas as pd
 import sklearn
 from tqdm import tqdm
 
+from Experiments.experiments import parallel_param_validation
 from Preprocessing import preprocessing
-from Utils import fixed_values, paths, common_functions
+from Utils import common_functions, fixed_values
 
 
-def parallel_param_validation(X_train: np.array, X_test: np.array, y_train: pd.Series, y_test: pd.Series,
-                              clf_to_val: sklearn.base.ClassifierMixin, preprocess: str,
-                              features_number: int, params: dict) -> float:
-    """
-
-    Parallel validation
-
-    """
-
-    if preprocess == 'whole':
-        X_train_pre_f, X_test_pre_f = X_train.copy(), X_test.copy()
-    else:
-        X_train_pre_f, X_test_pre_f = preprocessing.get_features(X_train, X_test, features_number)
-
-    # Reset
-    clf = sklearn.clone(clf_to_val)
-
-    # Set params
-    clf.set_params(**params)
-
-    # Train
-    clf.fit(X_train_pre_f, y_train)
-
-    # Evaluate
-    y_pred = clf.predict(X_test_pre_f)
-    metric_test = fixed_values.VALIDATION_METRIC(y_test, y_pred)
-
-    # Save results
-    return metric_test
-
-
-def main_experiment(strategy: Optional[str] = 'kfold') -> None:
-    """Function to made the main experiment"""
-
-    assert strategy in ['kfold', 'randomsplit']
-
-    if strategy == 'kfold':
-        EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS
-    else:
-        EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS_SHUFFLE
+def test(testing_n_jobs: int) -> None:
+    n_idx_internal = 3
+    strategy = 'randomsplit'
 
     progress_bar = tqdm(fixed_values.DATASETS,
-                        total=(2 * (len(fixed_values.CLASSIFIERS) - 1) + len(fixed_values.CLASSIFIERS)) *
-                              (len(fixed_values.PREPROCESSES) + 1) * EXTERNAL_SPLITS)
+                        total=(2 * (len(fixed_values.CLASSIFIERS) - 2) + len(fixed_values.CLASSIFIERS)) *
+                              (len(fixed_values.PREPROCESSES) + 1) * n_idx_internal)
 
-    results_file = f"{paths.RESULTS_PATH}/results_{time.time()}_main_experiment.csv"
-    with open(results_file, 'a') as f:
-        f.write("DATASET;PREPROCESS;CLASSIFIER_NAME;"
-                "IDX_EXTERNAL;FEATURES_NUMBER;PARAMS;"
-                "METRICS_DICT\n")
     for dataset in progress_bar:
         _, X, y = common_functions.load_data(dataset)
         for classifier_name, classifier in fixed_values.CLASSIFIERS.items():
@@ -71,7 +28,8 @@ def main_experiment(strategy: Optional[str] = 'kfold') -> None:
                 continue
             clf_to_val = classifier['clf']
             for preprocess in fixed_values.PREPROCESSES + ['whole']:
-                for idx_external in range(EXTERNAL_SPLITS):
+
+                for idx_external in range(n_idx_internal):
 
                     tqdm_desc = f"Dataset: {dataset} " \
                                 f"({(list(fixed_values.DATASETS)).index(dataset) + 1}" \
@@ -82,10 +40,16 @@ def main_experiment(strategy: Optional[str] = 'kfold') -> None:
                                 f"Pre: {preprocess} " \
                                 f"({(fixed_values.PREPROCESSES + ['whole']).index(preprocess) + 1}" \
                                 f"/{len(fixed_values.PREPROCESSES) + 1}) " \
-                                f"Ext. fold: {idx_external + 1}/{EXTERNAL_SPLITS}"
+                                f"Ext. fold: {idx_external + 1}/{n_idx_internal}"
                     progress_bar.set_description(tqdm_desc)
 
-                    # Params internal validation
+                    if preprocess not in ['mRMR', 'whole'] or dataset != 'CC':
+                        if progress_bar.last_print_n < progress_bar.total:
+                            progress_bar.update(1)
+                        else:
+                            progress_bar.close()
+                        break
+
                     param_grid = classifier['param_grid']
                     best_score = -1
                     best_params = -1
@@ -122,7 +86,7 @@ def main_experiment(strategy: Optional[str] = 'kfold') -> None:
                                 {'feat': features_number, 'params': params}
                             )
 
-                            internal_results = joblib.Parallel(n_jobs=5)(
+                            internal_results = joblib.Parallel(n_jobs=8)(
                                 joblib.delayed(parallel_param_validation)(
                                     X_train_pre_save[idx_internal], X_test_pre_save[idx_internal],
                                     y_train_save[idx_internal], y_test_save[idx_internal],
@@ -139,7 +103,6 @@ def main_experiment(strategy: Optional[str] = 'kfold') -> None:
                                 best_score = mean_score
                                 best_params = params
                                 best_features_number = features_number
-                    # End of param cross validation
 
                     X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy)
 
@@ -174,14 +137,6 @@ def main_experiment(strategy: Optional[str] = 'kfold') -> None:
 
                         if ev_metric['values'] == 'predictions':
                             metrics_dict[ev_name] = ev_metric['function'](y_test, y_pred)
-                    # joblib.dump(clf,
-                    #             f'{paths.CLASSIFIERS_PATH}/{dataset}_{preprocess}_{classifier_name}'
-                    #             f'_{idx_external}.joblib')
-
-                    csv_string = f"{dataset};{preprocess};{classifier_name};{idx_external};" \
-                                 f"{best_features_number};{best_params};{metrics_dict}"
-                    with open(f'{results_file}', 'a') as f:
-                        f.write(f"{csv_string}\n")
 
                     if progress_bar.last_print_n < progress_bar.total:
                         progress_bar.update(1)
@@ -189,5 +144,17 @@ def main_experiment(strategy: Optional[str] = 'kfold') -> None:
                         progress_bar.close()
 
 
+def main() -> None:
+    """
+        Main function
+    """
+
+    for n_jobs in range(2, 9):
+        t0 = time.perf_counter_ns()
+        test(testing_n_jobs=n_jobs)
+        t1 = time.perf_counter_ns()
+        print(f"\n{n_jobs} -> {(t1 - t0) / 1e9}\n")
+
+
 if __name__ == '__main__':
-    main_experiment(strategy='randomsplit')
+    main()
