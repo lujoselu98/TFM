@@ -59,6 +59,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Experiments\Results\results_1646067243.162219_main_experiment.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

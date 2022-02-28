@@ -16,7 +16,7 @@ def main() -> None:
     """
         Main function to generate all posible exported latex documents formats
     """
-    file = '22_02_22_results_main_experiment.csv'
+    file = '28_02_22_results_main_experiment.csv'
     progress_bar = tqdm(['classifiers', 'datasets'], total=4)
     for out in progress_bar:
         progress_bar.set_description(f"Generating latex by {out}")
