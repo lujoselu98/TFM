@@ -3,6 +3,8 @@
 """
 from typing import Optional, List
 
+import matplotlib
+import numpy as np
 import pandas as pd
 from pylatex import Document, Command, Tabular, MultiColumn, MultiRow, Package, Table
 from pylatex.base_classes import ContainerCommand
@@ -12,7 +14,7 @@ from tqdm import tqdm
 from Utils import paths, pandas_utils, fixed_values
 
 
-def main() -> None:
+def old_main() -> None:
     """
         Main function to generate all posible exported latex documents formats
     """
@@ -33,6 +35,16 @@ def main() -> None:
                 progress_bar.close()
 
 
+def main() -> None:
+    """
+        Main function to export latex colors
+    """
+    file = '28_02_22_results_main_experiment.csv'
+    out_file = f"{paths.LATEX_PATH}/testing"
+
+    create_latex_color_document(file, out_file)
+
+
 def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers', mark_rows: Optional[bool] = True,
                           clean_tex: Optional[bool] = False) -> None:
     """
@@ -47,24 +59,8 @@ def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers'
     """
     assert csv_file.endswith('csv')
     assert out in ['classifiers', 'datasets']
-    doc = Document('multirow', documentclass='report')
 
-    doc.packages.append(Package('multirow'))
-    doc.packages.append(Package('adjustbox'))
-    doc.packages.append(Package('ctable'))
-
-    doc.preamble.append(Command('title', 'Resultados Experimentos DAHFI'))
-    doc.preamble.append(Command('author', 'Jose Luis Lavado'))
-    doc.preamble.append(Command('date', NoEscape(r'\today')))
-
-    doc.preamble.append(NoEscape(r"\textwidth = 16truecm"))
-    doc.preamble.append(NoEscape(r"\textheight = 25truecm"))
-    doc.preamble.append(NoEscape(r"\oddsidemargin = -20pt"))
-    doc.preamble.append(NoEscape(r"\evensidemargin = 5pt"))
-    doc.preamble.append(NoEscape(r"\topmargin = -2truecm"))
-
-    doc.append(NoEscape(r'\maketitle'))
-    doc.append(NoEscape(r'\renewcommand{\arraystretch}{1.2}'))
+    doc = _latex_preamble()
 
     for metric in fixed_values.EVALUATION_METRICS:
         data = _get_data_from_csv(f"{paths.RESULTS_PATH}/{csv_file}", metric)
@@ -157,6 +153,188 @@ def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers'
     doc.generate_pdf(out_file, compiler='pdflatex', clean_tex=clean_tex)
     # doc.generate_tex(f"{paths.LATEX_PATH}/test_pyLatex")
     # print(doc.dumps())
+
+
+def create_latex_color_document(csv_file: str, out_file: str, clean_tex: Optional[bool] = False) -> None:
+    """
+
+    Export results from csv to Latex in different formats
+
+    :param csv_file: csv file with the experiments results
+    :param out_file: pdf file to generate
+    :param clean_tex: true to clean tex after pdf generation, default is False
+    """
+    assert csv_file.endswith('csv')
+
+    doc = _latex_preamble()
+
+    cmap = matplotlib.cm.get_cmap('YlGn')
+    rgb_colors_24 = cmap([i / 24 for i in range(24)])  # 24 for FFT 4 pre x 6 clf
+    rgb_colors_20 = cmap([i / 20 for i in range(20)])  # 12 for CC and DCOR 4 pre x 6 clf
+
+    for i, color in enumerate(rgb_colors_24[::-1]):
+        doc.preamble.append(NoEscape(r"\definecolor{green_" + str(i) + "}{rgb}{"
+                                     + str(color[0]) + "," + str(color[1]) + "," + str(color[2]) +
+                                     "}"))
+
+    for i, color in enumerate(rgb_colors_20[::-1]):
+        doc.preamble.append(NoEscape(r"\definecolor{green_20_" + str(i) + "}{rgb}{"
+                                     + str(color[0]) + "," + str(color[1]) + "," + str(color[2]) +
+                                     "}"))
+
+    for metric in fixed_values.EVALUATION_METRICS:
+        data = _get_data_from_csv(f"{paths.RESULTS_PATH}/{csv_file}", metric)
+        preprocesses = data.columns.get_level_values(1).unique()
+        datasets =  data.index.get_level_values(1).unique()
+
+        classifiers = dict()
+        for dataset in datasets:
+            classifiers[dataset] = data.loc[pd.IndexSlice[:, dataset], :].index.get_level_values(0)
+
+        size_box = ContainerCommand(arguments=[NoEscape(r'\textwidth'), '!'])
+        size_box.latex_name = 'resizebox'
+
+        table = Table()
+
+        tabular = Tabular('cc|c|c|c|c')
+        blank_columns = ['' for _ in range(tabular.width - len(preprocesses))]
+        tabular.add_row((*blank_columns, *preprocesses))
+        tabular.append(Command('specialrule', arguments=['.2em', '.1em', '.1em']))
+
+        colors_order = dict()
+        for dataset in datasets:
+            if dataset == 'FFT':
+                colors = np.array([f'green_{i}' for i in range(24)]).reshape(
+                    (len(classifiers[dataset]), len(preprocesses)))
+            else:
+                colors = np.array([f'green_20_{i}' for i in range(20)]).reshape(
+                    (len(classifiers[dataset]), len(preprocesses)))
+            colors_order[dataset] = _get_color_matrix(data.loc[pd.IndexSlice[:, dataset], :]['mean'], colors)
+        for block, dataset in enumerate(datasets):
+            print(dataset, colors_order[dataset])
+
+            for row, classifier in enumerate(classifiers[dataset]):
+                # Hay classifiers que no se usan para todos los classifiers
+                if (classifier, dataset) in data.index:
+                    row_data = data.loc[(classifier, dataset)]
+
+                    start_brace = "{"
+                    end_brace = "}"
+
+                    row_colors = colors_order[dataset][row]
+                    row_data = [
+                        NoEscape(f" \cellcolor{start_brace}{row_colors[i]}{end_brace}"
+                                 f"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}")
+                        for i, preprocess in enumerate(preprocesses)]
+
+                    # if dataset == 'CC':
+                    #     row_colors = CC_colors[row]
+                    #     row_data = [
+                    #         NoEscape(f" \cellcolor{start_brace}{row_colors[i]}{end_brace}"
+                    #                  f"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}")
+                    #         for i, preprocess in enumerate(preprocesses)]
+                    # elif dataset == 'DCOR':
+                    #     row_colors = DCOR_colors[row]
+                    #     row_data = [
+                    #         NoEscape(f" \cellcolor{start_brace}{row_colors[i]}{end_brace}"
+                    #                  f"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}")
+                    #         for i, preprocess in enumerate(preprocesses)]
+                    #
+                    # elif dataset == 'FFT':
+                    #     row_colors = FFT_colors[row]
+                    #
+                    #     row_data = [
+                    #         NoEscape(f" \cellcolor{start_brace}{row_colors[i]}{end_brace}"
+                    #                  f"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}")
+                    #         for i, preprocess in enumerate(preprocesses)]
+                    #     print(row_data)
+                    # else:
+                    #     row_data = [
+                    #         NoEscape(f"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}")
+                    #         for preprocess in preprocesses]
+                else:
+                    continue
+
+                if row == 0:
+                    tabular.add_row(
+                        (
+                            MultiColumn(1, align='c|', data=MultiRow(3, data=dataset)),
+                            classifier, *row_data
+                        )
+                    )
+                else:
+                    tabular.add_row(
+                        (
+                            MultiColumn(1, align='c|', data=''),
+                            classifier, *row_data
+                        )
+                    )
+
+                if row != len(classifiers[dataset]) - 1:
+                    tabular.add_hline(start=2, end=len(preprocesses) + 2)
+                else:
+                    tabular.append(Command('specialrule', arguments=['.2em', '.1em', '.1em']))
+
+        caption = Command('caption', f"Tabla comparativa en {fixed_values.EVALUATION_METRICS[metric]['name']}")
+        size_box.append(tabular)
+        table.append(size_box)
+        table.append(caption)
+        doc.append(table)
+    doc.generate_pdf(out_file, compiler='pdflatex', clean_tex=clean_tex)
+    # doc.generate_tex(out_file)
+    # print(doc.dumps())
+
+
+def _get_color_matrix(data: pd.DataFrame, colors: np.ndarray) -> np.ndarray:
+    row_order, col_order = [], []
+
+    index_list = data.index.values.tolist()
+    columns_list = data.columns.values.tolist()
+    sort_values = np.sort(data.values.flatten())[::-1]
+
+    for value in sort_values:
+        for col in data.columns:
+            if value in data[col].values:
+                row_order.append(index_list.index(data.index[data[col] == value]))
+                col_order.append(columns_list.index(col))
+
+    colors_order = np.empty(dtype='<U12', shape=(len(index_list), len(columns_list)))
+    order = [(r, c) for r, c in zip(row_order, col_order)]
+    counter = 0
+    for row in range(colors_order.shape[0]):
+        for col in range(colors_order.shape[1]):
+            colors_order[order[counter]] = colors[row, col]
+            counter += 1
+
+    return colors_order
+
+
+def _latex_preamble() -> Document:
+    """
+        Create doc of latex and preamble
+    """
+    doc = Document('multirow', documentclass='report')
+
+    doc.packages.append(Package('multirow'))
+    doc.packages.append(Package('adjustbox'))
+    doc.packages.append(Package('ctable'))
+    doc.packages.append(Package('xcolor'))
+    doc.packages.append(Package('colortbl'))
+
+    doc.preamble.append(Command('title', 'Resultados Experimentos DAHFI'))
+    doc.preamble.append(Command('author', 'Jose Luis Lavado'))
+    doc.preamble.append(Command('date', NoEscape(r'\today')))
+
+    doc.preamble.append(NoEscape(r"\textwidth = 16truecm"))
+    doc.preamble.append(NoEscape(r"\textheight = 25truecm"))
+    doc.preamble.append(NoEscape(r"\oddsidemargin = -20pt"))
+    doc.preamble.append(NoEscape(r"\evensidemargin = 5pt"))
+    doc.preamble.append(NoEscape(r"\topmargin = -2truecm"))
+
+    doc.append(NoEscape(r'\maketitle'))
+    doc.append(NoEscape(r'\renewcommand{\arraystretch}{1.2}'))
+
+    return doc
 
 
 def _create_latex_row(data: pd.DataFrame, mark_preprocess: Optional[List] = None) -> List:

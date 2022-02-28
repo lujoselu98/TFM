@@ -1,0 +1,212 @@
+\documentclass{report}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage{multirow}%
+\usepackage{adjustbox}%
+\usepackage{ctable}%
+\usepackage{xcolor}%
+\usepackage{colortbl}%
+%
+\title{Resultados Experimentos DAHFI}%
+\author{Jose Luis Lavado}%
+\date{\today}%
+\textwidth = 16truecm%
+\textheight = 25truecm%
+\oddsidemargin = -20pt%
+\evensidemargin = 5pt%
+\topmargin = -2truecm%
+\definecolor{green_0}{rgb}{0.0,0.31364859669357936,0.1780084582852749}%
+\definecolor{green_1}{rgb}{0.0,0.36101499423298733,0.19695501730103807}%
+\definecolor{green_2}{rgb}{0.0,0.40407535563244906,0.21417916186082278}%
+\definecolor{green_3}{rgb}{0.04359861591695502,0.442722029988466,0.23063437139561707}%
+\definecolor{green_4}{rgb}{0.09096501345636294,0.48061514801999233,0.2468742791234141}%
+\definecolor{green_5}{rgb}{0.1340253748558247,0.5150634371395617,0.26163783160322956}%
+\definecolor{green_6}{rgb}{0.17508650519031144,0.5668281430219146,0.2955324875048059}%
+\definecolor{green_7}{rgb}{0.21568627450980393,0.6196078431372549,0.330718954248366}%
+\definecolor{green_8}{rgb}{0.25259515570934254,0.6675893886966551,0.36270665128796614}%
+\definecolor{green_9}{rgb}{0.3251057285659361,0.7050519031141869,0.4004459823144944}%
+\definecolor{green_10}{rgb}{0.39953863898500575,0.7415916955017301,0.43833910034602075}%
+\definecolor{green_11}{rgb}{0.4672049211841599,0.7748096885813149,0.4727873894655901}%
+\definecolor{green_12}{rgb}{0.5390542099192619,0.8061822376009228,0.5016378316032295}%
+\definecolor{green_13}{rgb}{0.6107804690503653,0.8373087274125337,0.5300576701268743}%
+\definecolor{green_14}{rgb}{0.6759861591695502,0.86560553633218,0.5558938869665514}%
+\definecolor{green_15}{rgb}{0.7359477124183007,0.8915032679738563,0.5843137254901961}%
+\definecolor{green_16}{rgb}{0.7954940407535563,0.9172164552095349,0.6127335640138408}%
+\definecolor{green_17}{rgb}{0.8496270665128797,0.9405920799692425,0.6385697808535178}%
+\definecolor{green_18}{rgb}{0.8906574394463668,0.957047289504037,0.6683121876201461}%
+\definecolor{green_19}{rgb}{0.9312572087658593,0.973287197231834,0.6980853517877739}%
+\definecolor{green_20}{rgb}{0.9681660899653979,0.9880507497116494,0.7251518646674355}%
+\definecolor{green_21}{rgb}{0.9793310265282583,0.992249134948097,0.7843598615916955}%
+\definecolor{green_22}{rgb}{0.990157631680123,0.9963091118800461,0.8439061899269512}%
+\definecolor{green_23}{rgb}{1.0,1.0,0.8980392156862745}%
+\definecolor{green_20_0}{rgb}{0.0,0.3222606689734717,0.18145328719723186}%
+\definecolor{green_20_1}{rgb}{0.0,0.378239138792772,0.20384467512495194}%
+\definecolor{green_20_2}{rgb}{0.026374471357170318,0.42894271434063824,0.2247289504036909}%
+\definecolor{green_20_3}{rgb}{0.0823529411764706,0.47372549019607846,0.24392156862745099}%
+\definecolor{green_20_4}{rgb}{0.1340253748558247,0.5150634371395617,0.26163783160322956}%
+\definecolor{green_20_5}{rgb}{0.18246828143021915,0.5764244521337947,0.30193002691272586}%
+\definecolor{green_20_6}{rgb}{0.23044982698961936,0.638800461361015,0.3435140330642061}%
+\definecolor{green_20_7}{rgb}{0.29803921568627445,0.6917647058823528,0.38666666666666666}%
+\definecolor{green_20_8}{rgb}{0.3860053825451749,0.7349480968858131,0.4314494425221069}%
+\definecolor{green_20_9}{rgb}{0.4672049211841599,0.7748096885813149,0.4727873894655901}%
+\definecolor{green_20_10}{rgb}{0.5520953479430988,0.811841599384852,0.5068050749711649}%
+\definecolor{green_20_11}{rgb}{0.6368627450980392,0.8486274509803922,0.5403921568627451}%
+\definecolor{green_20_12}{rgb}{0.7142945021145714,0.8821530180699731,0.5739792387543252}%
+\definecolor{green_20_13}{rgb}{0.7846674356016916,0.9125413302575932,0.6075663206459054}%
+\definecolor{green_20_14}{rgb}{0.8496270665128797,0.9405920799692425,0.6385697808535178}%
+\definecolor{green_20_15}{rgb}{0.8980392156862745,0.96,0.6737254901960784}%
+\definecolor{green_20_16}{rgb}{0.9460207612456747,0.9791926182237601,0.7089119569396386}%
+\definecolor{green_20_17}{rgb}{0.9753940792003075,0.9907727797001153,0.7627066512879661}%
+\definecolor{green_20_18}{rgb}{0.9881891580161476,0.9955709342560554,0.8330795847750865}%
+\definecolor{green_20_19}{rgb}{1.0,1.0,0.8980392156862745}%
+%
+\begin{document}%
+\normalsize%
+\maketitle%
+\renewcommand{\arraystretch}{1.2}%
+
+
+\begin{table}%
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{cc|c|c|c|c}%
+&&PCA&PLS&mRMR&whole\\%
+\specialrule{.2em}{.1em}{.1em}%
+\multicolumn{1}{c|}{\multirow{3}{*}{CC}}&KNN& \cellcolor{green_20_12}0.523 $\pm$ 0.034& \cellcolor{green_20_15}0.515 $\pm$ 0.032& \cellcolor{green_20_18}0.512 $\pm$ 0.033& \cellcolor{green_20_13}0.519 $\pm$ 0.028\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&KNNSScaler& \cellcolor{green_20_19}0.507 $\pm$ 0.033& \cellcolor{green_20_14}0.516 $\pm$ 0.033& \cellcolor{green_20_16}0.515 $\pm$ 0.035& \cellcolor{green_20_17}0.513 $\pm$ 0.032\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&LR& \cellcolor{green_20_0}0.569 $\pm$ 0.040& \cellcolor{green_20_2}0.549 $\pm$ 0.044& \cellcolor{green_20_1}0.551 $\pm$ 0.044& \cellcolor{green_20_3}0.548 $\pm$ 0.043\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&SVC& \cellcolor{green_20_11}0.525 $\pm$ 0.041& \cellcolor{green_20_10}0.526 $\pm$ 0.039& \cellcolor{green_20_4}0.541 $\pm$ 0.043& \cellcolor{green_20_8}0.528 $\pm$ 0.040\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&SVCSScaler& \cellcolor{green_20_7}0.532 $\pm$ 0.047& \cellcolor{green_20_9}0.527 $\pm$ 0.042& \cellcolor{green_20_5}0.536 $\pm$ 0.047& \cellcolor{green_20_6}0.532 $\pm$ 0.037\\%
+\specialrule{.2em}{.1em}{.1em}%
+\multicolumn{1}{c|}{\multirow{3}{*}{DCOR}}&KNN& \cellcolor{green_20_13}0.491 $\pm$ 0.038& \cellcolor{green_20_8}0.498 $\pm$ 0.031& \cellcolor{green_20_4}0.502 $\pm$ 0.032& \cellcolor{green_20_10}0.496 $\pm$ 0.026\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&KNNSScaler& \cellcolor{green_20_3}0.504 $\pm$ 0.034& \cellcolor{green_20_5}0.502 $\pm$ 0.035& \cellcolor{green_20_6}0.502 $\pm$ 0.029& \cellcolor{green_20_12}0.491 $\pm$ 0.029\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&LR& \cellcolor{green_20_11}0.491 $\pm$ 0.034& \cellcolor{green_20_0}0.508 $\pm$ 0.048& \cellcolor{green_20_2}0.507 $\pm$ 0.036& \cellcolor{green_20_7}0.499 $\pm$ 0.043\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&SVC& \cellcolor{green_20_19}0.474 $\pm$ 0.035& \cellcolor{green_20_9}0.496 $\pm$ 0.045& \cellcolor{green_20_14}0.489 $\pm$ 0.037& \cellcolor{green_20_17}0.479 $\pm$ 0.031\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&SVCSScaler& \cellcolor{green_20_18}0.478 $\pm$ 0.039& \cellcolor{green_20_1}0.508 $\pm$ 0.044& \cellcolor{green_20_16}0.486 $\pm$ 0.043& \cellcolor{green_20_15}0.486 $\pm$ 0.027\\%
+\specialrule{.2em}{.1em}{.1em}%
+\multicolumn{1}{c|}{\multirow{3}{*}{FFT}}&KNN& \cellcolor{green_13}0.522 $\pm$ 0.039& \cellcolor{green_10}0.528 $\pm$ 0.038& \cellcolor{green_19}0.511 $\pm$ 0.031& \cellcolor{green_18}0.513 $\pm$ 0.027\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&KNNSScaler& \cellcolor{green_14}0.519 $\pm$ 0.031& \cellcolor{green_15}0.518 $\pm$ 0.038& \cellcolor{green_17}0.516 $\pm$ 0.038& \cellcolor{green_22}0.506 $\pm$ 0.030\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&LR& \cellcolor{green_8}0.534 $\pm$ 0.045& \cellcolor{green_7}0.538 $\pm$ 0.041& \cellcolor{green_1}0.564 $\pm$ 0.039& \cellcolor{green_21}0.506 $\pm$ 0.043\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&LRSScaler& \cellcolor{green_11}0.527 $\pm$ 0.043& \cellcolor{green_5}0.539 $\pm$ 0.044& \cellcolor{green_0}0.564 $\pm$ 0.040& \cellcolor{green_4}0.543 $\pm$ 0.048\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&SVC& \cellcolor{green_20}0.510 $\pm$ 0.030& \cellcolor{green_9}0.532 $\pm$ 0.044& \cellcolor{green_16}0.517 $\pm$ 0.033& \cellcolor{green_23}0.500 $\pm$ 0.000\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&SVCSScaler& \cellcolor{green_6}0.539 $\pm$ 0.044& \cellcolor{green_12}0.524 $\pm$ 0.043& \cellcolor{green_3}0.555 $\pm$ 0.043& \cellcolor{green_2}0.555 $\pm$ 0.035\\%
+\specialrule{.2em}{.1em}{.1em}%
+\end{tabular}%
+}%
+\caption{Tabla comparativa en Balanced Accuracy}%
+\end{table}
+
+%
+
+
+\begin{table}%
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{cc|c|c|c|c}%
+&&PCA&PLS&mRMR&whole\\%
+\specialrule{.2em}{.1em}{.1em}%
+\multicolumn{1}{c|}{\multirow{3}{*}{CC}}&KNN& \cellcolor{green_20_4}0.557 $\pm$ 0.051& \cellcolor{green_20_17}0.528 $\pm$ 0.046& \cellcolor{green_20_16}0.531 $\pm$ 0.042& \cellcolor{green_20_7}0.550 $\pm$ 0.048\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&KNNSScaler& \cellcolor{green_20_19}0.516 $\pm$ 0.047& \cellcolor{green_20_18}0.520 $\pm$ 0.047& \cellcolor{green_20_15}0.534 $\pm$ 0.042& \cellcolor{green_20_6}0.551 $\pm$ 0.053\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&LR& \cellcolor{green_20_0}0.595 $\pm$ 0.045& \cellcolor{green_20_3}0.568 $\pm$ 0.049& \cellcolor{green_20_2}0.570 $\pm$ 0.049& \cellcolor{green_20_1}0.572 $\pm$ 0.043\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&SVC& \cellcolor{green_20_14}0.536 $\pm$ 0.052& \cellcolor{green_20_12}0.540 $\pm$ 0.046& \cellcolor{green_20_5}0.552 $\pm$ 0.048& \cellcolor{green_20_13}0.537 $\pm$ 0.049\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&SVCSScaler& \cellcolor{green_20_9}0.547 $\pm$ 0.058& \cellcolor{green_20_11}0.540 $\pm$ 0.051& \cellcolor{green_20_10}0.545 $\pm$ 0.050& \cellcolor{green_20_8}0.548 $\pm$ 0.045\\%
+\specialrule{.2em}{.1em}{.1em}%
+\multicolumn{1}{c|}{\multirow{3}{*}{DCOR}}&KNN& \cellcolor{green_20_13}0.479 $\pm$ 0.050& \cellcolor{green_20_6}0.499 $\pm$ 0.052& \cellcolor{green_20_10}0.487 $\pm$ 0.056& \cellcolor{green_20_17}0.472 $\pm$ 0.054\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&KNNSScaler& \cellcolor{green_20_3}0.502 $\pm$ 0.050& \cellcolor{green_20_5}0.500 $\pm$ 0.052& \cellcolor{green_20_11}0.486 $\pm$ 0.050& \cellcolor{green_20_15}0.475 $\pm$ 0.047\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&LR& \cellcolor{green_20_9}0.488 $\pm$ 0.040& \cellcolor{green_20_0}0.512 $\pm$ 0.051& \cellcolor{green_20_2}0.509 $\pm$ 0.046& \cellcolor{green_20_4}0.501 $\pm$ 0.044\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&SVC& \cellcolor{green_20_19}0.465 $\pm$ 0.045& \cellcolor{green_20_7}0.495 $\pm$ 0.055& \cellcolor{green_20_8}0.488 $\pm$ 0.051& \cellcolor{green_20_14}0.475 $\pm$ 0.049\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&SVCSScaler& \cellcolor{green_20_16}0.474 $\pm$ 0.044& \cellcolor{green_20_1}0.511 $\pm$ 0.051& \cellcolor{green_20_12}0.483 $\pm$ 0.053& \cellcolor{green_20_18}0.468 $\pm$ 0.060\\%
+\specialrule{.2em}{.1em}{.1em}%
+\multicolumn{1}{c|}{\multirow{3}{*}{FFT}}&KNN& \cellcolor{green_17}0.533 $\pm$ 0.048& \cellcolor{green_13}0.544 $\pm$ 0.054& \cellcolor{green_19}0.527 $\pm$ 0.049& \cellcolor{green_18}0.528 $\pm$ 0.047\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&KNNSScaler& \cellcolor{green_16}0.534 $\pm$ 0.047& \cellcolor{green_20}0.520 $\pm$ 0.049& \cellcolor{green_15}0.535 $\pm$ 0.050& \cellcolor{green_10}0.546 $\pm$ 0.055\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&LR& \cellcolor{green_8}0.553 $\pm$ 0.055& \cellcolor{green_5}0.556 $\pm$ 0.053& \cellcolor{green_1}0.583 $\pm$ 0.046& \cellcolor{green_21}0.506 $\pm$ 0.048\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&LRSScaler& \cellcolor{green_12}0.545 $\pm$ 0.057& \cellcolor{green_4}0.559 $\pm$ 0.054& \cellcolor{green_2}0.579 $\pm$ 0.049& \cellcolor{green_9}0.553 $\pm$ 0.058\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&SVC& \cellcolor{green_22}0.504 $\pm$ 0.049& \cellcolor{green_7}0.554 $\pm$ 0.058& \cellcolor{green_11}0.545 $\pm$ 0.051& \cellcolor{green_23}0.500 $\pm$ 0.000\\%
+\cline{2%
+-%
+6}%
+\multicolumn{1}{c|}{}&SVCSScaler& \cellcolor{green_6}0.555 $\pm$ 0.053& \cellcolor{green_14}0.542 $\pm$ 0.054& \cellcolor{green_3}0.574 $\pm$ 0.050& \cellcolor{green_0}0.585 $\pm$ 0.047\\%
+\specialrule{.2em}{.1em}{.1em}%
+\end{tabular}%
+}%
+\caption{Tabla comparativa en Area bajo la curva roc}%
+\end{table}
+
+%
+\end{document}
