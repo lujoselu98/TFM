@@ -118,9 +118,9 @@ def main_experiment(strategy: Optional[str] = 'kfold') -> None:
                     for features_number in dimension_grid:
                         for params in param_permutations:
 
-                            progress_bar.set_postfix(
-                                {'feat': features_number, 'params': params}
-                            )
+                            # progress_bar.set_postfix(
+                            #     {'feat': features_number, 'params': params}
+                            # )
 
                             internal_results = joblib.Parallel(n_jobs=5)(
                                 joblib.delayed(parallel_param_validation)(

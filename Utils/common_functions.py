@@ -55,8 +55,8 @@ def get_fold(X: pd.DataFrame, y: pd.Series, idx_external: int, idx_internal: Opt
         external_cv = sklearn.model_selection.StratifiedShuffleSplit(n_splits=fixed_values.EXTERNAL_SPLITS_SHUFFLE,
                                                                      test_size=fixed_values.EXTERNAL_TEST_SIZE,
                                                                      random_state=0)
-    splits = list(external_cv.split(X, y))
-    index_train, index_test = splits[idx_external]
+
+    index_train, index_test = next(itertools.islice(external_cv.split(X, y), idx_external, None), None)
 
     if idx_internal is None:
         return X.iloc[index_train], X.iloc[index_test], y.iloc[index_train], y.iloc[index_test]
@@ -69,8 +69,8 @@ def get_fold(X: pd.DataFrame, y: pd.Series, idx_external: int, idx_internal: Opt
         # Usamos el idx externo para el random del shuffle del interno
         internal_cv = sklearn.model_selection.StratifiedKFold(n_splits=fixed_values.INTERNAL_SPLITS, shuffle=True,
                                                               random_state=idx_external)
-        splits = list(internal_cv.split(X_int, y_int))
-        index_train, index_test = splits[idx_internal]
+
+        index_train, index_test = next(itertools.islice(internal_cv.split(X_int, y_int), idx_internal, None), None)
 
         return X_int.iloc[index_train], X_int.iloc[index_test], y_int.iloc[index_train], y_int.iloc[index_test]
 
