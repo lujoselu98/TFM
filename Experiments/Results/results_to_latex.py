@@ -42,7 +42,7 @@ def main() -> None:
     file = '28_02_22_results_main_experiment.csv'
     out_file = f"{paths.LATEX_PATH}/color_map_results"
 
-    create_latex_color_document(file, out_file, color_map='YlOrRd')
+    create_latex_color_document(file, out_file, color_map='YlGn')
 
 
 def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers', mark_rows: Optional[bool] = True,
