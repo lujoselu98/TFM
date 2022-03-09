@@ -45,7 +45,7 @@ def parallel_param_validation(X_train: np.array, X_test: np.array, y_train: pd.S
     return metric_test
 
 
-def main_experiment(strategy: Optional[str] = 'kfold') -> None:
+def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: bool = False) -> None:
     """Function to made the main experiment"""
 
     assert strategy in ['kfold', 'randomsplit']
@@ -65,7 +65,7 @@ def main_experiment(strategy: Optional[str] = 'kfold') -> None:
                 "IDX_EXTERNAL;FEATURES_NUMBER;PARAMS;"
                 "METRICS_DICT\n")
     for dataset in progress_bar:
-        _, X, y = common_functions.load_data(dataset)
+        _, X, y = common_functions.load_data(dataset, remove_outliers=remove_outliers)
         for classifier_name, classifier in fixed_values.CLASSIFIERS.items():
             if dataset not in classifier['datasets']:
                 continue
@@ -102,8 +102,9 @@ def main_experiment(strategy: Optional[str] = 'kfold') -> None:
                         if preprocess == 'whole':
                             X_train_pre, X_test_pre = X_train.copy(), X_test.copy()
                         else:
-                            X_train_pre, X_test_pre = preprocessing.load_preprocess(dataset, preprocess, idx_external,
-                                                                                    idx_internal)
+                            X_train_pre, X_test_pre = preprocessing.load_preprocess(dataset, preprocess,
+                                                                                    idx_external, idx_internal,
+                                                                                    remove_outliers=remove_outliers)
 
                         X_train_pre_save.append(X_train_pre)
                         X_test_pre_save.append(X_test_pre)
@@ -146,7 +147,8 @@ def main_experiment(strategy: Optional[str] = 'kfold') -> None:
                     if preprocess == 'whole':
                         X_train_pre_f, X_test_pre_f = X_train.copy(), X_test.copy()
                     else:
-                        X_train_pre, X_test_pre = preprocessing.load_preprocess(dataset, preprocess, idx_external)
+                        X_train_pre, X_test_pre = preprocessing.load_preprocess(dataset, preprocess, idx_external,
+                                                                                remove_outliers=remove_outliers)
                         X_train_pre_f, X_test_pre_f = preprocessing.get_features(X_train_pre, X_test_pre,
                                                                                  best_features_number)
 
@@ -190,4 +192,4 @@ def main_experiment(strategy: Optional[str] = 'kfold') -> None:
 
 
 if __name__ == '__main__':
-    main_experiment(strategy='randomsplit')
+    main_experiment(strategy='randomsplit', remove_outliers=True)
