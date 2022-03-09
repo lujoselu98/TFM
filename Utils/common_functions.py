@@ -9,10 +9,11 @@ from Utils import fixed_values
 from Utils import paths
 
 
-def load_data(dataset: str) -> Tuple[np.array, pd.DataFrame, pd.Series]:
+def load_data(dataset: str, remove_outliers: bool = False) -> Tuple[np.array, pd.DataFrame, pd.Series]:
     """
     Function to load data
     :param dataset: dataset identifier [CC, CDCOR, FFT]
+    :param remove_outliers: remove outliers or not
     :return: features_names, data matrix, label vector
     """
     if dataset == 'CC':
@@ -26,6 +27,11 @@ def load_data(dataset: str) -> Tuple[np.array, pd.DataFrame, pd.Series]:
 
     X = pd.read_pickle(f"{data_path}/X.pickle")
     y = pd.read_pickle(f"{data_path}/y.pickle")
+
+    if remove_outliers:
+        X = X.drop(fixed_values.OUTLIERS_IDX)
+        y = y.drop(fixed_values.OUTLIERS_IDX)
+
     tt = X.columns
 
     if dataset == 'FFT':

@@ -104,16 +104,22 @@ fabric.properties
 *.pyc
 
 # Preprocess files
-/Preprocessing/FPCA/FPCA_FILEs/*
-/Preprocessing/FPCA/FPCA_FILEs/OLD/*
-/Preprocessing/mRMR/mRMR_FILEs/*
-/Preprocessing/mRMR/mRMR_FILEs/OLD/*
-/Preprocessing/PLS/PLS_FILEs/*
-/Preprocessing/PLS/PLS_FILEs/OLD/*
+/Preprocessing/FPCA/FPCA_FILES/*
+/Preprocessing/FPCA/FPCA_FILES/OLD/*
+/Preprocessing/FPCA/no_outliers/FPCA_FILES/*
+/Preprocessing/mRMR/mRMR_FILES/*
+/Preprocessing/mRMR/mRMR_FILES/OLD/*
+/Preprocessing/mRMR/no_outliers/mRMR_FILES/*
+/Preprocessing/PLS/PLS_FILES/*
+/Preprocessing/PLS/PLS_FILES/OLD/*
+/Preprocessing/PLS/no_outliers/PLS_FILES/*
 
-!/Preprocessing/FPCA/FPCA_FILEs/.gitkeep
-!/Preprocessing/mRMR/mRMR_FILEs/.gitkeep
-!/Preprocessing/PLS/PLS_FILEs/.gitkeep
+!/Preprocessing/FPCA/FPCA_FILES/.gitkeep
+!/Preprocessing/FPCA/no_outliers/FPCA_FILES/.gitkeep
+!/Preprocessing/mRMR/mRMR_FILES/.gitkeep
+!/Preprocessing/mRMR/no_outliers/mRMR_FILES/.gitkeep
+!/Preprocessing/PLS/PLS_FILES/.gitkeep
+!/Preprocessing/PLS/no_outliers/PLS_FILES/.gitkeep
 
 # Plot images
 /Transformations/**/*.png

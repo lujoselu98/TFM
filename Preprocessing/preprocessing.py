@@ -9,7 +9,7 @@ import numpy as np
 from Utils import paths, fixed_values
 
 
-def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_internal: Optional[int] = None) -> Tuple[
+def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_internal: Optional[int] = None, remove_outliers: bool=False) -> Tuple[
         np.ndarray, np.ndarray]:
     """
 
@@ -19,15 +19,22 @@ def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_intern
     :param preprocess: Preprocess to load
     :param idx_external: idx of external division
     :param idx_internal: idx of internal division
+    :param remove_outliers: to remove outliers or not
     :return: X_train and X_test from file given the parameters
     """
 
     if preprocess == 'mRMR':
         path = paths.MRMR_PATH
+        if remove_outliers:
+            path = paths.MRMR_OUTLIERS_PATH
     elif preprocess == 'PCA':
         path = paths.FPCA_PATH
+        if remove_outliers:
+            path = paths.FPCA_OUTLIERS_PATH
     elif preprocess == 'PLS':
         path = paths.PLS_PATH
+        if remove_outliers:
+            path = paths.PLS_OUTLIERS_PATH
     else:
         raise ValueError(f"unknown preprocess: {preprocess}")
 

@@ -37,20 +37,25 @@ def calculate_PLS(X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFram
     return X_train_pls, X_test_pls
 
 
-def save_PLS(dataset: str, strategy: Optional[str] = 'kfold') -> None:
+def save_PLS(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: bool = False) -> None:
     """
         Save the data of projected data by PLS to use in experiments
     :param dataset: Dataset to use
+    :param remove_outliers: to remove outliers or not
     :param strategy: Strategy to split data
     """
     assert strategy in ['kfold', 'randomsplit']
 
-    tt, X, y = common_functions.load_data(dataset)
+    tt, X, y = common_functions.load_data(dataset, remove_outliers)
 
     if strategy == 'kfold':
         EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS
     else:
         EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS_SHUFFLE
+
+    save_path = paths.PLS_PATH
+    if remove_outliers:
+        save_path = paths.PLS_OUTLIERS_PATH
 
     for idx_external in tqdm(range(EXTERNAL_SPLITS)):
 
@@ -58,7 +63,7 @@ def save_PLS(dataset: str, strategy: Optional[str] = 'kfold') -> None:
 
         X_train_pls, X_test_pls = calculate_PLS(X_train, y_train, X_test, n_components=fixed_values.MAX_DIMENSION)
 
-        components_file = f"{paths.PLS_PATH}/{dataset}_PLS_{idx_external}"
+        components_file = f"{save_path}/{dataset}_PLS_{idx_external}"
 
         with open(f"{components_file}_train.pickle", 'wb') as f:
             pickle.dump(X_train_pls, f)
@@ -72,7 +77,7 @@ def save_PLS(dataset: str, strategy: Optional[str] = 'kfold') -> None:
 
             X_train_pca, X_test_pca = calculate_PLS(X_train, y_train, X_test, n_components=fixed_values.MAX_DIMENSION)
 
-            components_file = f"{paths.PLS_PATH}/{dataset}_PLS_{idx_external}_{idx_internal}"
+            components_file = f"{save_path}/{dataset}_PLS_{idx_external}_{idx_internal}"
 
             with open(f"{components_file}_train.pickle", 'wb') as f:
                 pickle.dump(X_train_pca, f)
@@ -87,7 +92,7 @@ def main() -> None:
     """
     for dataset in fixed_values.DATASETS:
         print(dataset)
-        save_PLS(dataset, strategy='randomsplit')
+        save_PLS(dataset, strategy='randomsplit', remove_outliers=True)
 
 
 if __name__ == '__main__':
