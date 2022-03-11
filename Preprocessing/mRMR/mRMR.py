@@ -3,7 +3,7 @@
 """
 import operator
 import pickle
-from typing import Optional, List
+from typing import Optional, List, Any
 
 import dcor
 import joblib
@@ -201,7 +201,7 @@ def load_mRMR_indexes(dataset: str, idx_external: int, idx_internal: Optional[in
 
     with open(f'{mRMR_indexes_file}', 'r') as f:
         line = f.readline()
-        mRMR_indexes = line.strip().replace("]", "").replace("[", "").replace("'", "").split(', ')
+        mRMR_indexes: List[Any] = line.strip().replace("]", "").replace("[", "").replace("'", "").split(', ')
         if dataset != 'FFT':
             mRMR_indexes = [int(x) for x in mRMR_indexes]
         else:
@@ -231,7 +231,7 @@ def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: 
 
     for idx_external in tqdm(range(EXTERNAL_SPLITS), desc=f'Saving .pickle {dataset}'):
         X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy)
-        mRMR_indexes = load_mRMR_indexes(dataset, idx_external, remove_outliers=remove_outliers)
+        mRMR_indexes: List[Any] = load_mRMR_indexes(dataset, idx_external, remove_outliers=remove_outliers)
 
         if dataset == 'FFT':
             mRMR_indexes = list(map(str, mRMR_indexes))

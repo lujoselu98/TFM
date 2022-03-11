@@ -2,6 +2,7 @@
     Experiments to choose perfect number of njobs
 """
 import time
+from typing import Optional
 
 import joblib
 import numpy as np
@@ -53,7 +54,7 @@ def test(testing_n_jobs: int) -> None:
                     param_grid = classifier['param_grid']
                     best_score = -1
                     best_params = -1
-                    best_features_number = -1
+                    best_features_number: Optional[int] = -1
 
                     y_train_save, y_test_save = [], []
                     X_train_pre_save, X_test_pre_save = [], []

@@ -7,7 +7,7 @@ from typing import Any
 import numpy as np
 
 
-def constant_size(signal_values: np.array, threshold: int = 1) -> int:
+def constant_size(signal_values: np.ndarray, threshold: int = 1) -> int:
     """
 
     Calculate the total size of the constant part of the signal

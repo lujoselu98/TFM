@@ -1,7 +1,8 @@
 """
     Functions to parse results and to make Latex code
 """
-from typing import Optional, List
+import itertools
+from typing import Optional, List, Dict
 
 import matplotlib
 import numpy as np
@@ -9,6 +10,7 @@ import pandas as pd
 from pylatex import Document, Command, Tabular, MultiColumn, MultiRow, Package, Table
 from pylatex.base_classes import ContainerCommand
 from pylatex.utils import NoEscape, bold
+from scipy import stats
 from tqdm import tqdm
 
 from Utils import paths, pandas_utils, fixed_values
@@ -39,8 +41,9 @@ def main() -> None:
     """
         Main function to export latex colors
     """
-    file = '28_02_22_results_main_experiment.csv'
-    out_file = f"{paths.LATEX_PATH}/color_map_results"
+    # file = '28_02_22_results_main_experiment.csv'
+    file = '11_03_22_results_main_exxperiment_no_outliers.csv'
+    out_file = f"{paths.LATEX_PATH}/color_map_results_no_outliers"
 
     create_latex_color_document(file, out_file, color_map='YlGn')
 
@@ -338,6 +341,66 @@ def _create_latex_row(data: pd.DataFrame, mark_preprocess: Optional[List] = None
     return row_latex_data
 
 
+def _get_significant_order(csv_file: str, dataset: str, metric: str, alpha: Optional[float] = 0.01) -> Dict[int, List]:
+    """
+
+    Method for calculate the stadistically significant rank of models using Wilcoxon, one dataset and one metric
+
+    :param csv_file: results file
+    :param dataset: dataset to filter
+    :param metric: metric to filter
+    :param alpha: significant level
+    :return: rank dict (rank, models)
+    """
+    results_data = pd.read_csv(csv_file, sep=';')
+    results_data[metric] = results_data['METRICS_DICT'].apply(lambda x: pandas_utils.extract_dict(x, metric))
+    results_data['MODEL_NAME'] = results_data['PREPROCESS'] + " + " + results_data['CLASSIFIER_NAME']
+    results_data = results_data[results_data['CLASSIFIER_NAME'] != 'LRSScaler']
+    results_data = results_data[['DATASET', 'MODEL_NAME', metric]]
+    dataset_results = results_data[results_data['DATASET'] == dataset]
+
+    # Rank all models
+    dataset_metrics = np.zeros(len(dataset_results.MODEL_NAME.unique()))
+    for i, model in enumerate(dataset_results.MODEL_NAME.unique()):
+        dataset_model_results = dataset_results[dataset_results['MODEL_NAME'] == model][metric]
+        dataset_metrics[i] = dataset_model_results.mean()
+    if any(np.diff(dataset_metrics) == 0):
+        raise ValueError(f"Ties on dataset {dataset} with metric {metric}")
+    model_ranks = dataset_results.MODEL_NAME.unique()[np.argsort(dataset_metrics)[::-1]]
+
+    models = dataset_results.MODEL_NAME.unique()
+
+    # Calculate p_value for all combinations of models (np.nan default)
+    p_values = pd.DataFrame(0, index=models, columns=models)
+    for model in models:
+        p_values.loc[model, model] = np.nan
+
+    for model_1, model_2 in itertools.permutations(models, 2):
+        results_model_1 = dataset_results[dataset_results.MODEL_NAME == model_1][metric]
+        results_model_2 = dataset_results[dataset_results.MODEL_NAME == model_2][metric]
+        p_values.loc[model_1, model_2] = stats.wilcoxon(results_model_1.values, results_model_2.values)[1]
+
+    p_values = p_values.loc[model_ranks, model_ranks]
+
+    p_values.to_excel(f'p_values_{dataset}_{metric}.xls')
+
+    # Finally rank the models
+    returned_rank = dict()
+    rank = 0
+    ranked = []
+    for model in model_ranks:
+        if model in ranked:
+            continue
+        rank_models = p_values.index[p_values.loc[model] > alpha].to_list()
+        rank_models = [model for model in rank_models if model not in ranked]
+        rank_models.append(model)
+        returned_rank[rank] = rank_models[::-1]
+        ranked.extend(rank_models)
+        rank += 1
+
+    return returned_rank
+
+
 def _get_data_from_csv(csv_file: str, metric: str) -> pd.DataFrame:
     """
 
@@ -363,5 +426,16 @@ def _get_data_from_csv(csv_file: str, metric: str) -> pd.DataFrame:
     return results_pivot_table
 
 
+def test_significance_ranking_main() -> None:
+    for dataset in fixed_values.DATASETS:
+        for metric in fixed_values.EVALUATION_METRICS:
+            ranking = _get_significant_order('28_02_22_results_main_experiment.csv', dataset, metric, alpha=0.01)
+            print(f"{dataset} {metric}")
+            for rank, models in ranking.items():
+                print(rank, models)
+            print("*" * 10)
+
+
 if __name__ == '__main__':
-    main()
+    # main()
+    test_significance_ranking_main()

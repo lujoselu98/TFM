@@ -14,7 +14,7 @@ from Preprocessing import preprocessing
 from Utils import fixed_values, paths, common_functions
 
 
-def parallel_param_validation(X_train: np.array, X_test: np.array, y_train: pd.Series, y_test: pd.Series,
+def parallel_param_validation(X_train: np.ndarray, X_test: np.ndarray, y_train: pd.Series, y_test: pd.Series,
                               clf_to_val: sklearn.base.ClassifierMixin, preprocess: str,
                               features_number: int, params: dict) -> float:
     """
@@ -89,7 +89,7 @@ def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: bool = F
                     param_grid = classifier['param_grid']
                     best_score = -1
                     best_params = -1
-                    best_features_number = -1
+                    best_features_number:Optional[int] = -1
 
                     y_train_save, y_test_save = [], []
                     X_train_pre_save, X_test_pre_save = [], []

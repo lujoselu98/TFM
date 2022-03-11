@@ -9,7 +9,7 @@ from Utils import fixed_values
 from Utils import paths
 
 
-def load_data(dataset: str, remove_outliers: bool = False) -> Tuple[np.array, pd.DataFrame, pd.Series]:
+def load_data(dataset: str, remove_outliers: bool = False) -> Tuple[np.ndarray, pd.DataFrame, pd.Series]:
     """
     Function to load data
     :param dataset: dataset identifier [CC, CDCOR, FFT]
@@ -90,7 +90,7 @@ def get_all_permutations(dictionary: Dict) -> List[Dict]:
     return [dict(zip(keys, v)) for v in itertools.product(*values)]
 
 
-def _print_functions():
+def _print_functions() -> None:
     """
         Just print defined functions docstring
     """
