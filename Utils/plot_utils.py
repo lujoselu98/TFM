@@ -6,6 +6,7 @@ from typing import Optional
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import seaborn as sns
 from matplotlib.axes import Axes
 
 COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
@@ -61,3 +62,93 @@ def plot_data_desc(tt: np.ndarray, X: pd.DataFrame, y: pd.Series,
 
     if save:
         plt.gcf().savefig(f"{save_path}.pdf")
+
+
+def plot_fhr_uc(fhr: pd.DataFrame, uc: pd.DataFrame, y: pd.Series,
+                save: Optional[bool] = False, save_path: Optional[str] = None,
+                ax: Optional[Axes] = None) -> None:
+    """
+
+    :param fhr: Data to plot
+    :param uc: Data to plot  (features)
+    :param y: Data to plot  (label)
+    :param save: Save it or not
+    :param save_path: path to save
+    :param ax: axis to plot or new figure
+    """
+
+    if save and save_path is None:
+        raise ValueError("If save is set it needs a save path")
+    if not save and save_path is not None:
+        raise Warning("If save is not set the save_path is ignored. Figure not saved.")
+
+    if ax is None:
+        fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(20, 10))
+
+    ax[0].plot(fhr[y == 0].mean().index, fhr[y == 0].mean().values, label='Mean FHR class 0')
+    ax[0].plot(fhr[y == 1].mean().index, fhr[y == 1].mean().values, label='Mean FHR class 1')
+    ax[1].plot(uc[y == 0].mean().index, uc[y == 0].mean().values, label='Mean UC class 0')
+    ax[1].plot(uc[y == 1].mean().index, uc[y == 1].mean().values, label='Mean UC class 1')
+
+    ax[0].set_xlabel('Time(s)', fontsize=25)
+    ax[1].set_xlabel('Time(s)', fontsize=25)
+    ax[0].set_ylabel('FHR', fontsize=25)
+    ax[1].set_ylabel('UC', fontsize=25)
+    ax[0].legend()
+    ax[1].legend()
+
+    if save:
+        plt.gcf().savefig(f"{save_path}.pdf")
+
+
+def plot_class_correlation(X, y,
+                           title: Optional[str] = "Correlation with class",
+                           save: Optional[bool] = False, save_path: Optional[str] = None,
+                           ax: Optional[Axes] = None) -> None:
+    """
+
+    :param X: Data to plot  (features)
+    :param y: Data to plot  (label)
+    :param title: Title of the plot
+    :param save: Save it or not
+    :param save_path: path to save
+    :param ax: axis to plot or new figure
+    """
+
+    if save and save_path is None:
+        raise ValueError("If save is set it needs a save path")
+    if not save and save_path is not None:
+        raise Warning("If save is not set the save_path is ignored. Figure not saved.")
+
+    if ax is None:
+        fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 10))
+
+    X.corrwith(y).plot(ax=ax)
+
+    ax.set_ylabel('Correlation')
+    ax.set_xlabel('Lag')
+    ax.set_title(f'{title}')
+
+    if save:
+        plt.gcf().savefig(f"{save_path}.pdf")
+
+
+def plot_class_proportion(y: pd.Series,
+                          save: Optional[bool] = False, save_path: Optional[str] = None,
+                          ax: Optional[Axes] = None) -> None:
+    """
+
+    :param y: Data to plot  (label)
+    :param save: Save it or not
+    :param save_path: path to save
+    :param ax: axis to plot or new figure
+    """
+
+    if save and save_path is None:
+        raise ValueError("If save is set it needs a save path")
+    if not save and save_path is not None:
+        raise Warning("If save is not set the save_path is ignored. Figure not saved.")
+    if ax is None:
+        fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+
+    sns.barplot(x='class', y='%', data=pd.DataFrame(y.value_counts(normalize=True)).reset_index())

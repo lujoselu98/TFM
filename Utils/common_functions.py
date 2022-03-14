@@ -90,6 +90,43 @@ def get_all_permutations(dictionary: Dict) -> List[Dict]:
     return [dict(zip(keys, v)) for v in itertools.product(*values)]
 
 
+def filter_patterns(fhr: pd.DataFrame, uc: pd.DataFrame, y: pd.Series, mins_cut: Optional[int] = 30,
+                    nan_percentage_threshold: Optional[int] = 30) -> [pd.DataFrame, pd.DataFrame, pd.Series]:
+    """
+
+    :param fhr: FHR data
+    :param uc: UC data
+    :param y: labels
+    :param mins_cut: mins from the end to keep
+    :param nan_percentage_threshold: min nan threshold to keep a pattern
+    :return: clean_fhr, clean_uc, clean_y
+    """
+    cut_fhr = fhr.copy().iloc[:, -mins_cut * 60 * 4:]
+    fhr_nans_percent = (cut_fhr.isna().sum(axis=1) / cut_fhr.shape[1] * 100)
+    fhr_now_dismissed = fhr_nans_percent.index[fhr_nans_percent > nan_percentage_threshold].to_list()
+
+    cut_uc = uc.copy().iloc[:, -mins_cut * 60 * 4:]
+    uc_nans_percent = (cut_uc.isna().sum(axis=1) / cut_fhr.shape[1] * 100)
+    uc_now_dismissed = uc_nans_percent.index[uc_nans_percent > nan_percentage_threshold].to_list()
+
+    removed = list(set(fhr_now_dismissed).union(set(uc_now_dismissed)))
+    clean_fhr = cut_fhr.drop(removed)
+    clean_uc = cut_uc.drop(removed)
+    clean_y = y.drop(removed)
+
+    before_dismissed = [1104, 1119, 1134, 1149, 1155, 1158, 1186, 1188, 1258, 1292, 1322,
+                        1327, 1451, 1477, 1482, 2003]
+    check_list = [x for x in before_dismissed if (x not in fhr_now_dismissed) and (x not in uc_now_dismissed)]
+
+    if len(check_list) != 0:
+        Warning(
+            f'Not all before dismissed are removed with this parameters. '
+            f'mins_cut = {mins_cut}, nan_percentage_threshold = {nan_percentage_threshold}, {check_list}'
+        )
+
+    return clean_fhr, clean_uc, clean_y
+
+
 def _print_functions() -> None:
     """
         Just print defined functions docstring
