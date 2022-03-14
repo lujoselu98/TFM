@@ -3,11 +3,13 @@
 """
 from typing import Optional
 
+import dcor
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 from matplotlib.axes import Axes
+from tqdm.notebook import tqdm as nb_tqdm
 
 COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
 
@@ -154,5 +156,49 @@ def plot_class_proportion(y: pd.Series,
     sns.barplot(x='index', y='ph', data=pd.DataFrame(y.value_counts(normalize=True)).reset_index(), ax=ax)
     ax.set_ylabel('% patterns')
 
-    ax.set_xlabel('Classs')
+    ax.set_xlabel('Class')
 
+    if save:
+        plt.gcf().savefig(f"{save_path}.pdf")
+
+
+def plot_relevance(X, y,
+                   title: Optional[str] = "Distance correlation with class",
+                   save: Optional[bool] = False, save_path: Optional[str] = None,
+                   ax: Optional[Axes] = None) -> None:
+    """
+
+    :param X: Data to plot  (features)
+    :param y: Data to plot  (label)
+    :param title: Title of the plot
+    :param save: Save it or not
+    :param save_path: path to save
+    :param ax: axis to plot or new figure
+    """
+
+    if save and save_path is None:
+        raise ValueError("If save is set it needs a save path")
+    if not save and save_path is not None:
+        raise Warning("If save is not set the save_path is ignored. Figure not saved.")
+
+    if ax is None:
+        fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 10))
+
+    X_t = X.T
+    y = y.astype('float')
+
+    candidates = X_t.index.to_list()
+    relevance_vector = dict()
+
+    for idx in nb_tqdm(candidates):
+        row_vals = X_t.loc[idx]
+        relevance_vector[idx] = dcor.u_distance_correlation_sqr(row_vals, y)
+
+    ax.plot(relevance_vector.keys(), relevance_vector.values())
+
+    ax.set_ylabel('Relevance with the class')
+    ax.set_xlabel('Lag')
+    ax.set_title(f'{title}')
+
+    if save:
+        plt.gcf().savefig(f"{save_path}.pdf")
