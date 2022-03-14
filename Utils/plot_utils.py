@@ -151,4 +151,8 @@ def plot_class_proportion(y: pd.Series,
     if ax is None:
         fig, ax = plt.subplots(1, 1, figsize=(10, 10))
 
-    sns.barplot(x='class', y='%', data=pd.DataFrame(y.value_counts(normalize=True)).reset_index())
+    sns.barplot(x='index', y='ph', data=pd.DataFrame(y.value_counts(normalize=True)).reset_index(), ax=ax)
+    ax.set_ylabel('% patterns')
+
+    ax.set_xlabel('Classs')
+
