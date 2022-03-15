@@ -9,13 +9,19 @@ from Utils import fixed_values
 from Utils import paths
 
 
-def load_data(dataset: str, remove_outliers: bool = False) -> Tuple[np.ndarray, pd.DataFrame, pd.Series]:
+def load_data(dataset: str, remove_outliers: Optional[bool] = False, filter_data: Optional[bool] = False) -> Tuple[
+    np.ndarray, pd.DataFrame, pd.Series]:
     """
     Function to load data
     :param dataset: dataset identifier [CC, CDCOR, FFT]
     :param remove_outliers: remove outliers or not
+    :param filter_data to get filter data
     :return: features_names, data matrix, label vector
     """
+
+    if remove_outliers and filter_data:
+        ValueError('Both remove_outliers and filter_data cannot be set together.')
+
     if dataset == 'CC':
         data_path = paths.CC_DATA_PATH
     elif dataset == 'DCOR':
@@ -25,8 +31,10 @@ def load_data(dataset: str, remove_outliers: bool = False) -> Tuple[np.ndarray, 
     else:
         raise ValueError(f"unknown dataset: {dataset}")
 
-    X = pd.read_pickle(f"{data_path}/X.pickle")
-    y = pd.read_pickle(f"{data_path}/y.pickle")
+    filter_path = '' if not filter_data else 'clean_'
+
+    X = pd.read_pickle(f"{data_path}/{filter_path}X.pickle")
+    y = pd.read_pickle(f"{data_path}/{filter_path}y.pickle")
 
     if remove_outliers:
         X = X.drop(fixed_values.OUTLIERS_IDX)
