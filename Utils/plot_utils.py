@@ -17,7 +17,7 @@ COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e3
 def plot_data_desc(tt: np.ndarray, X: pd.DataFrame, y: pd.Series,
                    title: Optional[str] = "Dataset description", y_label: Optional[str] = "dataset value",
                    save: Optional[bool] = False, save_path: Optional[str] = None,
-                   ax: Optional[Axes] = None) -> None:
+                   ax: Optional[Axes] = None, fourier: Optional[bool] = False) -> None:
     """
 
     :param tt: Data to plot (time index)
@@ -28,6 +28,7 @@ def plot_data_desc(tt: np.ndarray, X: pd.DataFrame, y: pd.Series,
     :param save: Save it or not
     :param save_path: path to save
     :param ax: axis to plot or new figure
+    :param fourier: set to plot fourier plots
     """
 
     if save and save_path is None:
@@ -60,7 +61,11 @@ def plot_data_desc(tt: np.ndarray, X: pd.DataFrame, y: pd.Series,
     ax.legend(loc='best')
     ax.set_title(f"{title}")
     ax.set_ylabel(f"{y_label}")
-    ax.set_xlabel("Lag (s)")
+    if not fourier:
+        ax.set_xlabel("Lag (s)")
+    else:
+        ax.set_xlabel("Freq (Hz)")
+        ax.set_yscale('log')
 
     if save:
         plt.gcf().savefig(f"{save_path}.pdf")
