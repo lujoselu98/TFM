@@ -10,7 +10,7 @@ from Utils import paths, fixed_values
 
 
 def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_internal: Optional[int] = None,
-                    remove_outliers: Optional[bool] = False, filter_data: Optional[bool] = True) -> Tuple[
+                    remove_outliers: Optional[bool] = False, filter_data: Optional[bool] = False) -> Tuple[
     np.ndarray, np.ndarray]:
     """
 
