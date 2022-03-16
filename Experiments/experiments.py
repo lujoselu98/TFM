@@ -45,10 +45,14 @@ def parallel_param_validation(X_train: np.ndarray, X_test: np.ndarray, y_train: 
     return metric_test
 
 
-def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: bool = False) -> None:
+def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: Optional[bool] = False,
+                    filter_data: Optional[bool] = False) -> None:
     """Function to made the main experiment"""
 
     assert strategy in ['kfold', 'randomsplit']
+
+    if remove_outliers and filter_data:
+        ValueError('Both remove_outliers and filter_data cannot be set together.')
 
     if strategy == 'kfold':
         EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS
@@ -65,7 +69,7 @@ def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: bool = F
                 "IDX_EXTERNAL;FEATURES_NUMBER;PARAMS;"
                 "METRICS_DICT\n")
     for dataset in progress_bar:
-        _, X, y = common_functions.load_data(dataset, remove_outliers=remove_outliers)
+        _, X, y = common_functions.load_data(dataset, remove_outliers=remove_outliers, filter_data=filter_data)
         for classifier_name, classifier in fixed_values.CLASSIFIERS.items():
             if dataset not in classifier['datasets']:
                 continue
@@ -89,7 +93,7 @@ def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: bool = F
                     param_grid = classifier['param_grid']
                     best_score = -1
                     best_params = -1
-                    best_features_number:Optional[int] = -1
+                    best_features_number: Optional[int] = -1
 
                     y_train_save, y_test_save = [], []
                     X_train_pre_save, X_test_pre_save = [], []
@@ -104,7 +108,8 @@ def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: bool = F
                         else:
                             X_train_pre, X_test_pre = preprocessing.load_preprocess(dataset, preprocess,
                                                                                     idx_external, idx_internal,
-                                                                                    remove_outliers=remove_outliers)
+                                                                                    remove_outliers=remove_outliers,
+                                                                                    filter_data=filter_data)
 
                         X_train_pre_save.append(X_train_pre)
                         X_test_pre_save.append(X_test_pre)
@@ -148,7 +153,8 @@ def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: bool = F
                         X_train_pre_f, X_test_pre_f = X_train.copy(), X_test.copy()
                     else:
                         X_train_pre, X_test_pre = preprocessing.load_preprocess(dataset, preprocess, idx_external,
-                                                                                remove_outliers=remove_outliers)
+                                                                                remove_outliers=remove_outliers,
+                                                                                filter_data=filter_data)
                         X_train_pre_f, X_test_pre_f = preprocessing.get_features(X_train_pre, X_test_pre,
                                                                                  best_features_number)
 
@@ -192,4 +198,4 @@ def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: bool = F
 
 
 if __name__ == '__main__':
-    main_experiment(strategy='randomsplit', remove_outliers=True)
+    main_experiment(strategy='randomsplit', remove_outliers=False, filter_data=True)
