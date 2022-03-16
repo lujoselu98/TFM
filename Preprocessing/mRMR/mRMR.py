@@ -133,16 +133,21 @@ def parallel_internal_code(X: pd.DataFrame, tt: pd.Series, y: pd.Series, idx_ext
     return selected_features_index
 
 
-def save_mRMR_indexes(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: bool = False) -> None:
+def save_mRMR_indexes(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: Optional[bool] = False,
+                      filter_data: Optional[bool] = False) -> None:
     """
         Save mRMR indexes into .txt files
     :param dataset: Dataset to calculate and save the indexes
     :param remove_outliers: to remove the outliers or not
+    :param filter_data to get filter data
     :param strategy: Strategy to split data
     """
     assert strategy in ['kfold', 'randomsplit']
 
-    tt, X, y = common_functions.load_data(dataset, remove_outliers=remove_outliers)
+    if remove_outliers and filter_data:
+        ValueError('Both remove_outliers and filter_data cannot be set together.')
+
+    tt, X, y = common_functions.load_data(dataset, remove_outliers=remove_outliers, filter_data=filter_data)
 
     if strategy == 'kfold':
         EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS
@@ -158,11 +163,13 @@ def save_mRMR_indexes(dataset: str, strategy: Optional[str] = 'kfold', remove_ou
     if remove_outliers:
         save_path = paths.MRMR_OUTLIERS_PATH
 
+    filter_path = '' if not filter_data else 'clean_'
+
     for i, idx_external in tqdm(enumerate(range(EXTERNAL_SPLITS)), desc=f'Saving .txt {dataset}',
                                 total=EXTERNAL_SPLITS):
         selected_features_index = selected_features_indexes_ext[i]
 
-        sel_features_file = f"{save_path}/{dataset}_sel_features_{idx_external}.txt"
+        sel_features_file = f"{save_path}/{filter_path}{dataset}_sel_features_{idx_external}.txt"
         with open(sel_features_file, 'w') as f:
             f.write(str(selected_features_index.tolist()))
 
@@ -174,30 +181,37 @@ def save_mRMR_indexes(dataset: str, strategy: Optional[str] = 'kfold', remove_ou
         for j, idx_internal in enumerate(range(fixed_values.INTERNAL_SPLITS)):
             selected_features_index = selected_features_indexes_int[j]
 
-            sel_features_file = f"{save_path}/{dataset}_sel_features_{idx_external}_{idx_internal}.txt"
+            sel_features_file = f"{save_path}/{filter_path}{dataset}_sel_features_{idx_external}_{idx_internal}.txt"
             with open(sel_features_file, 'w') as f:
                 f.write(str(selected_features_index.tolist()))
 
 
 def load_mRMR_indexes(dataset: str, idx_external: int, idx_internal: Optional[int] = None,
-                      remove_outliers: bool = False) -> List[int]:
+                      remove_outliers: Optional[bool] = False, filter_data: Optional[bool] = False) -> List[int]:
     """
         Load indexes from .txt file, used to save the real values needed for experiments
-    :param remove_outliers:
     :param dataset: Dataset to load
+    :param remove_outliers: to remove outliers or not
+    :param filter_data to get filter data
     :param idx_external: External idx to load
     :param idx_internal: Internal idx to load
     :return: Read indexes
     """
+
+    if remove_outliers and filter_data:
+        ValueError('Both remove_outliers and filter_data cannot be set together.')
+
+    filter_path = '' if not filter_data else 'clean_'
+
     load_path = paths.MRMR_PATH
     if remove_outliers:
         load_path = paths.MRMR_OUTLIERS_PATH
 
     if idx_internal is None:
-        mRMR_indexes_file = f"{load_path}/{dataset}_sel_features_{idx_external}.txt"
+        mRMR_indexes_file = f"{load_path}/{filter_path}{dataset}_sel_features_{idx_external}.txt"
 
     else:  # idx_internal is not None
-        mRMR_indexes_file = f"{load_path}/{dataset}_sel_features_{idx_external}_{idx_internal}.txt"
+        mRMR_indexes_file = f"{load_path}/{filter_path}{dataset}_sel_features_{idx_external}_{idx_internal}.txt"
 
     with open(f'{mRMR_indexes_file}', 'r') as f:
         line = f.readline()
@@ -209,16 +223,21 @@ def load_mRMR_indexes(dataset: str, idx_external: int, idx_internal: Optional[in
     return mRMR_indexes
 
 
-def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: bool = False) -> None:
+def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: Optional[bool] = False,
+              filter_data: Optional[bool] = False) -> None:
     """
         Save the data of selected features by mRMR to use in experiments
     :param dataset: Dataset to use
     :param remove_outliers: to remove outliers or not
+    :param filter_data to get filter data
     :param strategy: Strategy to split data
     """
     assert strategy in ['kfold', 'randomsplit']
 
-    tt, X, y = common_functions.load_data(dataset, remove_outliers=remove_outliers)
+    if remove_outliers and filter_data:
+        ValueError('Both remove_outliers and filter_data cannot be set together.')
+
+    tt, X, y = common_functions.load_data(dataset, remove_outliers=remove_outliers, filter_data=filter_data)
 
     if strategy == 'kfold':
         EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS
@@ -228,6 +247,8 @@ def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: 
     save_path = paths.MRMR_PATH
     if remove_outliers:
         save_path = paths.MRMR_OUTLIERS_PATH
+
+    filter_path = '' if not filter_data else 'clean_'
 
     for idx_external in tqdm(range(EXTERNAL_SPLITS), desc=f'Saving .pickle {dataset}'):
         X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy)
@@ -239,7 +260,7 @@ def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: 
         X_train_mRMR = X_train[mRMR_indexes].values
         X_test_mRMR = X_test[mRMR_indexes].values
 
-        pickle_file = f"{save_path}/{dataset}_mRMR_{idx_external}"
+        pickle_file = f"{save_path}/{filter_path}{dataset}_mRMR_{idx_external}"
 
         with open(f"{pickle_file}_train.pickle", 'wb') as f:
             pickle.dump(X_train_mRMR, f)
@@ -258,7 +279,7 @@ def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: 
             X_train_mRMR = X_train[mRMR_indexes].values
             X_test_mRMR = X_test[mRMR_indexes].values
 
-            pickle_file = f"{save_path}/{dataset}_mRMR_{idx_external}_{idx_internal}"
+            pickle_file = f"{save_path}/{filter_path}{dataset}_mRMR_{idx_external}_{idx_internal}"
 
             with open(f"{pickle_file}_train.pickle", 'wb') as f:
                 pickle.dump(X_train_mRMR, f)
@@ -272,9 +293,9 @@ def main(dataset: str) -> None:
         Main function
     """
 
-    # print(dataset)
-    # save_mRMR_indexes(dataset, strategy='randomsplit', remove_outliers=True)
-    save_mRMR(dataset, strategy='randomsplit', remove_outliers=True)
+    print(dataset)
+    # save_mRMR_indexes(dataset, strategy='randomsplit', remove_outliers=False, filter_data=True)
+    save_mRMR(dataset, strategy='randomsplit', remove_outliers=False, filter_data=True)
 
 
 if __name__ == '__main__':

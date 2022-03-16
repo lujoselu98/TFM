@@ -9,8 +9,9 @@ import numpy as np
 from Utils import paths, fixed_values
 
 
-def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_internal: Optional[int] = None, remove_outliers: bool=False) -> Tuple[
-        np.ndarray, np.ndarray]:
+def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_internal: Optional[int] = None,
+                    remove_outliers: Optional[bool] = False, filter_data: Optional[bool] = True) -> Tuple[
+    np.ndarray, np.ndarray]:
     """
 
     Function to load a preprocessed dataset
@@ -20,6 +21,7 @@ def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_intern
     :param idx_external: idx of external division
     :param idx_internal: idx of internal division
     :param remove_outliers: to remove outliers or not
+    :param filter_data to get filter data
     :return: X_train and X_test from file given the parameters
     """
 
@@ -38,7 +40,13 @@ def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_intern
     else:
         raise ValueError(f"unknown preprocess: {preprocess}")
 
-    file_f_string = "{PATH}/{dataset}_{preprocess}_{idx_external}{idx_internal}"
+    if remove_outliers and filter_data:
+        ValueError('Both remove_outliers and filter_data cannot be set together.')
+
+    if not filter_data:
+        file_f_string = "{PATH}/{dataset}_{preprocess}_{idx_external}{idx_internal}"
+    else:
+        file_f_string = "{PATH}/clean_{dataset}_{preprocess}_{idx_external}{idx_internal}"
 
     idx_internal_s = ''
     if idx_internal is not None:

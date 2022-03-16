@@ -37,16 +37,21 @@ def calculate_PLS(X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFram
     return X_train_pls, X_test_pls
 
 
-def save_PLS(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: bool = False) -> None:
+def save_PLS(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: bool = False,
+             filter_data: Optional[bool] = False) -> None:
     """
-        Save the data of projected data by PLS to use in experiments
+        Save the data of projected data by FPCA to use in experiments
     :param dataset: Dataset to use
     :param remove_outliers: to remove outliers or not
+    :param filter_data to get filter data
     :param strategy: Strategy to split data
     """
     assert strategy in ['kfold', 'randomsplit']
 
-    tt, X, y = common_functions.load_data(dataset, remove_outliers)
+    if remove_outliers and filter_data:
+        ValueError('Both remove_outliers and filter_data cannot be set together.')
+
+    tt, X, y = common_functions.load_data(dataset, remove_outliers, filter_data)
 
     if strategy == 'kfold':
         EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS
@@ -57,13 +62,15 @@ def save_PLS(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: b
     if remove_outliers:
         save_path = paths.PLS_OUTLIERS_PATH
 
+    filter_path = '' if not filter_data else 'clean_'
+
     for idx_external in tqdm(range(EXTERNAL_SPLITS)):
 
         X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy)
 
         X_train_pls, X_test_pls = calculate_PLS(X_train, y_train, X_test, n_components=fixed_values.MAX_DIMENSION)
 
-        components_file = f"{save_path}/{dataset}_PLS_{idx_external}"
+        components_file = f"{save_path}/{filter_path}{dataset}_PLS_{idx_external}"
 
         with open(f"{components_file}_train.pickle", 'wb') as f:
             pickle.dump(X_train_pls, f)
@@ -77,7 +84,7 @@ def save_PLS(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: b
 
             X_train_pca, X_test_pca = calculate_PLS(X_train, y_train, X_test, n_components=fixed_values.MAX_DIMENSION)
 
-            components_file = f"{save_path}/{dataset}_PLS_{idx_external}_{idx_internal}"
+            components_file = f"{save_path}/{filter_path}{dataset}_PLS_{idx_external}_{idx_internal}"
 
             with open(f"{components_file}_train.pickle", 'wb') as f:
                 pickle.dump(X_train_pca, f)
@@ -92,7 +99,7 @@ def main() -> None:
     """
     for dataset in fixed_values.DATASETS:
         print(dataset)
-        save_PLS(dataset, strategy='randomsplit', remove_outliers=True)
+        save_PLS(dataset, strategy='randomsplit', remove_outliers=False, filter_data=True)
 
 
 if __name__ == '__main__':
