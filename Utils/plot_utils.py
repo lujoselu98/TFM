@@ -8,8 +8,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from Orange import evaluation
 from matplotlib.axes import Axes
 from tqdm.notebook import tqdm as nb_tqdm
+
+from Utils import pandas_utils, fixed_values
 
 COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
 
@@ -207,3 +210,37 @@ def plot_relevance(X, y,
 
     if save:
         plt.gcf().savefig(f"{save_path}.pdf")
+
+
+def plot_CD_diagram(results_file: str, dataset: str, width: Optional[int] = 10) -> plt.Figure:
+    """
+
+    :param results_file: csv with results
+    :param dataset: dataset to use on plot
+    :param width: with of the plot. Default is 10.
+    :return: The plot
+    """
+    results_data = pd.read_csv(results_file, sep=';')
+    for metric in fixed_values.EVALUATION_METRICS:
+        results_data[metric] = results_data['METRICS_DICT'].apply(lambda x: pandas_utils.extract_dict(x, metric))
+    results_data['MODEL_NAME'] = results_data['PREPROCESS'] + " + " + results_data['CLASSIFIER_NAME']
+    results_data = results_data[results_data['CLASSIFIER_NAME'] != 'LRSScaler']
+    results_data = results_data[['DATASET', 'MODEL_NAME', *fixed_values.EVALUATION_METRICS, 'IDX_EXTERNAL']]
+
+    dataset_results = results_data[results_data['DATASET'] == dataset]
+    models_avg_rank = {model: 0 for model in dataset_results.MODEL_NAME.unique()}
+
+    ranks = dataset_results.IDX_EXTERNAL.unique().__len__()
+    lowv, highv = 0, dataset_results.MODEL_NAME.unique().__len__(),
+
+    for idx_external in range(ranks):
+        ordered_results = dataset_results[dataset_results['IDX_EXTERNAL'] == idx_external].sort_values('AUC_SCORE',
+                                                                                                       ascending=False)
+        models_order = ordered_results.MODEL_NAME.to_list()
+        for model in models_avg_rank.keys():
+            models_avg_rank[model] += models_order.index(model)
+    models_avg_rank = {key: value / ranks for key, value in models_avg_rank.items()}
+
+    cd = evaluation.compute_CD(list(models_avg_rank.values()), 100)
+    return evaluation.graph_ranks(list(models_avg_rank.values()), names=list(models_avg_rank.keys()),
+                                  width=10, lowv=lowv, highv=highv, cd=cd)
