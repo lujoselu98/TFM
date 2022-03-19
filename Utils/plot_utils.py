@@ -242,5 +242,7 @@ def plot_CD_diagram(results_file: str, dataset: str, width: Optional[int] = 10) 
     models_avg_rank = {key: value / ranks for key, value in models_avg_rank.items()}
 
     cd = evaluation.compute_CD(list(models_avg_rank.values()), 100)
-    return evaluation.graph_ranks(list(models_avg_rank.values()), names=list(models_avg_rank.keys()),
-                                  width=10, lowv=lowv, highv=highv, cd=cd)
+    fig = evaluation.graph_ranks(list(models_avg_rank.values()), names=list(models_avg_rank.keys()),
+                                 width=width, lowv=lowv, highv=highv, cd=cd)
+    fig.set_suptitle(dataset)
+    return fig
