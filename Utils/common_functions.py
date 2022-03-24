@@ -49,18 +49,22 @@ def load_data(dataset: str, remove_outliers: Optional[bool] = False, filter_data
 
 
 def get_fold(X: pd.DataFrame, y: pd.Series, idx_external: int, idx_internal: Optional[int] = None,
-             strategy: Optional[str] = 'kfold') -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
+             strategy: Optional[str] = 'kfold', outliers_to_remove_from_train: Optional[str] = None) -> Tuple[
+    pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """
     Get X_train, X_test, y_train, y_test corresponding to the fold
     :param X: Whole data matrix
     :param y: Whole label vector
     :param idx_external: idx of the fold of external division
     :param idx_internal: idx of the fold of internal division
-    :param strategy: The strtegy to make the fold of external division ['kfold', 'randomsplit']
+    :param strategy: The strategy to make the fold of external division ['kfold', 'randomsplit']
+    :param outliers_to_remove_from_train dataset of which we should remove outliers on train
     :return:  X_train, X_test, y_train, y_test
     """
 
     assert strategy in ['kfold', 'randomsplit']
+    if outliers_to_remove_from_train is not None:
+        assert outliers_to_remove_from_train in fixed_values.DATASETS
 
     if strategy == 'kfold':
         external_cv = sklearn.model_selection.StratifiedKFold(n_splits=fixed_values.EXTERNAL_SPLITS, shuffle=True,
@@ -72,13 +76,19 @@ def get_fold(X: pd.DataFrame, y: pd.Series, idx_external: int, idx_internal: Opt
 
     index_train, index_test = next(itertools.islice(external_cv.split(X, y), idx_external, None), None)
 
+    # Remove outliers of dataset from train if they are on the fold
+    X_train, X_test, y_train, y_test = X.iloc[index_train], X.iloc[index_test], y.iloc[index_train], y.iloc[index_test]
+    if outliers_to_remove_from_train is not None:
+        outliers_idx = fixed_values.DATASET_OUTLIERS[outliers_to_remove_from_train]
+        X_train = X_train.drop(outliers_idx, errors='ignore')
+        y_train = y_train.drop(outliers_idx, errors='ignore')
+
     if idx_internal is None:
-        return X.iloc[index_train], X.iloc[index_test], y.iloc[index_train], y.iloc[index_test]
-        #      X_train            , X_test            , y_train            , y_test
+        return X_train, X_test, y_train, y_test
 
     if idx_internal is not None:
         # Dentro del interno la X y la y son los train del externo 9/10 del total
-        X_int, y_int = X.iloc[index_train], y.iloc[index_train]
+        X_int, y_int = X_train.copy(), y_train.copy() # Already outliers remove if set
 
         # Usamos el idx externo para el random del shuffle del interno
         internal_cv = sklearn.model_selection.StratifiedKFold(n_splits=fixed_values.INTERNAL_SPLITS, shuffle=True,

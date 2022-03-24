@@ -43,8 +43,8 @@ def main() -> None:
     """
     # file = '28_02_22_results_main_experiment.csv'
     # file = '11_03_22_results_main_exxperiment_no_outliers.csv'
-    file = 'results_1647440481.7991931_main_experiment.csv'
-    out_file = f"{paths.LATEX_PATH}/color_map_test"
+    file = '18_03_22_results_main_experiment_filtered.csv'
+    out_file = f"{paths.LATEX_PATH}/color_map_filtered"
 
     create_latex_color_document(file, out_file, color_map='YlGn')
 
