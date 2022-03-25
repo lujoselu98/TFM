@@ -106,12 +106,14 @@ def calculate_mRMR(X_train: pd.DataFrame, y_train: pd.Series, features_number: i
 
 
 def parallel_external_code(X: pd.DataFrame, tt: pd.Series, y: pd.Series, idx_external: int,
-                           strategy: Optional[str] = 'kfold') -> List[int]:
+                           strategy: Optional[str] = 'kfold',
+                           remove_outliers_dataset: Optional[str] = None) -> List[int]:
     """
         Function to parallelize inner loop
     """
     assert strategy in ['kfold', 'randomsplit']
-    X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy)
+    X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy,
+                                                                 outliers_remove_train=remove_outliers_dataset)
 
     selected_features_index = calculate_mRMR_skfda(X_train, tt, y_train,
                                                    features_number=fixed_values.MAX_DIMENSION)
@@ -120,12 +122,14 @@ def parallel_external_code(X: pd.DataFrame, tt: pd.Series, y: pd.Series, idx_ext
 
 
 def parallel_internal_code(X: pd.DataFrame, tt: pd.Series, y: pd.Series, idx_external: int, idx_internal: int,
-                           strategy: Optional[str] = 'kfold') -> List[int]:
+                           strategy: Optional[str] = 'kfold',
+                           remove_outliers_dataset: Optional[str] = None) -> List[int]:
     """
         Function to parallelize outer loop
     """
     assert strategy in ['kfold', 'randomsplit']
-    X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, idx_internal, strategy=strategy)
+    X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, idx_internal, strategy=strategy,
+                                                                 outliers_remove_train=remove_outliers_dataset)
 
     selected_features_index = calculate_mRMR_skfda(X_train, tt, y_train,
                                                    features_number=fixed_values.MAX_DIMENSION)
@@ -134,18 +138,19 @@ def parallel_internal_code(X: pd.DataFrame, tt: pd.Series, y: pd.Series, idx_ext
 
 
 def save_mRMR_indexes(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: Optional[bool] = False,
-                      filter_data: Optional[bool] = False) -> None:
+                      filter_data: Optional[bool] = False, remove_dataset_outliers: Optional[bool] = False) -> None:
     """
         Save mRMR indexes into .txt files
-    :param dataset: Dataset to calculate and save the indexes
-    :param remove_outliers: to remove the outliers or not
+    :param dataset: Dataset to use
+    :param remove_outliers: to remove outliers or not
     :param filter_data to get filter data
+    :param remove_dataset_outliers: to remove outliers or not but from dataset only
     :param strategy: Strategy to split data
     """
     assert strategy in ['kfold', 'randomsplit']
 
-    if remove_outliers and filter_data:
-        ValueError('Both remove_outliers and filter_data cannot be set together.')
+    if remove_outliers and filter_data and remove_dataset_outliers:
+        ValueError('Both remove_outliers, filter_data and remove_dataset_outliers cannot be set together.')
 
     tt, X, y = common_functions.load_data(dataset, remove_outliers=remove_outliers, filter_data=filter_data)
 
@@ -154,14 +159,20 @@ def save_mRMR_indexes(dataset: str, strategy: Optional[str] = 'kfold', remove_ou
     else:
         EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS_SHUFFLE
 
+    remove_outliers_dataset = None
+    if remove_dataset_outliers:
+        remove_outliers_dataset = dataset
+
     selected_features_indexes_ext = joblib.Parallel(n_jobs=8)(
-        joblib.delayed(parallel_external_code)(X, tt, y, idx_external, strategy)
+        joblib.delayed(parallel_external_code)(X, tt, y, idx_external, strategy, remove_outliers_dataset)
         for idx_external in tqdm(range(EXTERNAL_SPLITS), desc=f'mRMR {dataset}')
     )
 
     save_path = paths.MRMR_PATH
     if remove_outliers:
         save_path = paths.MRMR_OUTLIERS_PATH
+    if remove_dataset_outliers:
+        save_path = paths.MRMR_DATASET_OUTLIERS_PATH
 
     filter_path = '' if not filter_data else 'clean_'
 
@@ -174,7 +185,8 @@ def save_mRMR_indexes(dataset: str, strategy: Optional[str] = 'kfold', remove_ou
             f.write(str(selected_features_index.tolist()))
 
         selected_features_indexes_int = joblib.Parallel(n_jobs=8)(
-            joblib.delayed(parallel_internal_code)(X, tt, y, idx_external, idx_internal, strategy)
+            joblib.delayed(parallel_internal_code)(X, tt, y, idx_external, idx_internal, strategy,
+                                                   remove_outliers_dataset)
             for idx_internal in range(fixed_values.INTERNAL_SPLITS)
         )
 
@@ -187,25 +199,29 @@ def save_mRMR_indexes(dataset: str, strategy: Optional[str] = 'kfold', remove_ou
 
 
 def load_mRMR_indexes(dataset: str, idx_external: int, idx_internal: Optional[int] = None,
-                      remove_outliers: Optional[bool] = False, filter_data: Optional[bool] = False) -> List[int]:
+                      remove_outliers: Optional[bool] = False, filter_data: Optional[bool] = False,
+                      remove_dataset_outliers: Optional[bool] = False) -> List[int]:
     """
         Load indexes from .txt file, used to save the real values needed for experiments
     :param dataset: Dataset to load
     :param remove_outliers: to remove outliers or not
     :param filter_data to get filter data
+    :param remove_dataset_outliers: to remove outliers or not but from dataset only
     :param idx_external: External idx to load
     :param idx_internal: Internal idx to load
     :return: Read indexes
     """
 
-    if remove_outliers and filter_data:
-        ValueError('Both remove_outliers and filter_data cannot be set together.')
+    if remove_outliers and filter_data and remove_dataset_outliers:
+        ValueError('Both remove_outliers, filter_data and remove_dataset_outliers cannot be set together.')
 
     filter_path = '' if not filter_data else 'clean_'
 
     load_path = paths.MRMR_PATH
     if remove_outliers:
         load_path = paths.MRMR_OUTLIERS_PATH
+    if remove_dataset_outliers:
+        save_path = paths.MRMR_DATASET_OUTLIERS_PATH
 
     if idx_internal is None:
         mRMR_indexes_file = f"{load_path}/{filter_path}{dataset}_sel_features_{idx_external}.txt"
@@ -224,18 +240,19 @@ def load_mRMR_indexes(dataset: str, idx_external: int, idx_internal: Optional[in
 
 
 def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: Optional[bool] = False,
-              filter_data: Optional[bool] = False) -> None:
+              filter_data: Optional[bool] = False, remove_dataset_outliers: Optional[bool] = False) -> None:
     """
         Save the data of selected features by mRMR to use in experiments
     :param dataset: Dataset to use
     :param remove_outliers: to remove outliers or not
     :param filter_data to get filter data
+    :param remove_dataset_outliers: to remove outliers or not but from dataset only
     :param strategy: Strategy to split data
     """
     assert strategy in ['kfold', 'randomsplit']
 
-    if remove_outliers and filter_data:
-        ValueError('Both remove_outliers and filter_data cannot be set together.')
+    if remove_outliers and filter_data and remove_dataset_outliers:
+        ValueError('Both remove_outliers, filter_data and remove_dataset_outliers cannot be set together.')
 
     tt, X, y = common_functions.load_data(dataset, remove_outliers=remove_outliers, filter_data=filter_data)
 
@@ -247,12 +264,15 @@ def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: 
     save_path = paths.MRMR_PATH
     if remove_outliers:
         save_path = paths.MRMR_OUTLIERS_PATH
+    if remove_dataset_outliers:
+        save_path = paths.MRMR_DATASET_OUTLIERS_PATH
 
     filter_path = '' if not filter_data else 'clean_'
 
     for idx_external in tqdm(range(EXTERNAL_SPLITS), desc=f'Saving .pickle {dataset}'):
         X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy)
-        mRMR_indexes: List[Any] = load_mRMR_indexes(dataset, idx_external, remove_outliers=remove_outliers)
+        mRMR_indexes: List[Any] = load_mRMR_indexes(dataset, idx_external, remove_outliers=remove_outliers,
+                                                    remove_dataset_outliers=remove_dataset_outliers)
 
         if dataset == 'FFT':
             mRMR_indexes = list(map(str, mRMR_indexes))
@@ -294,8 +314,12 @@ def main(dataset: str) -> None:
     """
 
     print(dataset)
-    # save_mRMR_indexes(dataset, strategy='randomsplit', remove_outliers=False, filter_data=True)
-    save_mRMR(dataset, strategy='randomsplit', remove_outliers=False, filter_data=True)
+    save_mRMR_indexes(dataset,
+                      strategy='randomsplit',
+                      remove_outliers=False, filter_data=False, remove_dataset_outliers=True)
+    save_mRMR(dataset,
+              strategy='randomsplit',
+              remove_outliers=False, filter_data=False, remove_dataset_outliers=True)
 
 
 if __name__ == '__main__':

@@ -37,19 +37,20 @@ def calculate_PLS(X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFram
     return X_train_pls, X_test_pls
 
 
-def save_PLS(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: bool = False,
-             filter_data: Optional[bool] = False) -> None:
+def save_PLS(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: Optional[bool] = False,
+             filter_data: Optional[bool] = False, remove_dataset_outliers: Optional[bool] = False) -> None:
     """
-        Save the data of projected data by FPCA to use in experiments
+        Save the data of projected data by PLS to use in experiments
     :param dataset: Dataset to use
     :param remove_outliers: to remove outliers or not
     :param filter_data to get filter data
+    :param remove_dataset_outliers: to remove outliers or not but from dataset only
     :param strategy: Strategy to split data
     """
     assert strategy in ['kfold', 'randomsplit']
 
-    if remove_outliers and filter_data:
-        ValueError('Both remove_outliers and filter_data cannot be set together.')
+    if remove_outliers and filter_data and remove_dataset_outliers:
+        ValueError('Both remove_outliers, filter_data and remove_dataset_outliers cannot be set together.')
 
     tt, X, y = common_functions.load_data(dataset, remove_outliers, filter_data)
 
@@ -59,14 +60,19 @@ def save_PLS(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: b
         EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS_SHUFFLE
 
     save_path = paths.PLS_PATH
+    remove_outliers_dataset = None
     if remove_outliers:
         save_path = paths.PLS_OUTLIERS_PATH
+    if remove_dataset_outliers:
+        save_path = paths.PLS_DATASET_OUTLIERS_PATH
+        remove_outliers_dataset = dataset
 
     filter_path = '' if not filter_data else 'clean_'
 
     for idx_external in tqdm(range(EXTERNAL_SPLITS)):
 
-        X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy)
+        X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy,
+                                                                     outliers_remove_train=remove_outliers_dataset)
 
         X_train_pls, X_test_pls = calculate_PLS(X_train, y_train, X_test, n_components=fixed_values.MAX_DIMENSION)
 
@@ -79,8 +85,9 @@ def save_PLS(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: b
             pickle.dump(X_test_pls, f)
 
         for idx_internal in range(fixed_values.INTERNAL_SPLITS):
-            X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, idx_internal
-                                                                         , strategy=strategy)
+            X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, idx_internal,
+                                                                         strategy=strategy,
+                                                                         outliers_remove_train=remove_outliers_dataset)
 
             X_train_pca, X_test_pca = calculate_PLS(X_train, y_train, X_test, n_components=fixed_values.MAX_DIMENSION)
 
@@ -97,9 +104,9 @@ def main() -> None:
     """
         Main Function
     """
-    for dataset in fixed_values.DATASETS:
-        print(dataset)
-        save_PLS(dataset, strategy='randomsplit', remove_outliers=False, filter_data=True)
+    dataset = fixed_values.DATASETS[0]
+    print(dataset)
+    save_PLS(dataset, strategy='randomsplit', remove_outliers=False, filter_data=False, remove_dataset_outliers=True)
 
 
 if __name__ == '__main__':

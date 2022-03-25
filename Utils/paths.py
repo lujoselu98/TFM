@@ -25,10 +25,13 @@ FFT_DATA_PLOTS: str = f"{PLOTS_PATH}/fft_Data"
 # Paths for preprocessing paths
 MRMR_PATH = f"{PROJECT_PATH}/Preprocessing/mRMR/mRMR_files"
 MRMR_OUTLIERS_PATH = f"{PROJECT_PATH}/Preprocessing/mRMR/no_outliers/mRMR_files"
+MRMR_DATASET_OUTLIERS_PATH = f"{PROJECT_PATH}/Preprocessing/mRMR/no_dataset_outliers/mRMR_files"
 FPCA_PATH = f"{PROJECT_PATH}/Preprocessing/FPCA/FPCA_files"
 FPCA_OUTLIERS_PATH = f"{PROJECT_PATH}/Preprocessing/FPCA/no_outliers/FPCA_files"
+FPCA_DATASET_OUTLIERS_PATH = f"{PROJECT_PATH}/Preprocessing/FPCA/no_dataset_outliers/FPCA_files"
 PLS_PATH = f"{PROJECT_PATH}/Preprocessing/PLS/PLS_files"
 PLS_OUTLIERS_PATH = f"{PROJECT_PATH}/Preprocessing/PLS/no_outliers/PLS_files"
+PLS_DATASET_OUTLIERS_PATH = f"{PROJECT_PATH}/Preprocessing/PLS/no_dataset_outliers/PLS_files"
 
 # Paths to save results
 RESULTS_PATH = f"{PROJECT_PATH}/Experiments/Results"

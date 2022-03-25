@@ -49,7 +49,7 @@ def load_data(dataset: str, remove_outliers: Optional[bool] = False, filter_data
 
 
 def get_fold(X: pd.DataFrame, y: pd.Series, idx_external: int, idx_internal: Optional[int] = None,
-             strategy: Optional[str] = 'kfold', outliers_to_remove_from_train: Optional[str] = None) -> Tuple[
+             strategy: Optional[str] = 'kfold', outliers_remove_train: Optional[str] = None) -> Tuple[
     pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """
     Get X_train, X_test, y_train, y_test corresponding to the fold
@@ -58,13 +58,13 @@ def get_fold(X: pd.DataFrame, y: pd.Series, idx_external: int, idx_internal: Opt
     :param idx_external: idx of the fold of external division
     :param idx_internal: idx of the fold of internal division
     :param strategy: The strategy to make the fold of external division ['kfold', 'randomsplit']
-    :param outliers_to_remove_from_train dataset of which we should remove outliers on train
+    :param outliers_remove_train dataset of which we should remove outliers on train
     :return:  X_train, X_test, y_train, y_test
     """
 
     assert strategy in ['kfold', 'randomsplit']
-    if outliers_to_remove_from_train is not None:
-        assert outliers_to_remove_from_train in fixed_values.DATASETS
+    if outliers_remove_train is not None:
+        assert outliers_remove_train in fixed_values.DATASETS
 
     if strategy == 'kfold':
         external_cv = sklearn.model_selection.StratifiedKFold(n_splits=fixed_values.EXTERNAL_SPLITS, shuffle=True,
@@ -78,8 +78,8 @@ def get_fold(X: pd.DataFrame, y: pd.Series, idx_external: int, idx_internal: Opt
 
     # Remove outliers of dataset from train if they are on the fold
     X_train, X_test, y_train, y_test = X.iloc[index_train], X.iloc[index_test], y.iloc[index_train], y.iloc[index_test]
-    if outliers_to_remove_from_train is not None:
-        outliers_idx = fixed_values.DATASET_OUTLIERS[outliers_to_remove_from_train]
+    if outliers_remove_train is not None:
+        outliers_idx = fixed_values.DATASET_OUTLIERS[outliers_remove_train]
         X_train = X_train.drop(outliers_idx, errors='ignore')
         y_train = y_train.drop(outliers_idx, errors='ignore')
 
