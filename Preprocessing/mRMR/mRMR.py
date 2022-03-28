@@ -316,11 +316,11 @@ def main(dataset: str) -> None:
     print(dataset)
     save_mRMR_indexes(dataset,
                       strategy='randomsplit',
-                      remove_outliers=False, filter_data=False, remove_dataset_outliers=True)
+                      remove_outliers=False, filter_data=True, remove_dataset_outliers=False)
     save_mRMR(dataset,
               strategy='randomsplit',
-              remove_outliers=False, filter_data=False, remove_dataset_outliers=True)
+              remove_outliers=False, filter_data=True, remove_dataset_outliers=False)
 
 
 if __name__ == '__main__':
-    main(fixed_values.DATASETS[2])
+    main(fixed_values.DATASETS[1])

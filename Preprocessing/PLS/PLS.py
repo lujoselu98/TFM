@@ -104,9 +104,9 @@ def main() -> None:
     """
         Main Function
     """
-    dataset = fixed_values.DATASETS[0]
-    print(dataset)
-    save_PLS(dataset, strategy='randomsplit', remove_outliers=False, filter_data=False, remove_dataset_outliers=True)
+    for dataset in fixed_values.DATASETS:
+        print(dataset)
+        save_PLS(dataset, strategy='randomsplit', remove_outliers=False, filter_data=True, remove_dataset_outliers=False)
 
 
 if __name__ == '__main__':
