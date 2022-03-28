@@ -9,18 +9,19 @@ from Utils import fixed_values
 from Utils import paths
 
 
-def load_data(dataset: str, remove_outliers: Optional[bool] = False, filter_data: Optional[bool] = False) -> Tuple[
-    np.ndarray, pd.DataFrame, pd.Series]:
+def load_data(dataset: str, remove_outliers: Optional[bool] = False, filter_data: Optional[bool] = False,
+              easy_data: Optional[bool] = False) -> Tuple[np.ndarray, pd.DataFrame, pd.Series]:
     """
     Function to load data
     :param dataset: dataset identifier [CC, CDCOR, FFT]
     :param remove_outliers: remove outliers or not
     :param filter_data to get filter data
+    :param easy_data to use easy data patterns only
     :return: features_names, data matrix, label vector
     """
 
-    if remove_outliers and filter_data:
-        ValueError('Both remove_outliers and filter_data cannot be set together.')
+    if remove_outliers and filter_data and easy_data:
+        ValueError('Both remove_outliers, filter_data and easy_data cannot be set together.')
 
     if dataset == 'CC':
         data_path = paths.CC_DATA_PATH
@@ -32,9 +33,10 @@ def load_data(dataset: str, remove_outliers: Optional[bool] = False, filter_data
         raise ValueError(f"unknown dataset: {dataset}")
 
     filter_path = '' if not filter_data else 'clean_'
+    easy_path = '' if not easy_data else 'easy_'
 
-    X = pd.read_pickle(f"{data_path}/{filter_path}X.pickle")
-    y = pd.read_pickle(f"{data_path}/{filter_path}y.pickle")
+    X = pd.read_pickle(f"{data_path}/{filter_path}{easy_path}X.pickle")
+    y = pd.read_pickle(f"{data_path}/{filter_path}{easy_path}y.pickle")
 
     if remove_outliers:
         X = X.drop(fixed_values.OUTLIERS_IDX)
@@ -88,7 +90,7 @@ def get_fold(X: pd.DataFrame, y: pd.Series, idx_external: int, idx_internal: Opt
 
     if idx_internal is not None:
         # Dentro del interno la X y la y son los train del externo 9/10 del total
-        X_int, y_int = X_train.copy(), y_train.copy() # Already outliers remove if set
+        X_int, y_int = X_train.copy(), y_train.copy()  # Already outliers remove if set
 
         # Usamos el idx externo para el random del shuffle del interno
         internal_cv = sklearn.model_selection.StratifiedKFold(n_splits=fixed_values.INTERNAL_SPLITS, shuffle=True,

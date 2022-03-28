@@ -32,36 +32,40 @@ def calculate_FPCA(X_train: pd.DataFrame, X_test: pd.DataFrame, tt: np.ndarray, 
 
 
 def save_FPCA(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: Optional[bool] = False,
-              filter_data: Optional[bool] = False, remove_dataset_outliers: Optional[bool] = False) -> None:
+              filter_data: Optional[bool] = False, remove_dataset_outliers: Optional[bool] = False,
+              easy_data: Optional[bool] = False) -> None:
     """
         Save the data of projected data by FPCA to use in experiments
     :param dataset: Dataset to use
     :param remove_outliers: to remove outliers or not
     :param filter_data to get filter data
     :param remove_dataset_outliers: to remove outliers or not but from dataset only
+    :param easy_data to use easy data patterns only
     :param strategy: Strategy to split data
     """
     assert strategy in ['kfold', 'randomsplit']
 
-    if remove_outliers and filter_data and remove_dataset_outliers:
-        ValueError('Both remove_outliers, filter_data and remove_dataset_outliers cannot be set together.')
+    if remove_outliers + filter_data + remove_dataset_outliers + easy_data > 1:
+        ValueError('Both remove_outliers, filter_data, remove_dataset_outliers, easy_data cannot be set together.')
 
-    tt, X, y = common_functions.load_data(dataset, remove_outliers, filter_data)
+    tt, X, y = common_functions.load_data(dataset, remove_outliers, filter_data, easy_data)
 
     if strategy == 'kfold':
         EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS
     else:
         EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS_SHUFFLE
 
-    save_path = paths.FPCA_PATH
     remove_outliers_dataset = None
     if remove_outliers:
         save_path = paths.FPCA_OUTLIERS_PATH
-    if remove_dataset_outliers:
+    elif remove_dataset_outliers:
         save_path = paths.FPCA_DATASET_OUTLIERS_PATH
         remove_outliers_dataset = dataset
+    else:
+        save_path = paths.FPCA_PATH
 
     filter_path = '' if not filter_data else 'clean_'
+    easy_path = '' if not easy_data else 'easy_'
 
     for idx_external in tqdm(range(EXTERNAL_SPLITS)):
 
@@ -70,7 +74,7 @@ def save_FPCA(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: 
 
         X_train_pca, X_test_pca = calculate_FPCA(X_train, X_test, tt, n_components=fixed_values.MAX_DIMENSION)
 
-        components_file = f"{save_path}/{filter_path}{dataset}_PCA_{idx_external}"
+        components_file = f"{save_path}/{filter_path}{easy_path}{dataset}_PCA_{idx_external}"
 
         with open(f"{components_file}_train.pickle", 'wb') as f:
             pickle.dump(X_train_pca, f)
@@ -85,7 +89,7 @@ def save_FPCA(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: 
 
             X_train_pca, X_test_pca = calculate_FPCA(X_train, X_test, tt, n_components=fixed_values.MAX_DIMENSION)
 
-            components_file = f"{save_path}/{filter_path}{dataset}_PCA_{idx_external}_{idx_internal}"
+            components_file = f"{save_path}/{filter_path}{easy_path}{dataset}_PCA_{idx_external}_{idx_internal}"
 
             with open(f"{components_file}_train.pickle", 'wb') as f:
                 pickle.dump(X_train_pca, f)
@@ -101,8 +105,8 @@ def main() -> None:
     # for dataset in fixed_values.DATASETS:
     for dataset in fixed_values.DATASETS:
         print(dataset)
-        save_FPCA(dataset, strategy='randomsplit', remove_outliers=False, filter_data=True,
-                  remove_dataset_outliers=False)
+        save_FPCA(dataset, strategy='randomsplit', remove_outliers=False, filter_data=False,
+                  remove_dataset_outliers=False, easy_data=True)
 
 
 if __name__ == '__main__':
