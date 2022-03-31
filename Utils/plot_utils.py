@@ -8,11 +8,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from Orange import evaluation
 from matplotlib.axes import Axes
 from tqdm.notebook import tqdm as nb_tqdm
 
-from Utils import pandas_utils, fixed_values
+from Utils import pandas_utils, fixed_values, paths
 
 COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
 
@@ -220,6 +219,9 @@ def plot_CD_diagram(results_file: str, dataset: str, width: Optional[int] = 10) 
     :param width: with of the plot. Default is 10.
     :return: The plot
     """
+
+    from Orange import evaluation
+
     results_data = pd.read_csv(results_file, sep=';')
     for metric in fixed_values.EVALUATION_METRICS:
         results_data[metric] = results_data['METRICS_DICT'].apply(lambda x: pandas_utils.extract_dict(x, metric))
@@ -246,3 +248,56 @@ def plot_CD_diagram(results_file: str, dataset: str, width: Optional[int] = 10) 
                                  width=width, lowv=lowv, highv=highv, cd=cd)
     fig.set_suptitle(dataset)
     return fig
+
+
+def plot_results(csv_file: str, metric: str, extra: Optional[str] = ''):
+    """
+
+    Make stripplot and boxplot of a csv file of results for a given metric
+
+    :param csv_file: file with results
+    :param metric: metric to plot
+    :param extra: to add to save file
+    """
+
+    results_data = pd.read_csv(f"{paths.RESULTS_PATH}/{csv_file}", sep=';')
+    results_data[metric] = results_data['METRICS_DICT'].apply(lambda x: pandas_utils.extract_dict(x, metric))
+    results_data = results_data[['DATASET', 'CLASSIFIER_NAME', 'PREPROCESS', metric]]
+    results_data['MODEL_NAME'] = results_data['PREPROCESS'] + " + " + results_data['CLASSIFIER_NAME']
+
+    datasets = results_data['DATASET'].unique()
+
+    stripplot_data = results_data[['MODEL_NAME', 'DATASET'] + [metric]]
+    plt.figure(figsize=(30, 10))
+
+    ax = sns.stripplot(data=stripplot_data, y=metric, x='DATASET', hue='MODEL_NAME', dodge=True)
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0 + box.height * 0.1,
+                     box.width, box.height * 0.9])
+    for idx, minutes in enumerate(datasets[:-1]):
+        plt.axvline(x=idx + 0.5)
+    ax.set_title(f"{metric}", fontsize=30)
+    ax.tick_params(axis='both', which='major', labelsize=20)
+    ax.set_xlabel('Dataset', fontsize=25)
+    ax.set_ylabel(metric, fontsize=25)
+    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15),
+              fancybox=True, shadow=True, ncol=6)
+    ax.axhline(0.5, color='red')
+    plt.gcf().savefig(f"stripplot_{metric}_{extra}.pdf")
+
+    plt.figure(figsize=(30, 10))
+
+    ax = sns.boxplot(data=stripplot_data, y=metric, x='DATASET', hue='MODEL_NAME', dodge=True)
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0 + box.height * 0.1,
+                     box.width, box.height * 0.9])
+    for idx, minutes in enumerate(datasets[:-1]):
+        plt.axvline(x=idx + 0.5)
+    ax.set_title(f"{metric}", fontsize=30)
+    ax.tick_params(axis='both', which='major', labelsize=20)
+    ax.set_xlabel('Dataset', fontsize=25)
+    ax.set_ylabel(metric, fontsize=25)
+    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15),
+              fancybox=True, shadow=True, ncol=6)
+    ax.axhline(0.5, color='red')
+    plt.gcf().savefig(f"boxplot_{metric}_{extra}.pdf")
