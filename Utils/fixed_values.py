@@ -3,6 +3,7 @@
 """
 
 import numpy as np
+from sklearn.dummy import DummyClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import balanced_accuracy_score, roc_auc_score
 from sklearn.neighbors import KNeighborsClassifier
@@ -10,7 +11,8 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 
-DATASETS = ['CC', 'DCOR', 'FFT']
+# DATASETS = ['CC', 'DCOR', 'FFT']
+DATASETS = ['FFT']
 
 OUTLIERS_IDX = np.array(
     [1282, 1027, 1286, 1035, 1291, 1039, 1296, 1297, 1043, 1044, 1045,
@@ -112,6 +114,12 @@ CLASSIFIERS = {
     },
 }
 
+DUMMY_CLASSIFIER = {
+    'clf': DummyClassifier(strategy='constant', constant=1),
+    'param_grid': {},
+    'evaluate_score': 'predict_proba',
+    'datasets': DATASETS
+}
 VALIDATION_METRIC = balanced_accuracy_score
 
 EVALUATION_METRICS = {

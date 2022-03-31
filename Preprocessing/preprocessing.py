@@ -10,8 +10,8 @@ from Utils import paths, fixed_values
 
 
 def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_internal: Optional[int] = None,
-                    remove_outliers: Optional[bool] = False, filter_data: Optional[bool] = False) -> Tuple[
-    np.ndarray, np.ndarray]:
+                    remove_outliers: Optional[bool] = False, filter_data: Optional[bool] = False,
+                    easy_data: Optional[bool] = False) -> Tuple[np.ndarray, np.ndarray]:
     """
 
     Function to load a preprocessed dataset
@@ -22,6 +22,7 @@ def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_intern
     :param idx_internal: idx of internal division
     :param remove_outliers: to remove outliers or not
     :param filter_data to get filter data
+    :param easy_data to use easy data patterns only
     :return: X_train and X_test from file given the parameters
     """
 
@@ -40,13 +41,15 @@ def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_intern
     else:
         raise ValueError(f"unknown preprocess: {preprocess}")
 
-    if remove_outliers and filter_data:
-        ValueError('Both remove_outliers and filter_data cannot be set together.')
+    if remove_outliers +  filter_data + easy_data > 1:
+        ValueError('Both remove_outliers, filter_data and easy_data cannot be set together.')
 
-    if not filter_data:
-        file_f_string = "{PATH}/{dataset}_{preprocess}_{idx_external}{idx_internal}"
-    else:
+    if filter_data:
         file_f_string = "{PATH}/clean_{dataset}_{preprocess}_{idx_external}{idx_internal}"
+    elif easy_data:
+        file_f_string = "{PATH}/easy_{dataset}_{preprocess}_{idx_external}{idx_internal}"
+    else:
+        file_f_string = "{PATH}/{dataset}_{preprocess}_{idx_external}{idx_internal}"
 
     idx_internal_s = ''
     if idx_internal is not None:

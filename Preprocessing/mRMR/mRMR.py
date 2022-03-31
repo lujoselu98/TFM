@@ -248,7 +248,7 @@ def load_mRMR_indexes(dataset: str, idx_external: int, idx_internal: Optional[in
 
 def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: Optional[bool] = False,
               filter_data: Optional[bool] = False, remove_dataset_outliers: Optional[bool] = False,
-              easy_data: Optional[bool] = False) -> List[int]:
+              easy_data: Optional[bool] = False) -> None:
     """
         Load indexes from .txt file, used to save the real values needed for experiments
     :param dataset: Dataset to load

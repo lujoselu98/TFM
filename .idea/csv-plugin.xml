@@ -73,6 +73,48 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Experiments\Results\results_1648561797.5098982_main_experiment.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Experiments\Results\results_1648661256.7150881_dummy.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Experiments\Results\results_1648661355.7030132_dummy.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Experiments\Results\results_1648661401.4282818_dummy.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Experiments\Results\results_1648666215.5025105_main_experiment.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Experiments\Results\results_1648666384.7627065_main_experiment.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
