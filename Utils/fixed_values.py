@@ -11,8 +11,8 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 
-# DATASETS = ['CC', 'DCOR', 'FFT']
-DATASETS = ['FFT']
+DATASETS = ['CC', 'DCOR', 'FFT']
+# DATASETS = ['FFT']
 
 OUTLIERS_IDX = np.array(
     [1282, 1027, 1286, 1035, 1291, 1039, 1296, 1297, 1043, 1044, 1045,
@@ -52,7 +52,9 @@ EXTERNAL_TEST_SIZE = 0.25
 
 INTERNAL_SPLITS = 10
 
-PREPROCESSES = ['mRMR', 'PCA', 'PLS']
+# PREPROCESSES = ['mRMR', 'PCA', 'PLS']
+# PREPROCESSES = ['PCA', 'PLS']
+PREPROCESSES = ['mRMR']
 
 DIMENSION_GRID = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50, 75, 100]
 MAX_DIMENSION = max(DIMENSION_GRID)

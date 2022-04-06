@@ -74,63 +74,23 @@
 \begin{tabular}{cc|c|c|c|c}%
 &&PCA&PLS&mRMR&whole\\%
 \specialrule{.2em}{.1em}{.1em}%
-\multicolumn{1}{c|}{\multirow{3}{*}{CC}}&KNN& \cellcolor{green_20_4}0.524 $\pm$ 0.033& \cellcolor{green_20_19}0.496 $\pm$ 0.035& \cellcolor{green_20_13}0.507 $\pm$ 0.033& \cellcolor{green_20_14}0.507 $\pm$ 0.031\\%
+\multicolumn{1}{c|}{\multirow{3}{*}{CC}}&KNN& \cellcolor{green_20_5}0.527 $\pm$ 0.040& \cellcolor{green_20_10}0.512 $\pm$ 0.033& \cellcolor{green_20_19}0.491 $\pm$ 0.020& \cellcolor{green_20_6}0.523 $\pm$ 0.035\\%
 \cline{2%
 -%
 6}%
-\multicolumn{1}{c|}{}&KNNSScaler& \cellcolor{green_20_18}0.498 $\pm$ 0.032& \cellcolor{green_20_17}0.501 $\pm$ 0.031& \cellcolor{green_20_11}0.510 $\pm$ 0.032& \cellcolor{green_20_12}0.510 $\pm$ 0.034\\%
+\multicolumn{1}{c|}{}&KNNSScaler& \cellcolor{green_20_8}0.517 $\pm$ 0.037& \cellcolor{green_20_11}0.511 $\pm$ 0.035& \cellcolor{green_20_17}0.494 $\pm$ 0.021& \cellcolor{green_20_14}0.508 $\pm$ 0.025\\%
 \cline{2%
 -%
 6}%
-\multicolumn{1}{c|}{}&LR& \cellcolor{green_20_0}0.545 $\pm$ 0.053& \cellcolor{green_20_9}0.517 $\pm$ 0.047& \cellcolor{green_20_1}0.536 $\pm$ 0.043& \cellcolor{green_20_7}0.520 $\pm$ 0.039\\%
+\multicolumn{1}{c|}{}&LR& \cellcolor{green_20_2}0.533 $\pm$ 0.064& \cellcolor{green_20_4}0.528 $\pm$ 0.060& \cellcolor{green_20_3}0.530 $\pm$ 0.030& \cellcolor{green_20_1}0.534 $\pm$ 0.058\\%
 \cline{2%
 -%
 6}%
-\multicolumn{1}{c|}{}&SVC& \cellcolor{green_20_8}0.518 $\pm$ 0.041& \cellcolor{green_20_15}0.506 $\pm$ 0.045& \cellcolor{green_20_3}0.525 $\pm$ 0.047& \cellcolor{green_20_5}0.524 $\pm$ 0.042\\%
+\multicolumn{1}{c|}{}&SVC& \cellcolor{green_20_15}0.502 $\pm$ 0.061& \cellcolor{green_20_16}0.496 $\pm$ 0.057& \cellcolor{green_20_9}0.514 $\pm$ 0.037& \cellcolor{green_20_7}0.521 $\pm$ 0.061\\%
 \cline{2%
 -%
 6}%
-\multicolumn{1}{c|}{}&SVCSScaler& \cellcolor{green_20_6}0.520 $\pm$ 0.048& \cellcolor{green_20_16}0.504 $\pm$ 0.051& \cellcolor{green_20_2}0.530 $\pm$ 0.047& \cellcolor{green_20_10}0.512 $\pm$ 0.039\\%
-\specialrule{.2em}{.1em}{.1em}%
-\multicolumn{1}{c|}{\multirow{3}{*}{DCOR}}&KNN& \cellcolor{green_20_16}0.490 $\pm$ 0.037& \cellcolor{green_20_11}0.498 $\pm$ 0.036& \cellcolor{green_20_7}0.503 $\pm$ 0.035& \cellcolor{green_20_8}0.502 $\pm$ 0.031\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&KNNSScaler& \cellcolor{green_20_1}0.518 $\pm$ 0.044& \cellcolor{green_20_9}0.500 $\pm$ 0.038& \cellcolor{green_20_3}0.506 $\pm$ 0.037& \cellcolor{green_20_2}0.513 $\pm$ 0.032\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&LR& \cellcolor{green_20_17}0.479 $\pm$ 0.041& \cellcolor{green_20_5}0.503 $\pm$ 0.054& \cellcolor{green_20_0}0.526 $\pm$ 0.043& \cellcolor{green_20_10}0.500 $\pm$ 0.042\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&SVC& \cellcolor{green_20_19}0.465 $\pm$ 0.042& \cellcolor{green_20_14}0.495 $\pm$ 0.046& \cellcolor{green_20_4}0.503 $\pm$ 0.045& \cellcolor{green_20_18}0.477 $\pm$ 0.033\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&SVCSScaler& \cellcolor{green_20_12}0.497 $\pm$ 0.051& \cellcolor{green_20_13}0.497 $\pm$ 0.052& \cellcolor{green_20_6}0.503 $\pm$ 0.046& \cellcolor{green_20_15}0.492 $\pm$ 0.027\\%
-\specialrule{.2em}{.1em}{.1em}%
-\multicolumn{1}{c|}{\multirow{3}{*}{FFT}}&KNN& \cellcolor{green_13}0.537 $\pm$ 0.041& \cellcolor{green_10}0.540 $\pm$ 0.043& \cellcolor{green_17}0.527 $\pm$ 0.038& \cellcolor{green_18}0.524 $\pm$ 0.028\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&KNNSScaler& \cellcolor{green_19}0.521 $\pm$ 0.030& \cellcolor{green_16}0.529 $\pm$ 0.040& \cellcolor{green_12}0.538 $\pm$ 0.037& \cellcolor{green_22}0.510 $\pm$ 0.029\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&LR& \cellcolor{green_7}0.550 $\pm$ 0.039& \cellcolor{green_4}0.555 $\pm$ 0.046& \cellcolor{green_1}0.607 $\pm$ 0.051& \cellcolor{green_14}0.535 $\pm$ 0.047\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&LRSScaler& \cellcolor{green_8}0.548 $\pm$ 0.044& \cellcolor{green_9}0.548 $\pm$ 0.048& \cellcolor{green_0}0.612 $\pm$ 0.048& \cellcolor{green_5}0.552 $\pm$ 0.047\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&SVC& \cellcolor{green_20}0.516 $\pm$ 0.041& \cellcolor{green_6}0.551 $\pm$ 0.042& \cellcolor{green_21}0.516 $\pm$ 0.030& \cellcolor{green_23}0.500 $\pm$ 0.000\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&SVCSScaler& \cellcolor{green_15}0.531 $\pm$ 0.037& \cellcolor{green_11}0.539 $\pm$ 0.041& \cellcolor{green_2}0.601 $\pm$ 0.053& \cellcolor{green_3}0.568 $\pm$ 0.048\\%
+\multicolumn{1}{c|}{}&SVCSScaler& \cellcolor{green_20_13}0.509 $\pm$ 0.061& \cellcolor{green_20_12}0.510 $\pm$ 0.057& \cellcolor{green_20_0}0.540 $\pm$ 0.053& \cellcolor{green_20_18}0.493 $\pm$ 0.047\\%
 \specialrule{.2em}{.1em}{.1em}%
 \end{tabular}%
 }%
@@ -145,63 +105,23 @@
 \begin{tabular}{cc|c|c|c|c}%
 &&PCA&PLS&mRMR&whole\\%
 \specialrule{.2em}{.1em}{.1em}%
-\multicolumn{1}{c|}{\multirow{3}{*}{CC}}&KNN& \cellcolor{green_20_2}0.548 $\pm$ 0.050& \cellcolor{green_20_16}0.505 $\pm$ 0.057& \cellcolor{green_20_15}0.515 $\pm$ 0.050& \cellcolor{green_20_4}0.538 $\pm$ 0.048\\%
+\multicolumn{1}{c|}{\multirow{3}{*}{CC}}&KNN& \cellcolor{green_20_4}0.559 $\pm$ 0.060& \cellcolor{green_20_9}0.530 $\pm$ 0.070& \cellcolor{green_20_17}0.510 $\pm$ 0.062& \cellcolor{green_20_0}0.567 $\pm$ 0.072\\%
 \cline{2%
 -%
 6}%
-\multicolumn{1}{c|}{}&KNNSScaler& \cellcolor{green_20_18}0.503 $\pm$ 0.051& \cellcolor{green_20_19}0.500 $\pm$ 0.052& \cellcolor{green_20_13}0.519 $\pm$ 0.051& \cellcolor{green_20_3}0.545 $\pm$ 0.047\\%
+\multicolumn{1}{c|}{}&KNNSScaler& \cellcolor{green_20_10}0.528 $\pm$ 0.065& \cellcolor{green_20_14}0.519 $\pm$ 0.060& \cellcolor{green_20_6}0.551 $\pm$ 0.069& \cellcolor{green_20_1}0.566 $\pm$ 0.078\\%
 \cline{2%
 -%
 6}%
-\multicolumn{1}{c|}{}&LR& \cellcolor{green_20_0}0.566 $\pm$ 0.061& \cellcolor{green_20_8}0.527 $\pm$ 0.051& \cellcolor{green_20_1}0.549 $\pm$ 0.050& \cellcolor{green_20_7}0.527 $\pm$ 0.038\\%
+\multicolumn{1}{c|}{}&LR& \cellcolor{green_20_3}0.560 $\pm$ 0.072& \cellcolor{green_20_5}0.553 $\pm$ 0.071& \cellcolor{green_20_12}0.525 $\pm$ 0.048& \cellcolor{green_20_2}0.562 $\pm$ 0.062\\%
 \cline{2%
 -%
 6}%
-\multicolumn{1}{c|}{}&SVC& \cellcolor{green_20_11}0.525 $\pm$ 0.055& \cellcolor{green_20_14}0.519 $\pm$ 0.052& \cellcolor{green_20_5}0.529 $\pm$ 0.054& \cellcolor{green_20_12}0.519 $\pm$ 0.048\\%
+\multicolumn{1}{c|}{}&SVC& \cellcolor{green_20_15}0.516 $\pm$ 0.073& \cellcolor{green_20_18}0.505 $\pm$ 0.074& \cellcolor{green_20_19}0.495 $\pm$ 0.060& \cellcolor{green_20_7}0.540 $\pm$ 0.072\\%
 \cline{2%
 -%
 6}%
-\multicolumn{1}{c|}{}&SVCSScaler& \cellcolor{green_20_10}0.525 $\pm$ 0.054& \cellcolor{green_20_17}0.504 $\pm$ 0.054& \cellcolor{green_20_6}0.528 $\pm$ 0.053& \cellcolor{green_20_9}0.526 $\pm$ 0.041\\%
-\specialrule{.2em}{.1em}{.1em}%
-\multicolumn{1}{c|}{\multirow{3}{*}{DCOR}}&KNN& \cellcolor{green_20_15}0.482 $\pm$ 0.048& \cellcolor{green_20_13}0.491 $\pm$ 0.055& \cellcolor{green_20_3}0.505 $\pm$ 0.055& \cellcolor{green_20_12}0.494 $\pm$ 0.052\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&KNNSScaler& \cellcolor{green_20_1}0.518 $\pm$ 0.058& \cellcolor{green_20_10}0.497 $\pm$ 0.053& \cellcolor{green_20_5}0.502 $\pm$ 0.055& \cellcolor{green_20_7}0.501 $\pm$ 0.050\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&LR& \cellcolor{green_20_17}0.475 $\pm$ 0.055& \cellcolor{green_20_4}0.503 $\pm$ 0.067& \cellcolor{green_20_0}0.538 $\pm$ 0.055& \cellcolor{green_20_8}0.499 $\pm$ 0.046\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&SVC& \cellcolor{green_20_19}0.452 $\pm$ 0.053& \cellcolor{green_20_14}0.489 $\pm$ 0.054& \cellcolor{green_20_6}0.502 $\pm$ 0.051& \cellcolor{green_20_16}0.476 $\pm$ 0.061\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&SVCSScaler& \cellcolor{green_20_11}0.497 $\pm$ 0.063& \cellcolor{green_20_9}0.498 $\pm$ 0.060& \cellcolor{green_20_2}0.508 $\pm$ 0.061& \cellcolor{green_20_18}0.471 $\pm$ 0.051\\%
-\specialrule{.2em}{.1em}{.1em}%
-\multicolumn{1}{c|}{\multirow{3}{*}{FFT}}&KNN& \cellcolor{green_13}0.563 $\pm$ 0.057& \cellcolor{green_16}0.560 $\pm$ 0.052& \cellcolor{green_17}0.558 $\pm$ 0.059& \cellcolor{green_8}0.573 $\pm$ 0.051\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&KNNSScaler& \cellcolor{green_18}0.552 $\pm$ 0.052& \cellcolor{green_21}0.537 $\pm$ 0.051& \cellcolor{green_5}0.581 $\pm$ 0.059& \cellcolor{green_14}0.562 $\pm$ 0.056\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&LR& \cellcolor{green_7}0.573 $\pm$ 0.049& \cellcolor{green_4}0.582 $\pm$ 0.054& \cellcolor{green_2}0.633 $\pm$ 0.054& \cellcolor{green_20}0.547 $\pm$ 0.054\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&LRSScaler& \cellcolor{green_9}0.573 $\pm$ 0.051& \cellcolor{green_10}0.568 $\pm$ 0.056& \cellcolor{green_1}0.635 $\pm$ 0.054& \cellcolor{green_11}0.566 $\pm$ 0.059\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&SVC& \cellcolor{green_22}0.505 $\pm$ 0.066& \cellcolor{green_6}0.581 $\pm$ 0.059& \cellcolor{green_12}0.565 $\pm$ 0.047& \cellcolor{green_23}0.500 $\pm$ 0.000\\%
-\cline{2%
--%
-6}%
-\multicolumn{1}{c|}{}&SVCSScaler& \cellcolor{green_19}0.547 $\pm$ 0.047& \cellcolor{green_15}0.561 $\pm$ 0.057& \cellcolor{green_0}0.636 $\pm$ 0.061& \cellcolor{green_3}0.612 $\pm$ 0.051\\%
+\multicolumn{1}{c|}{}&SVCSScaler& \cellcolor{green_20_13}0.519 $\pm$ 0.069& \cellcolor{green_20_11}0.527 $\pm$ 0.065& \cellcolor{green_20_8}0.533 $\pm$ 0.074& \cellcolor{green_20_16}0.514 $\pm$ 0.073\\%
 \specialrule{.2em}{.1em}{.1em}%
 \end{tabular}%
 }%

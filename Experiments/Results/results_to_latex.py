@@ -44,7 +44,8 @@ def main() -> None:
     # file = '28_02_22_results_main_experiment.csv'
     # file = '11_03_22_results_main_exxperiment_no_outliers.csv'
     # file = '28_03_22_results_main_experiment_filtered.csv'
-    file = '31_03_22_results_main_experiment_easy.csv'
+    # file = '31_03_22_results_main_experiment_easy.csv'
+    file = 'mid_results_copy.csv'
     out_file = f"{paths.LATEX_PATH}/color_map_easy"
 
     create_latex_color_document(file, out_file, color_map='YlGn')
@@ -194,7 +195,7 @@ def create_latex_color_document(csv_file: str, out_file: str, clean_tex: Optiona
     for metric in fixed_values.EVALUATION_METRICS:
         data = _get_data_from_csv(f"{paths.RESULTS_PATH}/{csv_file}", metric)
         preprocesses = data.columns.get_level_values(1).unique()
-        datasets = data.index.get_level_values(1).unique()
+        datasets = ['CC']  # data.index.get_level_values(1).unique()
 
         classifiers = dict()
         for dataset in datasets:

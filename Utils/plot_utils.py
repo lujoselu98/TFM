@@ -52,13 +52,16 @@ def plot_data_desc(tt: np.ndarray, X: pd.DataFrame, y: pd.Series,
 
     if ax is None:
         fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 10))
-    ax.plot(tt / 4, mean_0, label='Class 0', color=COLORS[0])
-    ax.fill_between(tt / 4, mean_0 - std_0, mean_0 + std_0, label='Class 0 Std.', alpha=0.5, color=COLORS[0])
-    ax.fill_between(tt / 4, min_0, max_0, label='Class 0 Min./Max.', alpha=0.25, color=COLORS[0])
 
-    ax.plot(tt / 4, mean_1, label='Class 1', color=COLORS[1])
-    ax.fill_between(tt / 4, mean_1 - std_1, mean_1 + std_1, label='Class 1 Std.', alpha=0.5, color=COLORS[1])
-    ax.fill_between(tt / 4, min_1, max_1, label='Class 1 Min./Max.', alpha=0.25, color=COLORS[1])
+    if not fourier:
+        tt = tt / 4
+    ax.plot(tt, mean_0, label='Class 0', color=COLORS[0])
+    ax.fill_between(tt, mean_0 - std_0, mean_0 + std_0, label='Class 0 Std.', alpha=0.5, color=COLORS[0])
+    ax.fill_between(tt, min_0, max_0, label='Class 0 Min./Max.', alpha=0.25, color=COLORS[0])
+
+    ax.plot(tt, mean_1, label='Class 1', color=COLORS[1])
+    ax.fill_between(tt, mean_1 - std_1, mean_1 + std_1, label='Class 1 Std.', alpha=0.5, color=COLORS[1])
+    ax.fill_between(tt, min_1, max_1, label='Class 1 Min./Max.', alpha=0.25, color=COLORS[1])
 
     ax.legend(loc='best')
     ax.set_title(f"{title}")
@@ -201,8 +204,8 @@ def plot_relevance(X, y,
         row_vals = X_t.loc[idx]
         relevance_vector[idx] = dcor.u_distance_correlation_sqr(row_vals, y)
 
-    ax.plot(relevance_vector.keys(), relevance_vector.values())
-
+    ax.plot(np.array(list(relevance_vector.keys()), dtype='float64'), relevance_vector.values())
+    # ax.set_xticks(np.arange(min(relevance_vector.keys()), max(relevance_vector.keys())+1, 100))
     ax.set_ylabel('Relevance with the class')
     ax.set_xlabel('Lag')
     ax.set_title(f'{title}')
@@ -251,8 +254,8 @@ def plot_CD_diagram(results_file: str, dataset: str, width: Optional[int] = 10) 
 
 
 def plot_results(csv_file: str, metric: str, extra: Optional[str] = ''):
-    """
 
+    """
     Make stripplot and boxplot of a csv file of results for a given metric
 
     :param csv_file: file with results

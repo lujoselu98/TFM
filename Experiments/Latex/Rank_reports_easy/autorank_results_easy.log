@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.1.30)  30 MAR 2022 20:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.1.30)  31 MAR 2022 18:41
 entering extended mode
-**./autorank_results_filtered.tex
-(autorank_results_filtered.tex
+**./autorank_results_easy.tex
+(autorank_results_easy.tex
 LaTeX2e <2020-10-01> patch level 4
 L3 programming layer <2021-01-09> xparse <2020-03-03>
 ("C:\Users\jllav\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\article.cls"
@@ -175,11 +175,11 @@ d-pdftex.def"
 File: l3backend-pdftex.def 2021-01-09 L3 backend support: PDF output (pdfTeX)
 \l__kernel_color_stack_int=\count270
 \l__pdf_internal_box=\box49
-) (autorank_results_filtered.aux
+) (autorank_results_easy.aux
 LaTeX Info: Redefining \. on input line 8.
 LaTeX Info: Redefining \% on input line 8.
 )
-\openout1 = `autorank_results_filtered.aux'.
+\openout1 = `autorank_results_easy.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
 LaTeX Font Info:    ... okay on input line 16.
@@ -274,36 +274,36 @@ G,.JBIG2,.JB2,.eps]
 ) [1
 
 {C:/Users/jllav/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-<stat_results_cc.pdf, id=13, 831.4626pt x 292.69351pt>
+<stat_results_cc.pdf, id=12, 832.7957pt x 292.69351pt>
 File: stat_results_cc.pdf Graphic file (type pdf)
 <use stat_results_cc.pdf>
-Package pdftex.def Info: stat_results_cc.pdf  used on input line 87.
-(pdftex.def)             Requested size: 455.24408pt x 160.2584pt.
+Package pdftex.def Info: stat_results_cc.pdf  used on input line 88.
+(pdftex.def)             Requested size: 455.24408pt x 159.99937pt.
 
 [2 <./stat_results_cc.pdf>] [3]
-<stat_results_dcor.pdf, id=60, 821.69173pt x 299.92049pt>
+<stat_results_dcor.pdf, id=59, 830.09813pt x 299.92049pt>
 File: stat_results_dcor.pdf Graphic file (type pdf)
 <use stat_results_dcor.pdf>
-Package pdftex.def Info: stat_results_dcor.pdf  used on input line 163.
-(pdftex.def)             Requested size: 455.24408pt x 166.16493pt.
+Package pdftex.def Info: stat_results_dcor.pdf  used on input line 164.
+(pdftex.def)             Requested size: 455.24408pt x 164.48082pt.
  [4 <./stat_results_dcor.pdf>] [5]
-<stat_results_fft.pdf, id=107, 831.4626pt x 336.05548pt>
+<stat_results_fft.pdf, id=107, 831.4626pt x 321.6015pt>
 File: stat_results_fft.pdf Graphic file (type pdf)
 <use stat_results_fft.pdf>
-Package pdftex.def Info: stat_results_fft.pdf  used on input line 247.
-(pdftex.def)             Requested size: 455.24408pt x 184.00038pt.
- [6 <./stat_results_fft.pdf>] (autorank_results_filtered.aux
+Package pdftex.def Info: stat_results_fft.pdf  used on input line 246.
+(pdftex.def)             Requested size: 455.24408pt x 176.0864pt.
+ [6 <./stat_results_fft.pdf>] (autorank_results_easy.aux
 LaTeX Info: Redefining \. on input line 8.
 LaTeX Info: Redefining \% on input line 8.
 ) ) 
 Here is how much of TeX's memory you used:
  3598 strings out of 479622
- 53587 string characters out of 2863022
- 365387 words of memory out of 3000000
+ 53527 string characters out of 2863022
+ 365383 words of memory out of 3000000
  20707 multiletter control sequences out of 15000+200000
  408135 words of font info for 43 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 114i,7n,120p,774b,361s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 114i,8n,120p,757b,361s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\jllav\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600
 \tcrm1095.pk><C:/Users/jllav/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publ
 ic/amsfonts/cm/cmbx12.pfb><C:/Users/jllav/AppData/Local/Programs/MiKTeX 2.9/fon
@@ -314,7 +314,7 @@ ppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/
 Users/jllav/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
 sy8.pfb><C:/Users/jllav/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/am
 sfonts/cm/cmti10.pfb>
-Output written on autorank_results_filtered.pdf (6 pages, 134912 bytes).
+Output written on autorank_results_easy.pdf (6 pages, 134944 bytes).
 PDF statistics:
  177 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
