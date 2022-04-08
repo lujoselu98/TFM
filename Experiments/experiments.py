@@ -61,7 +61,8 @@ def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: Optional
 
     progress_bar = tqdm(fixed_values.DATASETS,
                         total=(2 * (len(fixed_values.CLASSIFIERS) - 1) + len(fixed_values.CLASSIFIERS)) *
-                              (len(fixed_values.PREPROCESSES) + 1) * EXTERNAL_SPLITS)
+                              (len(fixed_values.PREPROCESSES)) * EXTERNAL_SPLITS)
+                              # (len(fixed_values.PREPROCESSES) + 1) * EXTERNAL_SPLITS)
 
     results_file = f"{paths.RESULTS_PATH}/results_{time.time()}_main_experiment.csv"
     with open(results_file, 'a') as f:
@@ -76,7 +77,7 @@ def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: Optional
                 continue
             clf_to_val = classifier['clf']
             for preprocess in fixed_values.PREPROCESSES + ['whole']:
-                if preprocess == 'mRMR':
+                if preprocess == 'whole':
                     continue
                 for idx_external in range(EXTERNAL_SPLITS):
 

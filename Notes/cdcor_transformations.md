@@ -12,3 +12,7 @@ Finalmente tenemos 536 curvas con 2399 puntos cada una, correspondientes a los l
 ![Data desc by class](../Plots/cdcor_Data/Desc_plot.png)
 ![Data correlation class](../Plots/cdcor_Data/Class_correlation.png)
 ![Class Distribution](../Plots/cdcor_Data/Class_Distribution.png)
+
+
+Como la informacion se encuentra codificada temporalmente y  lo importante es cual va delante si las contracciones o el HR, importa no solo
+la magnitud de la correlación sino tambien el signo y al no permitir signo en la DCOR perdemos mucha información necesaria.

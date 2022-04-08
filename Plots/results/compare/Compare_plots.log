@@ -1,0 +1,430 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2022.4.1)  8 APR 2022 00:03
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**Compare_plots.tex
+(./Compare_plots.tex
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-02-24>
+(c:/texlive/2021/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
+(c:/texlive/2021/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count185
+\c@section=\count186
+\c@subsection=\count187
+\c@subsubsection=\count188
+\c@paragraph=\count189
+\c@subparagraph=\count190
+\c@figure=\count191
+\c@table=\count192
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+)
+(c:/texlive/2021/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2022/02/26 3.73 The Babel package
+\babel@savecnt=\count193
+\U@D=\dimen139
+\l@unhyphenated=\language87
+
+(c:/texlive/2021/texmf-dist/tex/generic/babel/txtbabel.def)
+\bbl@readstream=\read2
+\bbl@dirlevel=\count194
+
+(c:/texlive/2021/texmf-dist/tex/generic/babel-spanish/spanish.ldf
+Language: spanish.ldf 2021/05/27 v5.0q Spanish support from the babel system
+\es@quottoks=\toks16
+\es@quotdepth=\count195
+Package babel Info: Making " an active character on input line 570.
+Package babel Info: Making . an active character on input line 675.
+Package babel Info: Making < an active character on input line 722.
+Package babel Info: Making > an active character on input line 722.
+))
+(c:/texlive/2021/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+
+(c:/texlive/2021/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks17
+)
+(c:/texlive/2021/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2021/03/04 v1.4d Standard LaTeX Graphics (DPC,SPQR)
+
+(c:/texlive/2021/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+)
+(c:/texlive/2021/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+
+(c:/texlive/2021/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen140
+\Gin@req@width=\dimen141
+)
+(c:/texlive/2021/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count196
+\float@exts=\toks18
+\float@box=\box50
+\@float@everytoks=\toks19
+\@floatcapt=\box51
+)
+(c:/texlive/2021/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2022/03/01 v3.6b Customizing captions (AR)
+
+(c:/texlive/2021/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2022/03/17 v2.3b caption3 kernel (AR)
+\caption@tempdima=\dimen142
+\captionmargin=\dimen143
+\caption@leftmargin=\dimen144
+\caption@rightmargin=\dimen145
+\caption@width=\dimen146
+\caption@indent=\dimen147
+\caption@parindent=\dimen148
+\caption@hangindent=\dimen149
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count197
+\c@continuedfloat=\count198
+Package caption Info: float package is loaded.
+)
+(c:/texlive/2021/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count199
+\l__pdf_internal_box=\box52
+)
+
+LaTeX Warning: Unused global option(s):
+    [reqno].
+
+(./Compare_plots.aux
+LaTeX Info: Redefining \. on input line 8.
+LaTeX Info: Redefining \% on input line 8.
+)
+\openout1 = `Compare_plots.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Info: Redefining \. on input line 19.
+LaTeX Info: Redefining \% on input line 19.
+
+(c:/texlive/2021/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count266
+\scratchdimen=\dimen150
+\scratchbox=\box53
+\nofMPsegments=\count267
+\nofMParguments=\count268
+\everyMPshowfont=\toks20
+\MPscratchCnt=\count269
+\MPscratchDim=\dimen151
+\MPnumerator=\count270
+\makeMPintoPDFobject=\count271
+\everyMPtoPDFconversion=\toks21
+) (c:/texlive/2021/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(c:/texlive/2021/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+<CC_compare.pdf, id=1, 2160.79463pt x 751.67072pt>
+File: CC_compare.pdf Graphic file (type pdf)
+<use CC_compare.pdf>
+Package pdftex.def Info: CC_compare.pdf  used on input line 24.
+(pdftex.def)             Requested size: 591.81868pt x 205.86707pt.
+<DCOR_compare.pdf, id=2, 2160.79463pt x 751.67072pt>
+File: DCOR_compare.pdf Graphic file (type pdf)
+<use DCOR_compare.pdf>
+Package pdftex.def Info: DCOR_compare.pdf  used on input line 31.
+(pdftex.def)             Requested size: 591.81868pt x 205.86707pt.
+<FFT_compare.pdf, id=3, 2160.79463pt x 751.67072pt>
+File: FFT_compare.pdf Graphic file (type pdf)
+<use FFT_compare.pdf>
+Package pdftex.def Info: FFT_compare.pdf  used on input line 38.
+(pdftex.def)             Requested size: 591.81868pt x 205.86707pt.
+
+
+pdfTeX warning: pdflatex.exe (file ./boxplot_legend.pdf): PDF inclusion: found 
+PDF version <1.7>, but at most version <1.5> allowed
+<boxplot_legend.pdf, id=4, 848.25378pt x 74.71983pt>
+File: boxplot_legend.pdf Graphic file (type pdf)
+<use boxplot_legend.pdf>
+Package pdftex.def Info: boxplot_legend.pdf  used on input line 44.
+(pdftex.def)             Requested size: 455.24408pt x 40.1007pt.
+[1
+
+{c:/texlive/2021/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./CC_compare.pd
+f> <./DCOR_compare.pdf
+
+pdfTeX warning: pdflatex.exe (file ./DCOR_compare.pdf): PDF inclusion: multiple
+ pdfs with page group included in a single page
+> <./FFT_compare.pdf
+
+pdfTeX warning: pdflatex.exe (file ./FFT_compare.pdf): PDF inclusion: multiple 
+pdfs with page group included in a single page
+> <./boxplot_legend.pdf>]
+<boxplot_AUC_SCORE_base.pdf, id=132, 2160.79463pt x 715.53572pt>
+File: boxplot_AUC_SCORE_base.pdf Graphic file (type pdf)
+<use boxplot_AUC_SCORE_base.pdf>
+Package pdftex.def Info: boxplot_AUC_SCORE_base.pdf  used on input line 53.
+(pdftex.def)             Requested size: 591.81868pt x 195.97044pt.
+<boxplot_AUC_SCORE_filtered.pdf, id=133, 2160.79463pt x 715.53572pt>
+File: boxplot_AUC_SCORE_filtered.pdf Graphic file (type pdf)
+<use boxplot_AUC_SCORE_filtered.pdf>
+Package pdftex.def Info: boxplot_AUC_SCORE_filtered.pdf  used on input line 60.
+
+(pdftex.def)             Requested size: 591.81868pt x 195.97044pt.
+<boxplot_AUC_SCORE_easy.pdf, id=134, 2160.79463pt x 715.53572pt>
+File: boxplot_AUC_SCORE_easy.pdf Graphic file (type pdf)
+<use boxplot_AUC_SCORE_easy.pdf>
+Package pdftex.def Info: boxplot_AUC_SCORE_easy.pdf  used on input line 67.
+(pdftex.def)             Requested size: 591.81868pt x 195.97044pt.
+File: boxplot_legend.pdf Graphic file (type pdf)
+<use boxplot_legend.pdf>
+Package pdftex.def Info: boxplot_legend.pdf  used on input line 73.
+(pdftex.def)             Requested size: 455.24408pt x 40.1007pt.
+ [2 <./boxplot_AUC_SCORE_base.pdf> <./boxplot_AUC_SCORE_filtered.pdf
+
+pdfTeX warning: pdflatex.exe (file ./boxplot_AUC_SCORE_filtered.pdf): PDF inclu
+sion: multiple pdfs with page group included in a single page
+> <./boxplot_AUC_SCORE_easy.pdf
+
+pdfTeX warning: pdflatex.exe (file ./boxplot_AUC_SCORE_easy.pdf): PDF inclusion
+: multiple pdfs with page group included in a single page
+>]
+<../../../Experiments/Latex/Rank_reports/stat_results_cc.pdf, id=244, 832.7957p
+t x 299.92049pt>
+File: ../../../Experiments/Latex/Rank_reports/stat_results_cc.pdf Graphic file 
+(type pdf)
+<use ../../../Experiments/Latex/Rank_reports/stat_results_cc.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports/stat_results_c
+c.pdf  used on input line 83.
+(pdftex.def)             Requested size: 591.81868pt x 213.14638pt.
+<../../../Experiments/Latex/Rank_reports_filtered/stat_results_cc.pdf, id=245, 
+831.4626pt x 292.69351pt>
+File: ../../../Experiments/Latex/Rank_reports_filtered/stat_results_cc.pdf Grap
+hic file (type pdf)
+<use ../../../Experiments/Latex/Rank_reports_filtered/stat_results_cc.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports_filtered/stat_
+results_cc.pdf  used on input line 92.
+(pdftex.def)             Requested size: 591.81868pt x 208.33638pt.
+<../../../Experiments/Latex/Rank_reports_easy/stat_results_cc.pdf, id=246, 832.
+7957pt x 299.92049pt>
+File: ../../../Experiments/Latex/Rank_reports_easy/stat_results_cc.pdf Graphic 
+file (type pdf)
+<use ../../../Experiments/Latex/Rank_reports_easy/stat_results_cc.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports_easy/stat_resu
+lts_cc.pdf  used on input line 101.
+(pdftex.def)             Requested size: 591.81868pt x 213.14638pt.
+ [3 <../../../Experiments/Latex/Rank_reports/stat_results_cc.pdf> <../../../Exp
+eriments/Latex/Rank_reports_filtered/stat_results_cc.pdf
+
+pdfTeX warning: pdflatex.exe (file ../../../Experiments/Latex/Rank_reports_filt
+ered/stat_results_cc.pdf): PDF inclusion: multiple pdfs with page group include
+d in a single page
+> <../../../Experiments/Latex/Rank_reports_easy/stat_results_cc.pdf
+
+pdfTeX warning: pdflatex.exe (file ../../../Experiments/Latex/Rank_reports_easy
+/stat_results_cc.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+>]
+<../../../Experiments/Latex/Rank_reports/stat_results_DCOR.pdf, id=368, 821.691
+73pt x 285.46649pt>
+File: ../../../Experiments/Latex/Rank_reports/stat_results_DCOR.pdf Graphic fil
+e (type pdf)
+<use ../../../Experiments/Latex/Rank_reports/stat_results_DCOR.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports/stat_results_D
+COR.pdf  used on input line 112.
+(pdftex.def)             Requested size: 591.81868pt x 205.6054pt.
+<../../../Experiments/Latex/Rank_reports_filtered/stat_results_DCOR.pdf, id=369
+, 821.69173pt x 299.92049pt>
+File: ../../../Experiments/Latex/Rank_reports_filtered/stat_results_DCOR.pdf Gr
+aphic file (type pdf)
+<use ../../../Experiments/Latex/Rank_reports_filtered/stat_results_DCOR.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports_filtered/stat_
+results_DCOR.pdf  used on input line 121.
+(pdftex.def)             Requested size: 591.81868pt x 216.0158pt.
+<../../../Experiments/Latex/Rank_reports_easy/stat_results_DCOR.pdf, id=370, 83
+2.7957pt x 285.46649pt>
+File: ../../../Experiments/Latex/Rank_reports_easy/stat_results_DCOR.pdf Graphi
+c file (type pdf)
+<use ../../../Experiments/Latex/Rank_reports_easy/stat_results_DCOR.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports_easy/stat_resu
+lts_DCOR.pdf  used on input line 130.
+(pdftex.def)             Requested size: 591.81868pt x 202.87427pt.
+ [4 <../../../Experiments/Latex/Rank_reports/stat_results_dcor.pdf> <../../../E
+xperiments/Latex/Rank_reports_filtered/stat_results_dcor.pdf
+
+pdfTeX warning: pdflatex.exe (file ../../../Experiments/Latex/Rank_reports_filt
+ered/stat_results_dcor.pdf): PDF inclusion: multiple pdfs with page group inclu
+ded in a single page
+> <../../../Experiments/Latex/Rank_reports_easy/stat_results_dcor.pdf
+
+pdfTeX warning: pdflatex.exe (file ../../../Experiments/Latex/Rank_reports_easy
+/stat_results_dcor.pdf): PDF inclusion: multiple pdfs with page group included 
+in a single page
+>]
+<../../../Experiments/Latex/Rank_reports/stat_results_FFT.pdf, id=492, 832.7957
+pt x 350.5095pt>
+File: ../../../Experiments/Latex/Rank_reports/stat_results_FFT.pdf Graphic file
+ (type pdf)
+<use ../../../Experiments/Latex/Rank_reports/stat_results_FFT.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports/stat_results_F
+FT.pdf  used on input line 141.
+(pdftex.def)             Requested size: 591.81868pt x 249.09882pt.
+<../../../Experiments/Latex/Rank_reports_filtered/stat_results_FFT.pdf, id=493,
+ 831.4626pt x 336.05548pt>
+File: ../../../Experiments/Latex/Rank_reports_filtered/stat_results_FFT.pdf Gra
+phic file (type pdf)
+<use ../../../Experiments/Latex/Rank_reports_filtered/stat_results_FFT.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports_filtered/stat_
+results_FFT.pdf  used on input line 150.
+(pdftex.def)             Requested size: 591.81868pt x 239.201pt.
+<../../../Experiments/Latex/Rank_reports_easy/stat_results_FFT.pdf, id=494, 831
+.4626pt x 357.7365pt>
+File: ../../../Experiments/Latex/Rank_reports_easy/stat_results_FFT.pdf Graphic
+ file (type pdf)
+<use ../../../Experiments/Latex/Rank_reports_easy/stat_results_FFT.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports_easy/stat_resu
+lts_FFT.pdf  used on input line 159.
+(pdftex.def)             Requested size: 591.81868pt x 254.63333pt.
+ [5 <../../../Experiments/Latex/Rank_reports/stat_results_fft.pdf> <../../../Ex
+periments/Latex/Rank_reports_filtered/stat_results_fft.pdf
+
+pdfTeX warning: pdflatex.exe (file ../../../Experiments/Latex/Rank_reports_filt
+ered/stat_results_fft.pdf): PDF inclusion: multiple pdfs with page group includ
+ed in a single page
+> <../../../Experiments/Latex/Rank_reports_easy/stat_results_fft.pdf
+
+pdfTeX warning: pdflatex.exe (file ../../../Experiments/Latex/Rank_reports_easy
+/stat_results_fft.pdf): PDF inclusion: multiple pdfs with page group included i
+n a single page
+>]
+File: ../../../Experiments/Latex/Rank_reports/stat_results_cc.pdf Graphic file 
+(type pdf)
+<use ../../../Experiments/Latex/Rank_reports/stat_results_cc.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports/stat_results_c
+c.pdf  used on input line 171.
+(pdftex.def)             Requested size: 591.81868pt x 213.14638pt.
+<../../../Experiments/Latex/Rank_reports/stat_results_dcor.pdf, id=616, 821.691
+73pt x 285.46649pt>
+File: ../../../Experiments/Latex/Rank_reports/stat_results_dcor.pdf Graphic fil
+e (type pdf)
+<use ../../../Experiments/Latex/Rank_reports/stat_results_dcor.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports/stat_results_d
+cor.pdf  used on input line 180.
+(pdftex.def)             Requested size: 591.81868pt x 205.6054pt.
+<../../../Experiments/Latex/Rank_reports/stat_results_fft.pdf, id=617, 832.7957
+pt x 350.5095pt>
+File: ../../../Experiments/Latex/Rank_reports/stat_results_fft.pdf Graphic file
+ (type pdf)
+<use ../../../Experiments/Latex/Rank_reports/stat_results_fft.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports/stat_results_f
+ft.pdf  used on input line 189.
+(pdftex.def)             Requested size: 591.81868pt x 249.09882pt.
+ [6 <../../../Experiments/Latex/Rank_reports/stat_results_dcor.pdf> <../../../E
+xperiments/Latex/Rank_reports/stat_results_fft.pdf
+
+pdfTeX warning: pdflatex.exe (file ../../../Experiments/Latex/Rank_reports/stat
+_results_fft.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>]
+File: ../../../Experiments/Latex/Rank_reports_filtered/stat_results_cc.pdf Grap
+hic file (type pdf)
+<use ../../../Experiments/Latex/Rank_reports_filtered/stat_results_cc.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports_filtered/stat_
+results_cc.pdf  used on input line 200.
+(pdftex.def)             Requested size: 591.81868pt x 208.33638pt.
+<../../../Experiments/Latex/Rank_reports_filtered/stat_results_dcor.pdf, id=700
+, 821.69173pt x 299.92049pt>
+File: ../../../Experiments/Latex/Rank_reports_filtered/stat_results_dcor.pdf Gr
+aphic file (type pdf)
+<use ../../../Experiments/Latex/Rank_reports_filtered/stat_results_dcor.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports_filtered/stat_
+results_dcor.pdf  used on input line 209.
+(pdftex.def)             Requested size: 591.81868pt x 216.0158pt.
+<../../../Experiments/Latex/Rank_reports_filtered/stat_results_fft.pdf, id=701,
+ 831.4626pt x 336.05548pt>
+File: ../../../Experiments/Latex/Rank_reports_filtered/stat_results_fft.pdf Gra
+phic file (type pdf)
+<use ../../../Experiments/Latex/Rank_reports_filtered/stat_results_fft.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports_filtered/stat_
+results_fft.pdf  used on input line 218.
+(pdftex.def)             Requested size: 591.81868pt x 239.201pt.
+ [7 <../../../Experiments/Latex/Rank_reports_filtered/stat_results_dcor.pdf> <.
+./../../Experiments/Latex/Rank_reports_filtered/stat_results_fft.pdf
+
+pdfTeX warning: pdflatex.exe (file ../../../Experiments/Latex/Rank_reports_filt
+ered/stat_results_fft.pdf): PDF inclusion: multiple pdfs with page group includ
+ed in a single page
+>]
+File: ../../../Experiments/Latex/Rank_reports_easy/stat_results_cc.pdf Graphic 
+file (type pdf)
+<use ../../../Experiments/Latex/Rank_reports_easy/stat_results_cc.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports_easy/stat_resu
+lts_cc.pdf  used on input line 230.
+(pdftex.def)             Requested size: 591.81868pt x 213.14638pt.
+<../../../Experiments/Latex/Rank_reports_easy/stat_results_dcor.pdf, id=785, 83
+2.7957pt x 285.46649pt>
+File: ../../../Experiments/Latex/Rank_reports_easy/stat_results_dcor.pdf Graphi
+c file (type pdf)
+<use ../../../Experiments/Latex/Rank_reports_easy/stat_results_dcor.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports_easy/stat_resu
+lts_dcor.pdf  used on input line 239.
+(pdftex.def)             Requested size: 591.81868pt x 202.87427pt.
+<../../../Experiments/Latex/Rank_reports_easy/stat_results_fft.pdf, id=786, 831
+.4626pt x 357.7365pt>
+File: ../../../Experiments/Latex/Rank_reports_easy/stat_results_fft.pdf Graphic
+ file (type pdf)
+<use ../../../Experiments/Latex/Rank_reports_easy/stat_results_fft.pdf>
+Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports_easy/stat_resu
+lts_fft.pdf  used on input line 248.
+(pdftex.def)             Requested size: 591.81868pt x 254.63333pt.
+ [8 <../../../Experiments/Latex/Rank_reports_easy/stat_results_dcor.pdf> <../..
+/../Experiments/Latex/Rank_reports_easy/stat_results_fft.pdf
+
+pdfTeX warning: pdflatex.exe (file ../../../Experiments/Latex/Rank_reports_easy
+/stat_results_fft.pdf): PDF inclusion: multiple pdfs with page group included i
+n a single page
+>] (./Compare_plots.aux
+LaTeX Info: Redefining \. on input line 8.
+LaTeX Info: Redefining \% on input line 8.
+) ) 
+Here is how much of TeX's memory you used:
+ 4154 strings out of 478276
+ 79058 string characters out of 5850490
+ 371926 words of memory out of 5000000
+ 22376 multiletter control sequences out of 15000+600000
+ 469559 words of font info for 29 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 55i,7n,63p,352b,363s stack positions out of 5000i,500n,10000p,200000b,80000s
+<c:/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb>
+Output written on Compare_plots.pdf (8 pages, 339375 bytes).
+PDF statistics:
+ 876 PDF objects out of 1000 (max. 8388607)
+ 138 compressed objects within 2 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 111 words of extra memory for PDF output out of 10000 (max. 10000000)
+

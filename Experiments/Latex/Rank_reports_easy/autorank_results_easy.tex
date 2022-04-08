@@ -21,8 +21,8 @@
 	El análisis estadístico se hizo entre 21 modelos (poblaciones) con 100 muestras emparejadas.
 	
 	El nivel de significancia para los test globales (\textit{family-wise}) es de $\alpha=0.050$.
-.
-	No hemos podido rechazar la hipótesis nula de que la población sea normal para ninguna población (mínimo $p=0.029$). Por lo tanto asumimos que las poblaciones son normales.
+
+	No hemos podido rechazar la hipótesis nula de que la población sea normal para ninguna población (mínimo $p=0.024$). Por lo tanto asumimos que las poblaciones son normales.
 	
 	Hemos aplicado el test Bartlett para evaluar la homogeneidad de los datos y rechazamos la hipótesis nula ($p\approx 0$) de que los datos son homocedásticos. Por lo que asumimos que los datos son heteroscedásticos.
 	
@@ -34,54 +34,55 @@
 			\toprule
 			{} &     MR &     M &    SD &              CI &    $d$ &   Magnitude \\
 			\midrule
-			DUMMY              & 14.905 & 0.500 & 0.000 &  [0.500, 0.500] &      - &       large \\
-			PLS + KNNSScaler   & 13.565 & 0.500 & 0.052 &  [0.484, 0.517] & -0.013 &  negligible \\
-			PCA + KNNSScaler   & 13.385 & 0.503 & 0.051 &  [0.487, 0.519] & -0.078 &  negligible \\
-			PLS + SVCSScaler   & 13.345 & 0.504 & 0.054 &  [0.488, 0.521] & -0.116 &  negligible \\
-			PLS + KNN          & 13.155 & 0.505 & 0.057 &  [0.487, 0.523] & -0.122 &  negligible \\
-			mRMR + KNN         & 12.035 & 0.515 & 0.050 &  [0.500, 0.531] & -0.435 &       small \\
-			whole + SVC        & 11.905 & 0.519 & 0.048 &  [0.504, 0.534] & -0.573 &      medium \\
-			PLS + SVC          & 11.770 & 0.519 & 0.052 &  [0.502, 0.535] & -0.505 &      medium \\
-			mRMR + KNNSScaler  & 11.505 & 0.519 & 0.051 &  [0.503, 0.535] & -0.527 &      medium \\
-			PCA + SVC          & 11.030 & 0.525 & 0.055 &  [0.508, 0.542] & -0.649 &      medium \\
-			mRMR + SVC         & 10.785 & 0.529 & 0.054 &  [0.512, 0.545] & -0.752 &      medium \\
-			whole + SVCSScaler & 10.785 & 0.526 & 0.041 &  [0.513, 0.539] & -0.908 &       large \\
-			mRMR + SVCSScaler  & 10.755 & 0.528 & 0.053 &  [0.512, 0.545] & -0.750 &      medium \\
-			whole + LR         & 10.700 & 0.527 & 0.038 &  [0.515, 0.539] & -0.993 &       large \\
-			PLS + LR           & 10.600 & 0.527 & 0.051 &  [0.511, 0.542] & -0.742 &      medium \\
-			PCA + SVCSScaler   & 10.400 & 0.525 & 0.054 &  [0.509, 0.542] & -0.668 &      medium \\
-			whole + KNN        &  9.355 & 0.538 & 0.048 &  [0.523, 0.553] & -1.128 &       large \\
-			whole + KNNSScaler &  8.530 & 0.545 & 0.047 &  [0.530, 0.559] & -1.327 &       large \\
-			PCA + KNN          &  8.135 & 0.548 & 0.050 &  [0.532, 0.563] & -1.356 &       large \\
-			mRMR + LR          &  8.015 & 0.549 & 0.050 &  [0.533, 0.564] & -1.362 &       large \\
-			PCA + LR           &  6.340 & 0.566 & 0.061 &  [0.547, 0.585] & -1.520 &       large \\
+			 \textbf{DUMMY}              & 15.330 & 0.500 & 0.000 &  [0.500, 0.500] &      - &       large \\
+			PLS + SVC          & 14.200 & 0.505 & 0.074 &  [0.482, 0.529] & -0.101 &  negligible \\
+			whole + SVCSScaler & 13.185 & 0.514 & 0.073 &  [0.491, 0.537] & -0.265 &       small \\
+			PCA + SVC          & 13.005 & 0.516 & 0.073 &  [0.493, 0.539] & -0.315 &       small \\
+			PCA + SVCSScaler   & 12.700 & 0.519 & 0.069 &  [0.498, 0.541] & -0.395 &       small \\
+			PCA + KNNSScaler   & 12.470 & 0.528 & 0.065 &  [0.507, 0.548] & -0.601 &      medium \\
+			mRMR + KNNSScaler  & 12.460 & 0.524 & 0.061 &  [0.505, 0.543] & -0.551 &      medium \\
+			PLS + KNNSScaler   & 12.435 & 0.519 & 0.060 &  [0.500, 0.538] & -0.446 &       small \\
+			mRMR + KNN         & 12.285 & 0.524 & 0.061 &  [0.505, 0.543] & -0.559 &      medium \\
+			PLS + KNN          & 11.920 & 0.530 & 0.070 &  [0.509, 0.552] & -0.612 &      medium \\
+			PLS + SVCSScaler   & 11.900 & 0.527 & 0.065 &  [0.507, 0.547] & -0.582 &      medium \\
+			whole + SVC        & 10.860 & 0.540 & 0.072 &  [0.517, 0.562] & -0.786 &      medium \\
+			PLS + LR           &  9.855 & 0.553 & 0.071 &  [0.531, 0.575] & -1.050 &       large \\
+			mRMR + SVC         &  9.270 & 0.558 & 0.068 &  [0.537, 0.579] & -1.204 &       large \\
+			mRMR + SVCSScaler  &  9.230 & 0.556 & 0.063 &  [0.536, 0.575] & -1.242 &       large \\
+			PCA + LR           &  9.015 & 0.560 & 0.072 &  [0.538, 0.583] & -1.187 &       large \\
+			whole + KNNSScaler &  8.765 & 0.566 & 0.078 &  [0.542, 0.590] & -1.200 &       large \\
+			PCA + KNN          &  8.605 & 0.559 & 0.060 &  [0.541, 0.578] & -1.409 &       large \\
+			whole + LR         &  8.400 & 0.562 & 0.062 &  [0.542, 0.581] & -1.414 &       large \\
+			whole + KNN        &  8.215 & 0.567 & 0.072 &  [0.544, 0.589] & -1.305 &       large \\
+			mRMR + LR          &  6.895 & 0.578 & 0.071 &  [0.556, 0.600] & -1.550 &       large \\
 			\bottomrule
 		\end{tabular}
 		\caption{Comparativa del ROC AUC de los modelos con el dataset CC}
 		\label{tab:stat_results_cc}
 	\end{table}
 
-	Rechazamos la hipótesis nula $(p=8.5\times 10^{-38})$ del test de Friedman de que no hay diferencia entre las medidas de tendencia central de los modelos. Por lo que asumimos que hay una diferencia estadísticamente significativa entre las medianas de las poblaciones. 
+	Rechazamos la hipótesis nula $(p=2.46\times 10^{-20})$ del test de Friedman de que no hay diferencia entre las medidas de tendencia central de los modelos. Por lo que asumimos que hay una diferencia estadísticamente significativa entre las medianas de las poblaciones. 
 	
 	Basándonos en el test \textit{post-hoc} de Nemenyi, asumimos que no hay diferencia significativa dentro de los siguientes grupos:
 	
 	\begin{itemize}
-		\item DUMMY, PLS + KNNSScaler, PCA + KNNSScaler, PLS + SVCSScaler, PLS + KNN, mRMR + KNN y whole + SVC
+		\item  \textbf{DUMMY}, PLS + SVC, whole + SVCSScaler, PCA + SVC, PCA + SVCSScaler, PCA + KNNSScaler, mRMR + KNNSScaler, PLS + KNNSScaler y mRMR + KNN
 		
+		\item PLS + SVC, whole + SVCSScaler, PCA + SVC, PCA + SVCSScaler, PCA + KNNSScaler, mRMR + KNNSScaler, PLS + KNNSScaler, mRMR + KNN, PLS + KNN y PLS + SVCSScaler
 		
-		\item PLS + KNNSScaler, PCA + KNNSScaler, PLS + SVCSScaler, PLS + KNN, mRMR + KNN, whole + SVC, PLS + SVC, mRMR + KNNSScaler, PCA + SVC, mRMR + SVC, whole + SVCSScaler, mRMR + SVCSScaler, whole + LR y PLS + LR
+		\item whole + SVCSScaler, PCA + SVC, PCA + SVCSScaler, PCA + KNNSScaler, mRMR + KNNSScaler, PLS + KNNSScaler, mRMR + KNN, PLS + KNN, PLS + SVCSScaler y whole + SVC
 		
-		\item PCA + KNNSScaler, PLS + SVCSScaler, PLS + KNN, mRMR + KNN, whole + SVC, PLS + SVC, mRMR + KNNSScaler, PCA + SVC, mRMR + SVC, whole + SVCSScaler, mRMR + SVCSScaler, whole + LR, PLS + LR y PCA + SVCSScaler
+		\item PCA + SVCSScaler, PCA + KNNSScaler, mRMR + KNNSScaler, PLS + KNNSScaler, mRMR + KNN, PLS + KNN, PLS + SVCSScaler, whole + SVC y PLS + LR
 		
-		\item mRMR + KNN, whole + SVC, PLS + SVC, mRMR + KNNSScaler, PCA + SVC, mRMR + SVC, whole + SVCSScaler, mRMR + SVCSScaler, whole + LR, PLS + LR, PCA + SVCSScaler y whole + KNN
+		\item mRMR + KNN, PLS + KNN, PLS + SVCSScaler, whole + SVC, PLS + LR, mRMR + SVC y mRMR + SVCSScaler
 		
-		\item  mRMR + KNNSScaler, PCA + SVC, mRMR + SVC, whole + SVCSScaler, mRMR + SVCSScaler, whole + LR, PLS + LR, PCA + SVCSScaler, whole + KNN y whole + KNNSScaler.
+		\item PLS + KNN, PLS + SVCSScaler, whole + SVC, PLS + LR, mRMR + SVC, mRMR + SVCSScaler y PCA + LR 
 		
-		\item  PCA + SVC, mRMR + SVC, whole + SVCSScaler, mRMR + SVCSScaler, whole + LR, PLS + LR, PCA + SVCSScaler, whole + KNN, whole + KNNSScaler, PCA + KNN y mRMR + LR
+		\item  whole + SVC, PLS + LR, mRMR + SVC, mRMR + SVCSScaler, PCA + LR, whole + KNNSScaler, PCA + KNN, whole + LR y whole + KNN
 		
-		\item  whole + KNN, whole + KNNSScaler, PCA + KNN, mRMR + LR y PCA + LR. 
+		\item  PLS + LR, mRMR + SVC, mRMR + SVCSScaler, PCA + LR, whole + KNNSScaler, PCA + KNN, whole + LR, whole + KNN y mRMR + LR
+		
 	\end{itemize}
-	
 	Todas las demás diferencias son significativas.
 	 
 	\begin{figure}[h]
@@ -97,7 +98,7 @@
 	
 	El nivel de significancia para los test globales (\textit{family-wise}) es de $\alpha=0.050$.
 	
-	No hemos podido rechazar la hipótesis nula de que la población sea normal para ninguna población (mínimo $p=0.0526$). Por lo tanto asumimos que las poblaciones son normales.
+	No hemos podido rechazar la hipótesis nula de que la población sea normal para ninguna población (mínimo $p=0.018$). Por lo tanto asumimos que las poblaciones son normales.
 	
 	Hemos aplicado el test Bartlett para evaluar la homogeneidad de los datos y rechazamos la hipótesis nula ($p\approx 0$) de que los datos son homocedásticos. Por lo que asumimos que los datos son heteroscedásticos.
 	
@@ -111,51 +112,48 @@
 			\toprule
 			{} &     MR &     M &    SD &              CI &    $d$ &   Magnitude \\
 			\midrule
-			PCA + SVC          & 15.965 & 0.452 & 0.053 &  [0.435, 0.469] &  0.000 &  negligible \\
-			whole + SVCSScaler & 14.190 & 0.471 & 0.051 &  [0.455, 0.487] & -0.363 &       small \\
-			whole + SVC        & 13.420 & 0.476 & 0.061 &  [0.457, 0.495] & -0.418 &       small \\
-			PCA + LR           & 13.165 & 0.475 & 0.055 &  [0.457, 0.492] & -0.420 &       small \\
-			PCA + KNN          & 12.720 & 0.482 & 0.048 &  [0.467, 0.497] & -0.586 &      medium \\
-			PLS + SVC          & 11.755 & 0.489 & 0.054 &  [0.472, 0.506] & -0.689 &      medium \\
-			PLS + KNN          & 11.320 & 0.491 & 0.055 &  [0.474, 0.508] & -0.716 &      medium \\
-			whole + KNN        & 11.015 & 0.494 & 0.052 &  [0.477, 0.510] & -0.794 &      medium \\
-			PCA + SVCSScaler   & 10.815 & 0.497 & 0.063 &  [0.477, 0.517] & -0.773 &      medium \\
-			PLS + SVCSScaler   & 10.660 & 0.498 & 0.060 &  [0.479, 0.517] & -0.808 &       large \\
-			PLS + KNNSScaler   & 10.650 & 0.497 & 0.053 &  [0.481, 0.514] & -0.850 &       large \\
-			whole + KNNSScaler & 10.570 & 0.501 & 0.050 &  [0.485, 0.517] & -0.950 &       large \\
-			whole + LR         & 10.555 & 0.499 & 0.046 &  [0.485, 0.513] & -0.948 &       large \\
-			DUMMY              & 10.255 & 0.500 & 0.000 &  [0.500, 0.500] & -1.282 &       large \\
-			mRMR + SVC         & 10.225 & 0.502 & 0.051 &  [0.487, 0.518] & -0.970 &       large \\
-			mRMR + KNNSScaler  & 10.125 & 0.502 & 0.055 &  [0.485, 0.520] & -0.934 &       large \\
-			PLS + LR           &  9.965 & 0.503 & 0.067 &  [0.482, 0.523] & -0.837 &       large \\
-			mRMR + KNN         &  9.740 & 0.505 & 0.055 &  [0.488, 0.522] & -0.979 &       large \\
-			mRMR + SVCSScaler  &  9.375 & 0.508 & 0.061 &  [0.489, 0.527] & -0.984 &       large \\
-			PCA + KNNSScaler   &  8.485 & 0.518 & 0.058 &  [0.500, 0.536] & -1.186 &       large \\
-			mRMR + LR          &  6.030 & 0.538 & 0.055 &  [0.521, 0.555] & -1.592 &       large \\
+			PCA + SVCSScaler   & 14.025 & 0.453 & 0.069 &  [0.431, 0.474] &  0.000 &  negligible \\
+			PCA + SVC          & 13.780 & 0.459 & 0.061 &  [0.440, 0.478] & -0.095 &  negligible \\
+			PCA + KNNSScaler   & 13.375 & 0.464 & 0.063 &  [0.445, 0.484] & -0.175 &  negligible \\
+			PLS + SVC          & 13.200 & 0.467 & 0.066 &  [0.447, 0.488] & -0.215 &       small \\
+			PLS + SVCSScaler   & 12.625 & 0.472 & 0.064 &  [0.452, 0.492] & -0.291 &       small \\
+			PLS + LR           & 11.580 & 0.485 & 0.071 &  [0.463, 0.508] & -0.465 &       small \\
+			PCA + LR           & 11.490 & 0.485 & 0.065 &  [0.464, 0.505] & -0.471 &       small \\
+			whole + SVC        & 11.260 & 0.484 & 0.064 &  [0.464, 0.504] & -0.473 &       small \\
+			whole + SVCSScaler & 11.200 & 0.482 & 0.067 &  [0.461, 0.503] & -0.431 &       small \\
+			mRMR + KNNSScaler  & 11.025 & 0.484 & 0.059 &  [0.466, 0.503] & -0.490 &       small \\
+			PLS + KNNSScaler   & 10.955 & 0.488 & 0.065 &  [0.468, 0.509] & -0.529 &      medium \\
+			mRMR + SVCSScaler  & 10.745 & 0.495 & 0.071 &  [0.473, 0.517] & -0.603 &      medium \\
+			PLS + KNN          & 10.615 & 0.494 & 0.068 &  [0.473, 0.515] & -0.601 &      medium \\
+			mRMR + KNN         & 10.295 & 0.494 & 0.058 &  [0.476, 0.512] & -0.647 &      medium \\
+			whole + LR         &  9.830 & 0.499 & 0.057 &  [0.481, 0.517] & -0.729 &      medium \\
+			mRMR + SVC         &  9.715 & 0.499 & 0.066 &  [0.478, 0.520] & -0.682 &      medium \\
+			 \textbf{DUMMY}              &  9.640 & 0.500 & 0.000 &  [0.500, 0.500] & -0.962 &       large \\
+			PCA + KNN          &  9.600 & 0.502 & 0.066 &  [0.481, 0.523] & -0.726 &      medium \\
+			whole + KNNSScaler &  8.915 & 0.511 & 0.071 &  [0.489, 0.533] & -0.829 &       large \\
+			whole + KNN        &  8.745 & 0.510 & 0.072 &  [0.487, 0.532] & -0.802 &       large \\
+			mRMR + LR          &  8.385 & 0.516 & 0.067 &  [0.495, 0.536] & -0.919 &       large \\
 			\bottomrule
 		\end{tabular}
-		\caption{Comparativa del ROC AUC de los modelos con el dataset DCOR}
-		\label{tab:stat_results_dcor}
+			\caption{Comparativa del ROC AUC de los modelos con el dataset DCOR}
+			\label{tab:stat_results_dcor}
 	\end{table}
 	
 	Basándonos en el test \textit{post-hoc} de Nemenyi, asumimos que no hay diferencia significativa dentro de los siguientes grupos:
 	
 	\begin{itemize}
-		\item  PCA + SVC, whole + SVCSScaler, whole + SVC y PCA + LR
+		\item PCA + SVCSScaler, PCA + SVC, PCA + KNNSScaler, PLS + SVC, PLS + SVCSScaler, PLS + LR, PCA + LR, whole + SVC, whole + SVCSScaler, mRMR + KNNSScaler y PLS + KNNSScaler
 		
-		\item  whole + SVCSScaler, whole + SVC, PCA + LR, PCA + KNN, PLS + SVC y PLS + KNN
+		\item  PCA + SVC, PCA + KNNSScaler, PLS + SVC, PLS + SVCSScaler, PLS + LR, PCA + LR, whole + SVC, whole + SVCSScaler, mRMR + KNNSScaler, PLS + KNNSScaler y mRMR + SVCSScaler
 		
-		\item whole + SVC, PCA + LR, PCA + KNN, PLS + SVC, PLS + KNN, whole + KNN, PCA + SVCSScaler, PLS + SVCSScaler, PLS + KNNSScaler, whole + KNNSScaler y whole + LR
+		\item PCA + KNNSScaler, PLS + SVC, PLS + SVCSScaler, PLS + LR, PCA + LR, whole + SVC, whole + SVCSScaler, mRMR + KNNSScaler, PLS + KNNSScaler, mRMR + SVCSScaler, PLS + KNN y mRMR + KNN
 		
-		\item  PCA + LR, PCA + KNN, PLS + SVC, PLS + KNN, whole + KNN, PCA + SVCSScaler, PLS + SVCSScaler, PLS + KNNSScaler, whole + KNNSScaler, whole + LR, DUMMY, mRMR + SVC y mRMR + KNNSScaler
+		\item PLS + SVCSScaler, PLS + LR, PCA + LR, whole + SVC, whole + SVCSScaler, mRMR + KNNSScaler, PLS + KNNSScaler, mRMR + SVCSScaler, PLS + KNN, mRMR + KNN, whole + LR, mRMR + SVC,  \textbf{DUMMY} y PCA + KNN
 		
-		\item  PCA + KNN, PLS + SVC, PLS + KNN, whole + KNN, PCA + SVCSScaler, PLS + SVCSScaler, PLS + KNNSScaler, whole + KNNSScaler, whole + LR, DUMMY, mRMR + SVC, mRMR + KNNSScaler, PLS + LR y mRMR + KNN
+		\item PLS + LR, PCA + LR, whole + SVC, whole + SVCSScaler, mRMR + KNNSScaler, PLS + KNNSScaler, mRMR + SVCSScaler, PLS + KNN, mRMR + KNN, whole + LR, mRMR + SVC,  \textbf{DUMMY}, PCA + KNN, whole + KNNSScaler y whole + KNN
 		
-		\item  PLS + SVC, PLS + KNN, whole + KNN, PCA + SVCSScaler, PLS + SVCSScaler, PLS + KNNSScaler, whole + KNNSScaler, whole + LR, DUMMY, mRMR + SVC, mRMR + KNNSScaler, PLS + LR, mRMR + KNN y mRMR + SVCSScaler
 		
-		\item PLS + KNN, whole + KNN, PCA + SVCSScaler, PLS + SVCSScaler, PLS + KNNSScaler, whole + KNNSScaler, whole + LR, DUMMY, mRMR + SVC, mRMR + KNNSScaler, PLS + LR, mRMR + KNN, mRMR + SVCSScaler y PCA + KNNSScaler
-		
-		\item PCA + KNNSScaler and mRMR + LR.  
+		\item   PCA + LR, whole + SVC, whole + SVCSScaler, mRMR + KNNSScaler, PLS + KNNSScaler, mRMR + SVCSScaler, PLS + KNN, mRMR + KNN, whole + LR, mRMR + SVC,  \textbf{DUMMY}, PCA + KNN, whole + KNNSScaler, whole + KNN y mRMR + LR  
 	\end{itemize}
 	
 	Todas las demás diferencias son significativas.
@@ -173,13 +171,13 @@
 	
 	El nivel de significancia para los test globales (\textit{family-wise}) es de $\alpha=0.050$.
 	
-	No hemos podido rechazar la hipótesis nula de que la población sea normal para ninguna población (mínimo $p=0.013$). Por lo tanto asumimos que las poblaciones son normales.
+	No hemos podido rechazar la hipótesis nula de que la población sea normal para ninguna población (mínimo $p=0.031$). Por lo tanto asumimos que las poblaciones son normales.
 	
 	Hemos aplicado el test Bartlett para evaluar la homogeneidad de los datos y rechazamos la hipótesis nula ($p\approx 0$) de que los datos son homocedásticos. Por lo que asumimos que los datos son heteroscedásticos
 	
 	Dado que tenemos más de dos poblaciones, donde todas son normales pero heterocedásticas, usamos el test no paramétrico de Friedman como test \textit{omnibus} para determinar si hay alguna diferencia significativa entre las medias de las poblaciones. Utilizamos el test de Nemenyi como \textit{post-hoc} para saber que diferencias son significativas. Mostramos, en la tabla \ref{tab:stat_results_fft}, la media $(M)$, la desviación estándar $(SD)$, y el ranking medio $(MR)$ de cada modelo a partir de todas las muestras. Consideraremos significativas la diferencias entre modelos si la diferencia entre rankings medios es mayor que la distancia crítica de $CD=3.807$ dada por el test de Nemenyi.
 	
-	Rechazamos la hipótesis nula $(p=4.21\times 10^{-157})$ del test de Friedman de que no hay diferencia entre las medidas de tendencia central de los modelos. Por lo que asumimos que hay una diferencia estadísticamente significativa entre las medianas de las poblaciones.
+	Rechazamos la hipótesis nula $(p=5.15\times 10^{-161})$ del test de Friedman de que no hay diferencia entre las medidas de tendencia central de los modelos. Por lo que asumimos que hay una diferencia estadísticamente significativa entre las medianas de las poblaciones.
 	
 	\begin{table}[h]
 		\centering
@@ -187,31 +185,31 @@
 			\toprule
 			{} &     MR &     M &    SD &              CI &    \$d\$ &   Magnitude \\
 			\midrule
-			DUMMY              & 21.590 & 0.500 & 0.000 &  [0.500, 0.500] &      - &       large \\
-			whole + SVC        & 21.590 & 0.500 & 0.000 &  [0.500, 0.500] &      - &       large \\
-			PCA + SVC          & 19.170 & 0.505 & 0.066 &  [0.484, 0.526] & -0.106 &  negligible \\
-			PLS + KNNSScaler   & 16.815 & 0.537 & 0.051 &  [0.521, 0.553] & -1.018 &       large \\
-			whole + LR         & 15.330 & 0.547 & 0.054 &  [0.530, 0.564] & -1.244 &       large \\
-			PCA + SVCSScaler   & 15.310 & 0.547 & 0.047 &  [0.532, 0.562] & -1.434 &       large \\
-			PCA + KNNSScaler   & 14.700 & 0.552 & 0.052 &  [0.536, 0.569] & -1.414 &       large \\
-			mRMR + KNN         & 14.215 & 0.558 & 0.059 &  [0.540, 0.577] & -1.401 &       large \\
-			PLS + KNN          & 13.820 & 0.560 & 0.052 &  [0.543, 0.576] & -1.623 &       large \\
-			PLS + SVCSScaler   & 13.620 & 0.561 & 0.057 &  [0.543, 0.579] & -1.525 &       large \\
-			whole + KNNSScaler & 13.440 & 0.562 & 0.056 &  [0.544, 0.580] & -1.567 &       large \\
-			PCA + KNN          & 13.400 & 0.563 & 0.057 &  [0.545, 0.581] & -1.554 &       large \\
-			PLS + LRSScaler    & 12.950 & 0.568 & 0.056 &  [0.550, 0.586] & -1.713 &       large \\
-			mRMR + SVC         & 12.910 & 0.565 & 0.047 &  [0.550, 0.580] & -1.948 &       large \\
-			whole + LRSScaler  & 12.785 & 0.566 & 0.059 &  [0.548, 0.585] & -1.598 &       large \\
-			PCA + LR           & 12.190 & 0.573 & 0.049 &  [0.558, 0.589] & -2.139 &       large \\
-			whole + KNN        & 12.170 & 0.573 & 0.051 &  [0.557, 0.589] & -2.041 &       large \\
-			PCA + LRSScaler    & 12.085 & 0.573 & 0.051 &  [0.557, 0.589] & -2.026 &       large \\
-			mRMR + KNNSScaler  & 11.585 & 0.581 & 0.059 &  [0.563, 0.600] & -1.952 &       large \\
-			PLS + SVC          & 11.160 & 0.581 & 0.059 &  [0.562, 0.600] & -1.932 &       large \\
-			PLS + LR           & 11.115 & 0.582 & 0.054 &  [0.565, 0.599] & -2.149 &       large \\
-			whole + SVCSScaler &  7.660 & 0.612 & 0.051 &  [0.595, 0.628] & -3.101 &       large \\
-			mRMR + LR          &  5.360 & 0.633 & 0.054 &  [0.616, 0.650] & -3.466 &       large \\
-			mRMR + LRSScaler   &  5.115 & 0.635 & 0.054 &  [0.618, 0.653] & -3.512 &       large \\
-			mRMR + SVCSScaler  &  4.915 & 0.636 & 0.061 &  [0.617, 0.655] & -3.155 &       large \\
+			whole + LR         & 19.255 & 0.461 & 0.074 &  [0.437, 0.485] &  0.000 &  negligible \\
+			PLS + KNNSScaler   & 18.480 & 0.479 & 0.055 &  [0.462, 0.497] & -0.278 &       small \\
+			PCA + KNN          & 18.255 & 0.484 & 0.064 &  [0.463, 0.504] & -0.323 &       small \\
+			whole + KNNSScaler & 17.770 & 0.485 & 0.059 &  [0.467, 0.504] & -0.363 &       small \\
+			whole + LRSScaler  & 17.165 & 0.488 & 0.066 &  [0.467, 0.509] & -0.379 &       small \\
+			 \textbf{DUMMY}              & 17.000 & 0.500 & 0.000 &  [0.500, 0.500] & -0.741 &      medium \\
+			whole + SVC        & 17.000 & 0.500 & 0.000 &  [0.500, 0.500] & -0.741 &      medium \\
+			PLS + KNN          & 16.950 & 0.497 & 0.059 &  [0.478, 0.516] & -0.535 &      medium \\
+			PCA + SVC          & 15.955 & 0.499 & 0.085 &  [0.472, 0.526] & -0.474 &       small \\
+			PLS + SVCSScaler   & 14.945 & 0.509 & 0.074 &  [0.486, 0.533] & -0.650 &      medium \\
+			PLS + SVC          & 14.550 & 0.520 & 0.065 &  [0.499, 0.540] & -0.846 &       large \\
+			mRMR + KNN         & 13.830 & 0.524 & 0.068 &  [0.503, 0.546] & -0.890 &       large \\
+			whole + KNN        & 13.545 & 0.530 & 0.065 &  [0.509, 0.551] & -0.984 &       large \\
+			PCA + KNNSScaler   & 13.320 & 0.529 & 0.065 &  [0.509, 0.550] & -0.976 &       large \\
+			mRMR + KNNSScaler  & 12.950 & 0.533 & 0.066 &  [0.512, 0.554] & -1.020 &       large \\
+			PLS + LRSScaler    & 10.325 & 0.561 & 0.079 &  [0.536, 0.587] & -1.307 &       large \\
+			PLS + LR           & 10.320 & 0.562 & 0.078 &  [0.537, 0.586] & -1.318 &       large \\
+			mRMR + SVC         & 10.110 & 0.565 & 0.070 &  [0.543, 0.587] & -1.439 &       large \\
+			whole + SVCSScaler &  9.885 & 0.571 & 0.063 &  [0.551, 0.591] & -1.594 &       large \\
+			PCA + SVCSScaler   &  9.220 & 0.574 & 0.066 &  [0.553, 0.595] & -1.610 &       large \\
+			PCA + LRSScaler    &  9.215 & 0.575 & 0.085 &  [0.548, 0.602] & -1.427 &       large \\
+			PCA + LR           &  8.620 & 0.582 & 0.077 &  [0.558, 0.607] & -1.599 &       large \\
+			mRMR + SVCSScaler  &  5.880 & 0.610 & 0.073 &  [0.587, 0.633] & -2.015 &       large \\
+			mRMR + LRSScaler   &  5.340 & 0.622 & 0.079 &  [0.597, 0.647] & -2.106 &       large \\
+			mRMR + LR          &  5.115 & 0.624 & 0.071 &  [0.602, 0.647] & -2.253 &       large \\
 			\bottomrule
 		\end{tabular}
 		\caption{Comparativa del ROC AUC de los modelos con el dataset FFT}
@@ -221,23 +219,29 @@
 	Basándonos en el test \textit{post-hoc} de Nemenyi, asumimos que no hay diferencia significativa dentro de los siguientes grupos:
 	
 	\begin{itemize}
-		\item DUMMY, whole + SVC y PCA + SVC
+		\item whole + LR, PLS + KNNSScaler, PCA + KNN, whole + KNNSScaler, whole + LRSScaler,  \textbf{DUMMY}, whole + SVC, PLS + KNN, and PCA + SVC
 		
-		\item PCA + SVC and PLS + KNNSScaler
+		\item PLS + KNNSScaler, PCA + KNN, whole + KNNSScaler, whole + LRSScaler,  \textbf{DUMMY}, whole + SVC, PLS + KNN, PCA + SVC, and PLS + SVCSScaler
 		
+		\item PCA + KNN, whole + KNNSScaler, whole + LRSScaler,  \textbf{DUMMY}, whole + SVC, PLS + KNN, PCA + SVC, PLS + SVCSScaler, and PLS + SVC
 		
-		\item  PLS + KNNSScaler, whole + LR, PCA + SVCSScaler, PCA + KNNSScaler, mRMR + KNN, PLS + KNN, PLS + SVCSScaler, whole + KNNSScaler y PCA + KNN
+		\item whole + LRSScaler,  \textbf{DUMMY}, whole + SVC, PLS + KNN, PCA + SVC, PLS + SVCSScaler, PLS + SVC, mRMR + KNN, and whole + KNN
 		
+		\item  \textbf{DUMMY}, whole + SVC, PLS + KNN, PCA + SVC, PLS + SVCSScaler, PLS + SVC, mRMR + KNN, whole + KNN, and PCA + KNNSScaler
 		
-		\item whole + LR, PCA + SVCSScaler, PCA + KNNSScaler, mRMR + KNN, PLS + KNN, PLS + SVCSScaler, whole + KNNSScaler, PCA + KNN, PLS + LRSScaler, mRMR + SVC, whole + LRSScaler, PCA + LR, whole + KNN, PCA + LRSScaler y mRMR + KNNSScaler
+		\item PCA + SVC, PLS + SVCSScaler, PLS + SVC, mRMR + KNN, whole + KNN, PCA + KNNSScaler, and mRMR + KNNSScaler
 		
+		\item mRMR + KNN, whole + KNN, PCA + KNNSScaler, mRMR + KNNSScaler, PLS + LRSScaler, PLS + LR, and mRMR + SVC
 		
-		\item PCA + KNNSScaler, mRMR + KNN, PLS + KNN, PLS + SVCSScaler, whole + KNNSScaler, PCA + KNN, PLS + LRSScaler, mRMR + SVC, whole + LRSScaler, PCA + LR, whole + KNN, PCA + LRSScaler, mRMR + KNNSScaler, PLS + SVC y PLS + LR
+		\item whole + KNN, PCA + KNNSScaler, mRMR + KNNSScaler, PLS + LRSScaler, PLS + LR, mRMR + SVC, and whole + SVCSScaler
 		
+		\item mRMR + KNNSScaler, PLS + LRSScaler, PLS + LR, mRMR + SVC, whole + SVCSScaler, PCA + SVCSScaler, and PCA + LRSScaler
 		
-		\item PLS + SVC, PLS + LR y whole + SVCSScaler
+		\item PLS + LRSScaler, PLS + LR, mRMR + SVC, whole + SVCSScaler, PCA + SVCSScaler, PCA + LRSScaler, and PCA + LR
 		
-		\item whole + SVCSScaler, mRMR + LR, mRMR + LRSScaler y mRMR + SVCSScaler. 
+		\item PCA + SVCSScaler, PCA + LRSScaler, PCA + LR, and mRMR + SVCSScaler
+		
+		\item PCA + LR, mRMR + SVCSScaler, mRMR + LRSScaler, and mRMR + LR
 	\end{itemize}
 	
 	Todas las demás diferencias son significativas.
