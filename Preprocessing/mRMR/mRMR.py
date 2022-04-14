@@ -178,7 +178,7 @@ def save_mRMR_indexes(dataset: str, strategy: Optional[str] = 'kfold', remove_ou
     else:
         save_path = paths.MRMR_PATH
     filter_path = '' if not filter_data else 'clean_'
-    easy_path = '' if not easy_data else 'easy_'
+    easy_path = '' if not easy_data else 'new_easy_'
 
     for i, idx_external in tqdm(enumerate(range(EXTERNAL_SPLITS)), desc=f'Saving .txt {dataset}',
                                 total=EXTERNAL_SPLITS):
@@ -221,7 +221,7 @@ def load_mRMR_indexes(dataset: str, idx_external: int, idx_internal: Optional[in
         ValueError('Both remove_outliers, filter_data, remove_dataset_outliers, easy_data cannot be set together.')
 
     filter_path = '' if not filter_data else 'clean_'
-    easy_path = '' if not easy_data else 'easy_'
+    easy_path = '' if not easy_data else 'new_easy_'
 
     if remove_outliers:
         load_path = paths.MRMR_OUTLIERS_PATH
@@ -279,7 +279,7 @@ def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: 
         save_path = paths.MRMR_PATH
 
     filter_path = '' if not filter_data else 'clean_'
-    easy_path = '' if not easy_data else 'easy_'
+    easy_path = '' if not easy_data else 'new_easy_'
 
     for idx_external in tqdm(range(EXTERNAL_SPLITS), desc=f'Saving .pickle {dataset}'):
         X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy)

@@ -71,7 +71,7 @@ def save_PLS(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: O
         save_path = paths.PLS_PATH
 
     filter_path = '' if not filter_data else 'clean_'
-    easy_path = '' if not easy_data else 'easy_'
+    easy_path = '' if not easy_data else 'new_easy_'
 
     for idx_external in tqdm(range(EXTERNAL_SPLITS)):
 

@@ -60,9 +60,9 @@ def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: Optional
         EXTERNAL_SPLITS = fixed_values.EXTERNAL_SPLITS_SHUFFLE
 
     progress_bar = tqdm(fixed_values.DATASETS,
-                        total=(2 * (len(fixed_values.CLASSIFIERS) - 1) + len(fixed_values.CLASSIFIERS)) *
-                              (len(fixed_values.PREPROCESSES)) * EXTERNAL_SPLITS)
-                              # (len(fixed_values.PREPROCESSES) + 1) * EXTERNAL_SPLITS)
+#                        total=(2 * (len(fixed_values.CLASSIFIERS) - 1) + len(fixed_values.CLASSIFIERS)) *
+                        total=((len(fixed_values.CLASSIFIERS) - 1) + len(fixed_values.CLASSIFIERS)) *
+                               (len(fixed_values.PREPROCESSES) + 1) * EXTERNAL_SPLITS)
 
     results_file = f"{paths.RESULTS_PATH}/results_{time.time()}_main_experiment.csv"
     with open(results_file, 'a') as f:
@@ -70,15 +70,17 @@ def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: Optional
                 "IDX_EXTERNAL;FEATURES_NUMBER;PARAMS;"
                 "METRICS_DICT\n")
     for dataset in progress_bar:
+        if dataset != 'CC':
+            break
         _, X, y = common_functions.load_data(dataset, remove_outliers=remove_outliers, filter_data=filter_data,
                                              easy_data=easy_data)
         for classifier_name, classifier in fixed_values.CLASSIFIERS.items():
+            if 'KNN' not in classifier_name:
+                continue
             if dataset not in classifier['datasets']:
                 continue
             clf_to_val = classifier['clf']
             for preprocess in fixed_values.PREPROCESSES + ['whole']:
-                if preprocess == 'whole':
-                    continue
                 for idx_external in range(EXTERNAL_SPLITS):
 
                     tqdm_desc = f"Dataset: {dataset} " \

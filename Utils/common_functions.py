@@ -33,7 +33,7 @@ def load_data(dataset: str, remove_outliers: Optional[bool] = False, filter_data
         raise ValueError(f"unknown dataset: {dataset}")
 
     filter_path = '' if not filter_data else 'clean_'
-    easy_path = '' if not easy_data else 'easy_'
+    easy_path = '' if not easy_data else 'new_easy_'
 
     X = pd.read_pickle(f"{data_path}/{filter_path}{easy_path}X.pickle")
     y = pd.read_pickle(f"{data_path}/{filter_path}{easy_path}y.pickle")
