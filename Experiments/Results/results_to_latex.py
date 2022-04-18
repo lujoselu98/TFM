@@ -319,6 +319,7 @@ def old_create_latex_color_document(csv_file: str, out_file: str, clean_tex: Opt
 def create_latex_color_document(csv_file: str, out_file: str, color_map: str,
                                 clean_tex: Optional[bool] = False) -> None:
     """
+    https://gist.github.com/lujoselu98/80b12a4635276a926d1443d7d7ac23a3
 
     Export results from csv to Latex in different formats
 
