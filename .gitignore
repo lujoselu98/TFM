@@ -99,6 +99,7 @@ fabric.properties
 !/Data/fft_Data/
 /Data/fft_Data/*.csv
 /Data/fft_Data/*.pickle
+/Data/fft_Data/**/*.pickle
 
 # pyc files
 *.pyc
