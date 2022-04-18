@@ -7,6 +7,7 @@ from typing import Optional, List, Dict
 import matplotlib
 import numpy as np
 import pandas as pd
+import sklearn
 from pylatex import Document, Command, Tabular, MultiColumn, MultiRow, Package, Table
 from pylatex.base_classes import ContainerCommand
 from pylatex.utils import NoEscape, bold
@@ -41,14 +42,18 @@ def main() -> None:
     """
         Main function to export latex colors
     """
-    # file = '28_02_22_results_main_experiment.csv'
-    # file = '11_03_22_results_main_exxperiment_no_outliers.csv'
-    # file = '28_03_22_results_main_experiment_filtered.csv'
-    # file = '31_03_22_results_main_experiment_easy.csv'
-    file = '07_04_22_results_main_experiment_easy.csv'
-    out_file = f"{paths.LATEX_PATH}/color_map_easy"
 
-    create_latex_color_document(file, out_file, color_map='YlGn')
+    in_out_dict = {
+        '28_02_22_results_main_experiment.csv': 'new_base_color_map',
+        '28_03_22_results_main_experiment_filtered.csv': 'new_filtered_color_map',
+        '07_04_22_results_main_experiment_easy.csv': 'new_easy_color_map',
+    }
+
+    for file, out_file in in_out_dict.items():
+        print(f'Exporting {file} to latex as {out_file}...')
+        out_file = f"{paths.LATEX_PATH}/{out_file}"
+        create_latex_color_document(file, out_file, color_map='YlGn')
+        print('----- FINISHED -----')
 
 
 def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers', mark_rows: Optional[bool] = True,
@@ -161,8 +166,52 @@ def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers'
     # print(doc.dumps())
 
 
-def create_latex_color_document(csv_file: str, out_file: str, clean_tex: Optional[bool] = False,
-                                color_map: Optional[str] = 'YlGn') -> None:
+def _get_colors(csv_file: str, color_map: str, metric: str) -> pd.DataFrame:
+    """
+
+        Auxiliar function to create the colors use it on latex
+
+    :param csv_file: results file
+    :param color_map: matplolib color map name
+    :param metric: metric to calculate table
+    :return: DataFrame of colors (R, G, B)
+    """
+    cmap = matplotlib.cm.get_cmap(color_map)
+
+    results_data = pd.read_csv(f"{csv_file}", sep=';')
+    results_data[metric] = results_data['METRICS_DICT'].apply(lambda x: pandas_utils.extract_dict(x, metric))
+    results_data = results_data[['DATASET', 'CLASSIFIER_NAME', 'PREPROCESS', metric]]
+    results_data = results_data[['CLASSIFIER_NAME', 'DATASET', 'PREPROCESS'] + [metric]]
+
+    color_metric_df = results_data.groupby(['DATASET', 'CLASSIFIER_NAME', 'PREPROCESS']).mean()
+
+    color_metric_values = color_metric_df.values
+
+    scaler = sklearn.preprocessing.MinMaxScaler(feature_range=(0.1, 0.9))
+    scaled_color_metric_values = scaler.fit_transform(color_metric_values).reshape((64,))
+
+    colors = cmap(scaled_color_metric_values)[:, :3]
+
+    colors_df = pd.DataFrame(index=color_metric_df.index, columns=['R', 'G', 'B'])
+
+    colors_df['R'] = colors[:, 0]
+    colors_df['G'] = colors[:, 1]
+    colors_df['B'] = colors[:, 2]
+
+    return colors_df
+
+
+def _get_color_name(metric: str, idx: tuple) -> str:
+    """
+
+        Auxiliar function to make color name
+
+    """
+    return f"{metric}_{idx[0]}_{idx[1]}_{idx[2]}"
+
+
+def old_create_latex_color_document(csv_file: str, out_file: str, clean_tex: Optional[bool] = False,
+                                    color_map: Optional[str] = 'YlGn') -> None:
     """
 
     Export results from csv to Latex in different formats
@@ -265,6 +314,95 @@ def create_latex_color_document(csv_file: str, out_file: str, clean_tex: Optiona
     doc.generate_pdf(out_file, compiler='pdflatex', clean_tex=clean_tex)
     # doc.generate_tex(out_file)
     # print(doc.dumps())
+
+
+def create_latex_color_document(csv_file: str, out_file: str, color_map: str,
+                                clean_tex: Optional[bool] = False) -> None:
+    """
+
+    Export results from csv to Latex in different formats
+
+    :param color_map: color map of the table
+    :param csv_file: csv file with the experiments results
+    :param out_file: pdf file to generate
+    :param clean_tex: true to clean tex after pdf generation, default is False
+    """
+    assert csv_file.endswith('csv')
+    doc = _latex_preamble()
+
+    colors_dict = dict()
+    for metric in fixed_values.EVALUATION_METRICS:
+        colors_df = _get_colors(csv_file, color_map, metric)
+        colors_dict[metric] = colors_df
+
+        for idx, color in colors_df.iterrows():
+            # noinspection PyTypeChecker
+            doc.preamble.append(NoEscape(r"\definecolor{" + _get_color_name(metric, idx) + "}{rgb}{"
+                                         + str(color['R']) + ", " + str(color['G']) + ", " + str(color['B']) + "}"
+                                         ))
+
+    for metric in fixed_values.EVALUATION_METRICS:
+        data = _get_data_from_csv(csv_file, metric)
+        preprocesses = data.columns.get_level_values(1).unique()
+        datasets = data.index.get_level_values(1).unique()
+
+        classifiers = dict()
+        for dataset in datasets:
+            classifiers[dataset] = data.loc[pd.IndexSlice[:, dataset], :].index.get_level_values(0)
+
+        size_box = ContainerCommand(arguments=[NoEscape(r'\textwidth'), '!'])
+        size_box.latex_name = 'resizebox'
+
+        table = Table()
+
+        tabular = Tabular('cc|c|c|c|c')
+        blank_columns = ['' for _ in range(tabular.width - len(preprocesses))]
+        tabular.add_row((*blank_columns, *preprocesses))
+        tabular.append(Command('specialrule', arguments=['.2em', '.1em', '.1em']))
+
+        for block, dataset in enumerate(datasets):
+            for row, classifier in enumerate(classifiers[dataset]):
+                if (classifier, dataset) in data.index:
+                    row_data = data.loc[(classifier, dataset)]
+
+                    start_brace = "{"
+                    end_brace = "}"
+
+                    row_data = [
+                        NoEscape(f" \cellcolor{start_brace}"
+                                 f"{_get_color_name(metric, (dataset, classifier, preprocess))}"
+                                 f"{end_brace}"
+                                 f"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}")
+                        for i, preprocess in enumerate(preprocesses)]
+                else:
+                    continue
+
+                if row == 0:
+                    tabular.add_row(
+                        (
+                            MultiColumn(1, align='c|', data=MultiRow(3, data=dataset)),
+                            classifier, *row_data
+                        )
+                    )
+                else:
+                    tabular.add_row(
+                        (
+                            MultiColumn(1, align='c|', data=''),
+                            classifier, *row_data
+                        )
+                    )
+
+                if row != len(classifiers[dataset]) - 1:
+                    tabular.add_hline(start=2, end=len(preprocesses) + 2)
+                else:
+                    tabular.append(Command('specialrule', arguments=['.2em', '.1em', '.1em']))
+
+        caption = Command('caption', f"Tabla comparativa en {fixed_values.EVALUATION_METRICS[metric]['name']}")
+        size_box.append(tabular)
+        table.append(size_box)
+        table.append(caption)
+        doc.append(table)
+    doc.generate_pdf(out_file, compiler='pdflatex', clean_tex=clean_tex)
 
 
 def _get_color_matrix(data: pd.DataFrame, colors: np.ndarray) -> np.ndarray:
