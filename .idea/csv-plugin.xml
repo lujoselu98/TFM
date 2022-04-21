@@ -38,6 +38,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Data\cc_Data\easy_cc_dataset.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Data\cc_Data\new_easy_cc_dataset.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Experiments\Results\07_04_22_results_main_experiment_easy.csv">
           <value>
             <Attribute>
@@ -81,6 +95,13 @@
           </value>
         </entry>
         <entry key="\Experiments\Results\fake_results.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Experiments\Results\results_1650443008.3329966_main_experiment.csv">
           <value>
             <Attribute>
               <option name="separator" value=";" />

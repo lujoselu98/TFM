@@ -46,7 +46,7 @@ def main() -> None:
     in_out_dict = {
         '28_02_22_results_main_experiment.csv': 'new_base_color_map',
         '28_03_22_results_main_experiment_filtered.csv': 'new_filtered_color_map',
-        '07_04_22_results_main_experiment_easy.csv': 'new_easy_color_map',
+        '21_04_22_results_main_experiment_easy.csv': 'new_easy_color_map',
     }
 
     for file, out_file in in_out_dict.items():
