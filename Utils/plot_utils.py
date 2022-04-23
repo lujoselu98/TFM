@@ -97,10 +97,10 @@ def plot_fhr_uc(fhr: pd.DataFrame, uc: pd.DataFrame, y: pd.Series,
     if ax is None:
         fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(20, 10))
 
-    ax[0].plot(fhr[y == 0].mean().index, fhr[y == 0].mean().values, label='Mean FHR class 0')
-    ax[0].plot(fhr[y == 1].mean().index, fhr[y == 1].mean().values, label='Mean FHR class 1')
-    ax[1].plot(uc[y == 0].mean().index, uc[y == 0].mean().values, label='Mean UC class 0')
-    ax[1].plot(uc[y == 1].mean().index, uc[y == 1].mean().values, label='Mean UC class 1')
+    ax[0].plot(fhr[y == 0].mean().index, fhr[y == 0].mean().values, label='Media FHR normal')
+    ax[0].plot(fhr[y == 1].mean().index, fhr[y == 1].mean().values, label='Media FHR patológico')
+    ax[1].plot(uc[y == 0].mean().index, uc[y == 0].mean().values, label='Media UC normal')
+    ax[1].plot(uc[y == 1].mean().index, uc[y == 1].mean().values, label='Mean UC patológico')
 
     ax[0].set_xlabel('Time(s)', fontsize=25)
     ax[1].set_xlabel('Time(s)', fontsize=25)

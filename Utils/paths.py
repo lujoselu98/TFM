@@ -38,6 +38,8 @@ RESULTS_PATH = f"{PROJECT_PATH}/Experiments/Results"
 CLASSIFIERS_PATH = f"{PROJECT_PATH}/Experiments/Classifiers"
 LATEX_PATH = f"{PROJECT_PATH}/Experiments/Latex"
 
+# Memoria
+PLOTS_MEMORIA_PATH = f"{PROJECT_PATH}/memoria/plots_memoria"
 
 def _print_paths() -> None:
     """
