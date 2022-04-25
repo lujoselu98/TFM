@@ -116,6 +116,9 @@ fabric.properties
 /Preprocessing/mRMR/mRMR_FILES/OLD/*
 /Preprocessing/mRMR/no_outliers/mRMR_FILES/*
 /Preprocessing/mRMR/no_dataset_outliers/mRMR_FILES/*
+/Preprocessing/mRMR/smoothed/base/*
+/Preprocessing/mRMR/smoothed/filtered/*
+/Preprocessing/mRMR/smoothed/easy/*
 /Preprocessing/PLS/PLS_FILES/*
 /Preprocessing/PLS/PLS_FILES/OLD/*
 /Preprocessing/PLS/no_outliers/PLS_FILES/*
@@ -133,6 +136,9 @@ fabric.properties
 !/Preprocessing/mRMR/mRMR_FILES/.gitkeep
 !/Preprocessing/mRMR/no_outliers/mRMR_FILES/.gitkeep
 !/Preprocessing/mRMR/no_dataset_outliers/mRMR_FILES/.gitkeep
+!/Preprocessing/mRMR/smoothed/base/.gitkeep
+!/Preprocessing/mRMR/smoothed/filtered/.gitkeep
+!/Preprocessing/mRMR/smoothed/easy/.gitkeep
 !/Preprocessing/PLS/PLS_FILES/.gitkeep
 !/Preprocessing/PLS/no_outliers/PLS_FILES/.gitkeep
 !/Preprocessing/PLS/no_dataset_outliers/PLS_FILES/.gitkeep
