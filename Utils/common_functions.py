@@ -50,6 +50,51 @@ def load_data(dataset: str, remove_outliers: Optional[bool] = False, filter_data
     return tt, X, y
 
 
+def load_smoothed_data(idx_external: int, idx_internal: Optional[int] = None,
+                       filter_data: Optional[bool] = False, easy_data: Optional[bool] = False
+                       ) -> Tuple[np.ndarray, pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
+    """
+        Function to load FFT data already smoothed
+
+    :param idx_external: External fold index
+    :param idx_internal: Internal fold index
+    :param filter_data: If use filter_data
+    :param easy_data: If use easy_data
+    """
+    assert isinstance(idx_internal, int) or idx_internal is None
+
+    if filter_data + easy_data > 0:
+        ValueError('Both filter_data and easy_data cannot be set together.')
+
+    filter_set_folder = 'base'
+    prefix = ''
+
+    if filter_data:
+        filter_set_folder = 'filtered'
+        prefix = 'clean_'
+
+    if easy_data:
+        filter_set_folder = 'easy'
+        prefix = 'new_easy_'
+
+    folder_path = f"{paths.FFT_DATA_PATH}/smoothed_data/{filter_set_folder}"
+
+    X_train = pd.read_pickle(f"{folder_path}/X_{idx_external}_train.pickle")
+    X_test = pd.read_pickle(f"{folder_path}/X_{idx_external}_test.pickle")
+    y = pd.read_pickle(f"{paths.FFT_DATA_PATH}/{prefix}y.pickle")
+    y_train, y_test = y[X_train.index], y[X_test.index]
+
+    tt = X_train.columns.astype('float64')
+    if idx_internal is None:
+        return tt, X_train, X_test, y_train, y_test
+
+    internal_cv = sklearn.model_selection.StratifiedKFold(n_splits=fixed_values.INTERNAL_SPLITS, shuffle=True,
+                                                          random_state=idx_external)
+    index_train, index_test = next(itertools.islice(internal_cv.split(X_train, y_train), idx_internal, None), None)
+
+    return tt, X_train.iloc[index_train], X_train.iloc[index_test], y_train.iloc[index_train], y_train.iloc[index_test]
+
+
 def get_fold(X: pd.DataFrame, y: pd.Series, idx_external: int, idx_internal: Optional[int] = None,
              strategy: Optional[str] = 'kfold', outliers_remove_train: Optional[str] = None) -> Tuple[
     pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:

@@ -104,14 +104,68 @@ def save_PLS(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: O
                 pickle.dump(X_test_pca, f)
 
 
+def smoothed_save_PLS(filter_data: Optional[bool] = False, easy_data: Optional[bool] = False) -> None:
+    """
+        Save the data of projected data by PLS to use in experiments
+    :param filter_data to get filter data
+    :param easy_data to use easy data patterns only
+    """
+
+    if filter_data + easy_data > 1:
+        ValueError('Both filter_data, easy_data cannot be set together.')
+
+    filter_set_folder = 'base'
+
+    if filter_data:
+        filter_set_folder = 'filtered'
+
+    if easy_data:
+        filter_set_folder = 'easy'
+
+    folder_path = f"{paths.PLS_PATH}/../smoothed/{filter_set_folder}"
+
+    for idx_external in tqdm(range(fixed_values.EXTERNAL_SPLITS_SHUFFLE)):
+        tt, X_train, X_test, y_train, y_test = common_functions.load_smoothed_data(idx_external,
+                                                                                   filter_data=filter_data,
+                                                                                   easy_data=easy_data)
+
+        X_train_pca, X_test_pca = calculate_PLS(X_train, y_train, X_test, n_components=fixed_values.MAX_DIMENSION)
+
+        components_file = f"{folder_path}/PLS_{idx_external}"
+
+        with open(f"{components_file}_train.pickle", 'wb') as f:
+            pickle.dump(X_train_pca, f)
+
+        with open(f"{components_file}_test.pickle", 'wb') as f:
+            pickle.dump(X_test_pca, f)
+
+        for idx_internal in range(fixed_values.INTERNAL_SPLITS):
+            tt, X_train, X_test, y_train, y_test = common_functions.load_smoothed_data(idx_external, idx_internal,
+                                                                                       filter_data, easy_data)
+
+            X_train_pca, X_test_pca = calculate_PLS(X_train, y_train, X_test, n_components=fixed_values.MAX_DIMENSION)
+
+            components_file = f"{folder_path}/PLS_{idx_external}_{idx_internal}"
+
+            with open(f"{components_file}_train.pickle", 'wb') as f:
+                pickle.dump(X_train_pca, f)
+
+            with open(f"{components_file}_test.pickle", 'wb') as f:
+                pickle.dump(X_test_pca, f)
+
+
 def main() -> None:
     """
         Main Function
     """
-    for dataset in fixed_values.DATASETS:
-        print(dataset)
-        save_PLS(dataset, strategy='randomsplit', remove_outliers=False, filter_data=False,
-                 remove_dataset_outliers=False, easy_data=True)
+    # for dataset in fixed_values.DATASETS:
+    #     print(dataset)
+    #     save_PLS(dataset, strategy='randomsplit', remove_outliers=False, filter_data=False,
+    #              remove_dataset_outliers=False, easy_data=True)
+
+    smoothed_save_PLS(filter_data=False, easy_data=False)
+    smoothed_save_PLS(filter_data=True, easy_data=False)
+    smoothed_save_PLS(filter_data=False, easy_data=True)
 
 
 if __name__ == '__main__':

@@ -109,6 +109,9 @@ fabric.properties
 /Preprocessing/FPCA/FPCA_FILES/OLD/*
 /Preprocessing/FPCA/no_outliers/FPCA_FILES/*
 /Preprocessing/FPCA/no_dataset_outliers/FPCA_FILES/*
+/Preprocessing/FPCA/smoothed/base/*
+/Preprocessing/FPCA/smoothed/filtered/*
+/Preprocessing/FPCA/smoothed/easy/*
 /Preprocessing/mRMR/mRMR_FILES/*
 /Preprocessing/mRMR/mRMR_FILES/OLD/*
 /Preprocessing/mRMR/no_outliers/mRMR_FILES/*
@@ -117,16 +120,25 @@ fabric.properties
 /Preprocessing/PLS/PLS_FILES/OLD/*
 /Preprocessing/PLS/no_outliers/PLS_FILES/*
 /Preprocessing/PLS/no_dataset_outliers/PLS_FILES/*
+/Preprocessing/PLS/smoothed/base/*
+/Preprocessing/PLS/smoothed/filtered/*
+/Preprocessing/PLS/smoothed/easy/*
 
 !/Preprocessing/FPCA/FPCA_FILES/.gitkeep
 !/Preprocessing/FPCA/no_outliers/FPCA_FILES/.gitkeep
 !/Preprocessing/FPCA/no_dataset_outliers/FPCA_FILES/.gitkeep
+!/Preprocessing/FPCA/smoothed/base/.gitkeep
+!/Preprocessing/FPCA/smoothed/filtered/.gitkeep
+!/Preprocessing/FPCA/smoothed/easy/.gitkeep
 !/Preprocessing/mRMR/mRMR_FILES/.gitkeep
 !/Preprocessing/mRMR/no_outliers/mRMR_FILES/.gitkeep
 !/Preprocessing/mRMR/no_dataset_outliers/mRMR_FILES/.gitkeep
 !/Preprocessing/PLS/PLS_FILES/.gitkeep
 !/Preprocessing/PLS/no_outliers/PLS_FILES/.gitkeep
 !/Preprocessing/PLS/no_dataset_outliers/PLS_FILES/.gitkeep
+!/Preprocessing/PLS/smoothed/base/.gitkeep
+!/Preprocessing/PLS/smoothed/filtered/.gitkeep
+!/Preprocessing/PLS/smoothed/easy/.gitkeep
 
 # Plot images
 /Transformations/**/*.png
