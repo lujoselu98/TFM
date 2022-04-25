@@ -204,10 +204,10 @@ def plot_relevance(X, y,
         row_vals = X_t.loc[idx]
         relevance_vector[idx] = dcor.u_distance_correlation_sqr(row_vals, y)
 
-    ax.plot(np.array(list(relevance_vector.keys()), dtype='float64'), relevance_vector.values())
+    ax.plot(np.array(list(relevance_vector.keys()), dtype='float64') / 4, relevance_vector.values())
     # ax.set_xticks(np.arange(min(relevance_vector.keys()), max(relevance_vector.keys())+1, 100))
-    ax.set_ylabel('Relevance with the class')
-    ax.set_xlabel('Lag')
+    ax.set_ylabel('Distancia de correlación con la clase')
+    ax.set_xlabel('Lag (s)')
     ax.set_title(f'{title}')
 
     if save:
