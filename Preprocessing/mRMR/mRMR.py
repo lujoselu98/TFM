@@ -499,7 +499,7 @@ def main(dataset: str, filter_set: str) -> None:
     """
         Main function
     """
-
+    print(filter_set)
     # print(dataset)
     # save_mRMR_indexes(dataset,
     #                   strategy='randomsplit',
@@ -507,8 +507,9 @@ def main(dataset: str, filter_set: str) -> None:
     # save_mRMR(dataset,
     #           strategy='randomsplit',
     #           remove_outliers=False, filter_data=False, remove_dataset_outliers=False, easy_data=True)
-    # smoothed_save_mRMR_indexes(filter_data=filter_set == 'filtered', easy_data= filter_set == 'easy')
+    smoothed_save_mRMR_indexes(filter_data=filter_set == 'filtered', easy_data= filter_set == 'easy')
     smoothed_save_mRMR(filter_data=filter_set == 'filtered', easy_data= filter_set == 'easy')
 
+
 if __name__ == '__main__':
-    main(fixed_values.DATASETS[1], filter_set='Base')
+    main(fixed_values.DATASETS[1], filter_set='easy')
