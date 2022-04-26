@@ -41,7 +41,7 @@ def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_intern
     else:
         raise ValueError(f"unknown preprocess: {preprocess}")
 
-    if remove_outliers +  filter_data + easy_data > 1:
+    if remove_outliers + filter_data + easy_data > 1:
         ValueError('Both remove_outliers, filter_data and easy_data cannot be set together.')
 
     if filter_data:
@@ -57,6 +57,56 @@ def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_intern
 
     pickle_path = file_f_string.format(PATH=path, dataset=dataset, preprocess=preprocess, idx_external=idx_external,
                                        idx_internal=idx_internal_s)
+
+    with open(f"{pickle_path}_train.pickle", 'rb') as f:
+        X_train_pre = pickle.load(f)
+
+    with open(f"{pickle_path}_test.pickle", 'rb') as f:
+        X_test_pre = pickle.load(f)
+
+    return X_train_pre, X_test_pre
+
+
+def smoothed_load_preprocess(preprocess: str, idx_external: int, idx_internal: Optional[int] = None,
+                             filter_data: Optional[bool] = False, easy_data: Optional[bool] = False
+                             ) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Function to load a preprocessed dataset
+
+    :param preprocess: Preprocess to load
+    :param idx_external: idx of external division
+    :param idx_internal: idx of internal division
+    :param filter_data to get filter data
+    :param easy_data to use easy data patterns only
+    :return: X_train and X_test from file given the parameters
+    """
+    if filter_data + easy_data > 1:
+        ValueError('Both filter_data and easy_data cannot be set together.')
+
+    if preprocess == 'mRMR':
+        path = paths.MRMR_PATH
+    elif preprocess == 'PCA':
+        path = paths.FPCA_PATH
+    elif preprocess == 'PLS':
+        path = paths.PLS_PATH
+    else:
+        raise ValueError(f"unknown preprocess: {preprocess}")
+
+    filter_set_folder = 'base'
+
+    if filter_data:
+        filter_set_folder = 'filtered'
+
+    if easy_data:
+        filter_set_folder = 'easy'
+
+    folder_path = f"{path}/../smoothed/{filter_set_folder}"
+
+    idx_internal_s = ''
+    if idx_internal is not None:
+        idx_internal_s = '_' + str(idx_internal)
+
+    pickle_path = f"{folder_path}/{preprocess}_{idx_external}{idx_internal_s}"
 
     with open(f"{pickle_path}_train.pickle", 'rb') as f:
         X_train_pre = pickle.load(f)
