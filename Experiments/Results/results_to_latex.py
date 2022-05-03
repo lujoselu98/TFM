@@ -44,9 +44,9 @@ def main() -> None:
     """
 
     in_out_dict = {
-        '28_02_22_results_main_experiment.csv': 'new_base_color_map',
-        '28_03_22_results_main_experiment_filtered.csv': 'new_filtered_color_map',
-        '21_04_22_results_main_experiment_easy.csv': 'new_easy_color_map',
+        '28_02_22_results_main_experiment.csv': 'new_new_base_color_map',
+        '28_03_22_results_main_experiment_filtered.csv': 'new_new_filtered_color_map',
+        '21_04_22_results_main_experiment_easy.csv': 'new_new_easy_color_map',
     }
 
     for file, out_file in in_out_dict.items():
@@ -188,7 +188,7 @@ def _get_colors(csv_file: str, color_map: str, metric: str) -> pd.DataFrame:
     color_metric_values = color_metric_df.values
 
     scaler = sklearn.preprocessing.MinMaxScaler(feature_range=(0.1, 0.9))
-    scaled_color_metric_values = scaler.fit_transform(color_metric_values).reshape((64,))
+    scaled_color_metric_values = scaler.fit_transform(color_metric_values).reshape((88,))
 
     colors = cmap(scaled_color_metric_values)[:, :3]
 

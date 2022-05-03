@@ -1,6 +1,7 @@
 """
     Common shared values
 """
+from enum import Enum, auto
 
 import numpy as np
 from sklearn.dummy import DummyClassifier
@@ -12,6 +13,15 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 
 DATASETS = ['CC', 'DCOR', 'FFT']
+
+
+class FilterSet(Enum):
+    """Class for filter set"""
+    BASE = auto()
+    FILTERED = auto()
+    EASY = auto()
+
+
 # DATASETS = ['FFT']
 
 OUTLIERS_IDX = np.array(
@@ -37,14 +47,13 @@ DCOR_OUTLIERS_IDX = np.array(
 FFT_OUTLIERS_IDX = np.array(
     [1043, 1065, 1073, 1137, 1164, 1174, 1196, 1199, 1228, 1268, 1297,
      1313, 1338, 1407, 1422, 1428, 1431, 1501, 2013, 2021]
-) # cutoff_factor=5
+)  # cutoff_factor=5
 
 DATASET_OUTLIERS = {
     'CC': CC_OUTLIERS_IDX,
     'DCOR': DCOR_OUTLIERS_IDX,
     'FFT': FFT_OUTLIERS_IDX
 }
-
 
 EXTERNAL_SPLITS = 10
 EXTERNAL_SPLITS_SHUFFLE = 100
