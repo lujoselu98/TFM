@@ -23,6 +23,7 @@
       <excludeFolder url="file://$MODULE_DIR$/Preprocessing/FPCA/smoothed" />
       <excludeFolder url="file://$MODULE_DIR$/Preprocessing/PLS/smoothed" />
       <excludeFolder url="file://$MODULE_DIR$/Preprocessing/mRMR/smoothed" />
+      <excludeFolder url="file://$MODULE_DIR$/HGE" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.7 (DAHFI)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
