@@ -65,7 +65,8 @@ def save_FPCA(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: 
         save_path = paths.FPCA_PATH
 
     filter_path = '' if not filter_data else 'clean_'
-    easy_path = '' if not easy_data else 'new_easy_'
+    # easy_path = '' if not easy_data else 'new_easy_'
+    easy_path = '' if not easy_data else '705_easy_'
 
     for idx_external in tqdm(range(EXTERNAL_SPLITS)):
 
@@ -152,15 +153,15 @@ def main() -> None:
     """
         Main Function
     """
-    # for dataset in fixed_values.DATASETS:
-    #     if dataset != 'FFT':
-    #          continue
-    #     print(dataset)
-    #     save_FPCA(dataset, strategy='randomsplit', remove_outliers=False, filter_data=False,
-    #               remove_dataset_outliers=False, easy_data=True)
-    smoothed_save_FPCA(filter_data=False, easy_data=False)
-    smoothed_save_FPCA(filter_data=True, easy_data=False)
-    smoothed_save_FPCA(filter_data=False, easy_data=True)
+    for dataset in fixed_values.DATASETS:
+        # if dataset != 'FFT':
+        #      continue
+        print(dataset)
+        save_FPCA(dataset, strategy='randomsplit', remove_outliers=False, filter_data=False,
+                  remove_dataset_outliers=False, easy_data=True)
+    # smoothed_save_FPCA(filter_data=False, easy_data=False)
+    # smoothed_save_FPCA(filter_data=True, easy_data=False)
+    # smoothed_save_FPCA(filter_data=False, easy_data=True)
 
 
 if __name__ == '__main__':

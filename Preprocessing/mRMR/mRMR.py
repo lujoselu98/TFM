@@ -211,7 +211,8 @@ def save_mRMR_indexes(dataset: str, strategy: Optional[str] = 'kfold', remove_ou
     else:
         save_path = paths.MRMR_PATH
     filter_path = '' if not filter_data else 'clean_'
-    easy_path = '' if not easy_data else 'new_easy_'
+    # easy_path = '' if not easy_data else 'new_easy_'
+    easy_path = '' if not easy_data else '705_'
 
     for i, idx_external in tqdm(enumerate(range(EXTERNAL_SPLITS)), desc=f'Saving .txt {dataset}',
                                 total=EXTERNAL_SPLITS):
@@ -300,7 +301,8 @@ def load_mRMR_indexes(dataset: str, idx_external: int, idx_internal: Optional[in
         ValueError('Both remove_outliers, filter_data, remove_dataset_outliers, easy_data cannot be set together.')
 
     filter_path = '' if not filter_data else 'clean_'
-    easy_path = '' if not easy_data else 'new_easy_'
+    # easy_path = '' if not easy_data else 'new_easy_'
+    easy_path = '' if not easy_data else '705_easy_'
 
     if remove_outliers:
         load_path = paths.MRMR_OUTLIERS_PATH
@@ -395,7 +397,8 @@ def save_mRMR(dataset: str, strategy: Optional[str] = 'kfold', remove_outliers: 
         save_path = paths.MRMR_PATH
 
     filter_path = '' if not filter_data else 'clean_'
-    easy_path = '' if not easy_data else 'new_easy_'
+    # easy_path = '' if not easy_data else 'new_easy_'
+    easy_path = '' if not easy_data else '705_easy_'
 
     for idx_external in tqdm(range(EXTERNAL_SPLITS), desc=f'Saving .pickle {dataset}'):
         X_train, X_test, y_train, y_test = common_functions.get_fold(X, y, idx_external, strategy=strategy)
@@ -499,17 +502,20 @@ def main(dataset: str, filter_set: str) -> None:
     """
         Main function
     """
-    print(filter_set)
-    # print(dataset)
-    # save_mRMR_indexes(dataset,
-    #                   strategy='randomsplit',
-    #                   remove_outliers=False, filter_data=False, remove_dataset_outliers=False, easy_data=True)
-    # save_mRMR(dataset,
-    #           strategy='randomsplit',
-    #           remove_outliers=False, filter_data=False, remove_dataset_outliers=False, easy_data=True)
-    smoothed_save_mRMR_indexes(filter_data=filter_set == 'filtered', easy_data= filter_set == 'easy')
-    smoothed_save_mRMR(filter_data=filter_set == 'filtered', easy_data= filter_set == 'easy')
+    # print(filter_set)
+    print(dataset)
+    save_mRMR_indexes(dataset,
+                      strategy='randomsplit',
+                      remove_outliers=False, filter_data=False, remove_dataset_outliers=False, easy_data=True)
+    save_mRMR(dataset,
+              strategy='randomsplit',
+              remove_outliers=False, filter_data=False, remove_dataset_outliers=False, easy_data=True)
+    # smoothed_save_mRMR_indexes(filter_data=filter_set == 'filtered', easy_data= filter_set == 'easy')
+    # smoothed_save_mRMR(filter_data=filter_set == 'filtered', easy_data= filter_set == 'easy')
 
 
 if __name__ == '__main__':
-    main(fixed_values.DATASETS[1], filter_set='easy')
+    main(fixed_values.DATASETS[2], filter_set='')
+    # main(fixed_values.DATASETS[1], filter_set='')
+    # main(fixed_values.DATASETS[2], filter_set='')
+    # main(fixed_values.DATASETS[2], filter_set='easy')
