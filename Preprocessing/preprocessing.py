@@ -47,7 +47,8 @@ def load_preprocess(dataset: str, preprocess: str, idx_external: int, idx_intern
     if filter_data:
         file_f_string = "{PATH}/clean_{dataset}_{preprocess}_{idx_external}{idx_internal}"
     elif easy_data:
-        file_f_string = "{PATH}/new_easy_{dataset}_{preprocess}_{idx_external}{idx_internal}"
+        # file_f_string = "{PATH}/new_easy_{dataset}_{preprocess}_{idx_external}{idx_internal}"
+        file_f_string = "{PATH}/705_easy_{dataset}_{preprocess}_{idx_external}{idx_internal}"
     else:
         file_f_string = "{PATH}/{dataset}_{preprocess}_{idx_external}{idx_internal}"
 

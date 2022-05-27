@@ -424,5 +424,5 @@ def dummy_classifier(strategy: Optional[str] = 'kfold', remove_outliers: Optiona
 
 if __name__ == '__main__':
     # dummy_classifier(strategy='randomsplit', remove_outliers=False, filter_data=False, easy_data=True)
-    # main_experiment(strategy='randomsplit', remove_outliers=False, filter_data=False, easy_data=True)
-    smoothed_data_experiment()
+    main_experiment(strategy='randomsplit', remove_outliers=False, filter_data=False, easy_data=True)
+    # smoothed_data_experiment()
