@@ -6,7 +6,8 @@ from enum import Enum, auto
 import numpy as np
 from sklearn.dummy import DummyClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import balanced_accuracy_score, roc_auc_score
+from sklearn.metrics import balanced_accuracy_score, roc_auc_score, precision_score, recall_score, matthews_corrcoef, \
+    confusion_matrix
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
@@ -80,7 +81,9 @@ CLASSIFIERS = {
         'datasets': DATASETS
     },
     'SVCSScaler': {
-        'clf': make_pipeline(StandardScaler(), SVC(kernel='rbf', random_state=0, class_weight='balanced')),
+        'clf': make_pipeline(StandardScaler(), SVC(kernel='rbf',
+                                                   random_state=0,
+                                                   class_weight='balanced')),
         'param_grid': {
             'svc__gamma': np.logspace(-3, 3, 7),
             'svc__C': np.logspace(-3, 3, 7),
@@ -89,7 +92,10 @@ CLASSIFIERS = {
         'datasets': DATASETS
     },
     'LR': {
-        'clf': LogisticRegression(penalty='l1', solver='liblinear', random_state=0, class_weight='balanced',
+        'clf': LogisticRegression(penalty='l1',
+                                  solver='liblinear',
+                                  random_state=0,
+                                  class_weight='balanced',
                                   max_iter=1000),
         'param_grid': {
             'C': np.logspace(-3, 2, 6)
@@ -143,6 +149,26 @@ EVALUATION_METRICS = {
         'function': roc_auc_score,
         'values': 'scores',
         'name': 'Area bajo la curva roc',
+    },
+    'PRECISION': {
+        'function': precision_score,
+        'values': 'predictions',
+        'name': 'precision',
+    },
+    'RECALL': {
+        'function': recall_score,
+        'values': 'predictions',
+        'name': 'recall'
+    },
+    'MCC': {
+        'function': matthews_corrcoef,
+        'values': 'predictions',
+        'name': 'MCC'
+    },
+    'Confusion':{
+        'function': confusion_matrix,
+        'values': 'predictions',
+        'name': 'conf_matrix',
     },
 }
 

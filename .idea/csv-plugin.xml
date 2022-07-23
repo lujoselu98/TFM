@@ -59,6 +59,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Experiments\Results\07_06_22_results_main_experiment_best_models.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Experiments\Results\14_04_22_results_main_experiment_easy.csv">
           <value>
             <Attribute>
@@ -81,6 +88,13 @@
           </value>
         </entry>
         <entry key="\Experiments\Results\22_02_22_results_main_experiment.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Experiments\Results\27_05_22_results_main_experiment_705easy.csv">
           <value>
             <Attribute>
               <option name="separator" value=";" />

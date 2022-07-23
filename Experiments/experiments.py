@@ -12,6 +12,7 @@ from tqdm import tqdm
 
 from Preprocessing import preprocessing
 from Utils import fixed_values, paths, common_functions
+from Utils.fixed_values import FilterSet
 
 
 def parallel_param_validation(X_train: np.ndarray, X_test: np.ndarray, y_train: pd.Series, y_test: pd.Series,
@@ -69,13 +70,19 @@ def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: Optional
                 "IDX_EXTERNAL;FEATURES_NUMBER;PARAMS;"
                 "METRICS_DICT\n")
     for dataset in progress_bar:
+        if dataset != 'FFT':
+            continue
         _, X, y = common_functions.load_data(dataset, remove_outliers=remove_outliers, filter_data=filter_data,
                                              easy_data=easy_data)
         for classifier_name, classifier in fixed_values.CLASSIFIERS.items():
+            if classifier_name != 'LRSScaler':
+                continue
             if dataset not in classifier['datasets']:
                 continue
             clf_to_val = classifier['clf']
             for preprocess in fixed_values.PREPROCESSES + ['whole']:
+                if preprocess != 'mRMR':
+                    continue
                 for idx_external in range(EXTERNAL_SPLITS):
 
                     tqdm_desc = f"Dataset: {dataset} " \
@@ -216,13 +223,19 @@ def smoothed_data_experiment() -> None:
                 "METRICS_DICT\n")
 
     for filter_set in fixed_values.FilterSet:
+        if filter_set != FilterSet.BASE:
+            continue
         filter_data = (filter_set == fixed_values.FilterSet.FILTERED)
         easy_data = (filter_set == fixed_values.FilterSet.EASY)
 
         for classifier_name, classifier in fixed_values.CLASSIFIERS.items():
+            if classifier_name != 'SVC':
+                continue
             clf_to_val = classifier['clf']
             for preprocess in fixed_values.PREPROCESSES + ['whole']:
-                if preprocess != 'whole':
+                # if preprocess != 'whole':
+                #     continue
+                if preprocess != 'PLS':
                     continue
                 for idx_external in range(fixed_values.EXTERNAL_SPLITS_SHUFFLE):
                     tqdm_desc = f"Filter set: {filter_set.name} " \
@@ -424,5 +437,5 @@ def dummy_classifier(strategy: Optional[str] = 'kfold', remove_outliers: Optiona
 
 if __name__ == '__main__':
     # dummy_classifier(strategy='randomsplit', remove_outliers=False, filter_data=False, easy_data=True)
-    main_experiment(strategy='randomsplit', remove_outliers=False, filter_data=False, easy_data=True)
-    # smoothed_data_experiment()
+    # main_experiment(strategy='randomsplit', remove_outliers=False, filter_data=True, easy_data=False)
+    smoothed_data_experiment()
