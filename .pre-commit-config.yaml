@@ -3,14 +3,14 @@ repos:
       rev: 22.10.0
       hooks:
         -   id: black
-            args: [--diff, --check, --target-version=py310]
+            args: [--safe, --target-version=py37, --diff]
 
   -   repo: https://github.com/pre-commit/pre-commit-hooks
       rev: v4.4.0
       hooks:
         -    id: trailing-whitespace
         -    id: end-of-file-fixer
-        -    id: check-yaml # Checks yaml files for parsable syntax
+#        -    id: check-yaml # Checks yaml files for parsable syntax
         -    id: check-json # Checks json files for parsable syntax
         -    id: check-added-large-files
         -    id: check-case-conflict # Check for files that would conflict in case-insensitive file systems
@@ -28,22 +28,22 @@ repos:
       rev: v2.26.0
       hooks:
         -   id: pyupgrade
-            args: [--py39-plus]
+            args: [--py37-plus]
 
   -   repo: https://github.com/pycqa/isort/
       rev: 5.10.1
       hooks:
         -   id: isort
             types: [file, python]
-  -   repo: local
-      hooks:
-        -   id: pylint
-            name: pylint
-            entry: pylint
-            language: system
-            types: [python]
-            args:
-              - --rcfile=.pylintrc
+#  -   repo: local
+#      hooks:
+#        -   id: pylint
+#            name: pylint
+#            entry: pylint
+#            language: system
+#            types: [python]
+#            args:
+#              - --rcfile=.pylintrc
 
 
 

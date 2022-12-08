@@ -2,7 +2,7 @@ Partimos de unos datos de FHR y UC que consisten en 552 curvas con 21620 puntos 
 ya tienen marcadas a NaN los valores no válidos incluidos los tramos constantes.
 
 Sobre estos datos calculamos la correlación cruzada con lag. Para ello desplazamos la UC un lag en el tiempo y
-calculamos la correlación cruzada (NaN save pandas) con la FHR sin desplazar, variando el lag obtenemos la función de 
+calculamos la correlación cruzada (NaN save pandas) con la FHR sin desplazar, variando el lag obtenemos la función de
 distancia de correlación cruzada para cada curva que luego usaremos en el clasificador.
 
 En este cálculo incluimos la limitación de que haya un mínimo de 3000 puntos distintos de NaN en cada distancia de correlación y

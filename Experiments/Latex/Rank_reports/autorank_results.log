@@ -297,7 +297,7 @@ Package pdftex.def Info: stat_results_fft.pdf  used on input line 248.
  [6 <./stat_results_fft.pdf>] (autorank_results.aux
 LaTeX Info: Redefining \. on input line 8.
 LaTeX Info: Redefining \% on input line 8.
-) ) 
+) )
 Here is how much of TeX's memory you used:
  3596 strings out of 479622
  53427 string characters out of 2863022
@@ -320,4 +320,3 @@ PDF statistics:
  172 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
-

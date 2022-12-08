@@ -2,7 +2,7 @@ Vamos a explorar los outliers en cada conjunto de datos disponible utilizando 3 
 de la librería skfda:
 
 - Outliergram
-- Magnitude-shape plot 
+- Magnitude-shape plot
 - Basados en profundidad usando la Modified Band Depth y Integrated Depth
 
 # Cross correlation dataset
@@ -18,7 +18,7 @@ Se pueden ver todos representados junto con la media global en la siguiente grá
 
 ### Magnitude-shape plot
 
-Vemos que hay unos cuantos outliers concretamente son [1007, 1035, 1055, 1197, 1198, 1312, 1409, 1482, 2024] (9), 
+Vemos que hay unos cuantos outliers concretamente son [1007, 1035, 1055, 1197, 1198, 1312, 1409, 1482, 2024] (9),
 5 de clase 0 y 4 de clase 1.
 
 ![CC MSPlot](../Plots/cc_Data/CC_MSPlot.png)
@@ -27,7 +27,7 @@ Se pueden ver todos representados junto con la media global en la siguiente grá
 
 ![CC MSPlot outliers](../Plots/cc_Data/CC_MSPlot_outliers.png)
 
-Vemos que todos los detectados por este método ya habían sido detectados por el outliergram que había detectado un conjunto 
+Vemos que todos los detectados por este método ya habían sido detectados por el outliergram que había detectado un conjunto
 mayor de curvas.
 
 ### Basados en profundidad
@@ -81,4 +81,3 @@ Para la Integrated Depth
 Se pueden ver todos representados junto con la media global en la siguiente gráfica.
 
 ![CDCOR MSPlot outliers](../Plots/cdcor_Data/CDCOR_ID_Boxplot_outliers.png)
-

@@ -6,7 +6,7 @@
 \usepackage{booktabs}
 \usepackage{amsmath}
 
-\textwidth = 16truecm 
+\textwidth = 16truecm
 \textheight = 25truecm
 \oddsidemargin =-20pt
 \evensidemargin = 5pt
@@ -14,18 +14,18 @@
 
 \setlength{\parskip}{\baselineskip}%
 \begin{document}
-	
+
 	\section{Resultados CC}
 	\label{sec:results_cc}
-	
+
 	El análisis estadístico se hizo entre 21 modelos (poblaciones) con 100 muestras emparejadas.
-	
+
 	El nivel de significancia para los test globales (\textit{family-wise}) es de $\alpha=0.050$.
-	
+
 	Rechazamos la hipótesis nula de que la población es normal para el modelo PLS + SVC (p=0.002). Por lo tanto asumimos no que todas las poblaciones son normales.
-	
+
 	Dado que tenemos más de dos poblaciones y que al menos una de ella no es normal, usamos el test no paramétrico de Friedman como test \textit{omnibus} para determinar si hay alguna diferencia significativa entre las medianas de las poblaciones. Utilizamos el test de Nemenyi como \textit{post-hoc} para saber que diferencias son significativas. Mostramos, en la tabla \ref{tab:stat_results_cc}, la mediana $(MD)$, la desviación absoluta sobre a la mediana $(MAD)$, y el ranking medio $(MR)$ de cada modelo a partir de todas las muestras. Consideraremos significativas la diferencias entre modelos si la diferencia entre rankings medios es mayor que la distancia crítica de $CD=3.132$ dada por el test de Nemenyi.
-	
+
 	\begin{table}[h]
 		\centering
 		\begin{tabular}{lrrllll}
@@ -62,27 +62,27 @@
 	Rechazamos la hipótesis nula $(p=3.86\times 10^{-78})$ del test de Friedman de que no hay diferencia entre las medidas de tendencia central de los modelos. Por lo que asumimos que hay una diferencia estadísticamente significativa entre las medianas de las poblaciones.
 	\clearpage
 	Basándonos en el test \textit{post-hoc} de Nemenyi, asumimos que no hay diferencia significativa dentro de los siguientes grupos:
-	
+
 	\begin{itemize}
 		\item DUMMY y PCA + KNNSScaler
-		
+
 		\item PCA + KNNSScaler, PLS + KNNSScaler, mRMR + KNN, whole + SVC, PLS + KNN, PCA + SVC y mRMR + KNNSScaler
-		
+
 		\item PLS + KNNSScaler, mRMR + KNN, whole + SVC, PLS + KNN, PCA + SVC, mRMR + KNNSScaler, PLS + SVC, PLS + SVCSScaler y mRMR + SVCSScaler
-		
-		\item mRMR + KNN, whole + SVC, PLS + KNN, PCA + SVC, mRMR + KNNSScaler, PLS + SVC, PLS + SVCSScaler, mRMR + SVCSScaler, PCA + SVCSScaler, whole + SVCSScaler, whole + KNN, whole + KNNSScaler y mRMR + SVC 
-		
+
+		\item mRMR + KNN, whole + SVC, PLS + KNN, PCA + SVC, mRMR + KNNSScaler, PLS + SVC, PLS + SVCSScaler, mRMR + SVCSScaler, PCA + SVCSScaler, whole + SVCSScaler, whole + KNN, whole + KNNSScaler y mRMR + SVC
+
 		\item  mRMR + KNNSScaler, PLS + SVC, PLS + SVCSScaler, mRMR + SVCSScaler, PCA + SVCSScaler, whole + SVCSScaler, whole + KNN, whole + KNNSScaler, mRMR + SVC y PCA + KNN
-		
+
 		\item  PCA + SVCSScaler, whole + SVCSScaler, whole + KNN, whole + KNNSScaler, mRMR + SVC, PCA + KNN, PLS + LR y mRMR + LR
-	
+
 		\item  whole + KNNSScaler, mRMR + SVC, PCA + KNN, PLS + LR, mRMR + LR y whole + LR
-		
+
 		\item whole + LR y PCA + LR
 	\end{itemize}
-	
+
 	Todas las demás diferencias son significativas.
-	
+
 	\begin{figure}[h]
 		\includegraphics[width=\linewidth]{stat_results_cc.pdf}
 		\caption{El diagrama CD representa los resultados del test Nemenyi para el ranking basado en el ROC AUC de ls modelos con el dataset CC. Las lineas horizontales representan diferencias no significativas}
@@ -91,19 +91,19 @@
 
 	\section{Resultados DCOR}
 	\label{sec:results_dcor}
-	
+
 	El análisis estadístico se hizo entre 21 modelos (poblaciones) con 100 muestras emparejadas.
-	
+
 	El nivel de significancia para los test globales (\textit{family-wise}) es de $\alpha=0.050$.
-	
+
 	No hemos podido rechazar la hipótesis nula de que la población sea normal para ninguna población (mínimo $p=0.083$). Por lo tanto asumimos que las poblaciones son normales.
-	
+
 	Hemos aplicado el test Bartlett para evaluar la homogeneidad de los datos y rechazamos la hipótesis nula ($p\approx 0$) de que los datos son homocedásticos. Por lo que asumimos que los datos son heteroscedásticos.
-	
+
 	Dado que tenemos más de dos poblaciones, donde todas son normales pero heterocedásticas, usamos el test no paramétrico de Friedman como test \textit{omnibus} para determinar si hay alguna diferencia significativa entre las medias de las poblaciones. Utilizamos el test de Nemenyi como \textit{post-hoc} para saber que diferencias son significativas. Mostramos, en la tabla \ref{tab:stat_results_dcor}, la media $(M)$, la desviación estándar $(SD)$, y el ranking medio $(MR)$ de cada modelo a partir de todas las muestras. Consideraremos significativas la diferencias entre modelos si la diferencia entre rankings medios es mayor que la distancia crítica de $CD=3.132$ dada por el test de Nemenyi.
 
 	Rechazamos la hipótesis nula $(p=3.12\times 10^{-27})$ del test de Friedman de que no hay diferencia entre las medidas de tendencia central de los modelos. Por lo que asumimos que hay una diferencia estadísticamente significativa entre las medianas de las poblaciones.
-	
+
 	\begin{table}[h]
 		\centering
 		\begin{tabular}{lrrrlll}
@@ -136,47 +136,47 @@
 		\caption{Comparativa del ROC AUC de los modelos con el dataset DCOR}
 		\label{tab:stat_results_dcor}
 	\end{table}
-	
+
 	Basándonos en el test \textit{post-hoc} de Nemenyi, asumimos que no hay diferencia significativa dentro de los siguientes grupos:
-	
+
 	\begin{itemize}
 		\item PCA + SVC, whole + SVCSScaler, PCA + SVCSScaler, whole + KNN, whole + KNNSScaler, whole + SVC, PCA + KNN, mRMR + SVCSScaler, mRMR + KNNSScaler, mRMR + KNN, PCA + LR y mRMR + SVC
-		
+
 		\item whole + KNN, whole + KNNSScaler, whole + SVC, PCA + KNN, mRMR + SVCSScaler, mRMR + KNNSScaler, mRMR + KNN, PCA + LR, mRMR + SVC y PLS + SVC
-		
+
 		\item whole + SVC, PCA + KNN, mRMR + SVCSScaler, mRMR + KNNSScaler, mRMR + KNN, PCA + LR, mRMR + SVC, PLS + SVC y PLS + KNN
-		
+
 		\item PCA + KNN, mRMR + SVCSScaler, mRMR + KNNSScaler, mRMR + KNN, PCA + LR, mRMR + SVC, PLS + SVC, PLS + KNN, PLS + KNNSScaler, DUMMY, whole + LR y PCA + KNNSScaler
-		
+
 		\item mRMR + SVCSScaler, mRMR + KNNSScaler, mRMR + KNN, PCA + LR, mRMR + SVC, PLS + SVC, PLS + KNN, PLS + KNNSScaler, DUMMY, whole + LR, PCA + KNNSScaler, PLS + SVCSScaler y mRMR + LR
-		
-		\item mRMR + KNN, PCA + LR, mRMR + SVC, PLS + SVC, PLS + KNN, PLS + KNNSScaler, DUMMY, whole + LR, PCA + KNNSScaler, PLS + SVCSScaler, mRMR + LR y PLS + LR. 
-		
+
+		\item mRMR + KNN, PCA + LR, mRMR + SVC, PLS + SVC, PLS + KNN, PLS + KNNSScaler, DUMMY, whole + LR, PCA + KNNSScaler, PLS + SVCSScaler, mRMR + LR y PLS + LR.
+
 	\end{itemize}
-	
+
 	Todas las demás diferencias son significativas.
-	
+
 	\begin{figure}[h]
 		\includegraphics[width=\linewidth]{stat_results_dcor.pdf}
 		\caption{El diagrama CD representa los resultados del test Nemenyi para el ranking basado en el ROC AUC de ls modelos con el dataset DCOR. Las lineas horizontales representan diferencias no significativas}
 		\label{fig:stats_fig_dcor}
 	\end{figure}
-	
+
 	\section{Resultados FFT}
 	\label{sec:results_fft}
-	
+
 	El análisis estadístico se hizo entre 5 modelos (poblaciones) con 100 muestras emparejadas.
-	
+
 	El nivel de significancia para los test globales (\textit{family-wise}) es de $\alpha=0.050$.
-	
+
 	No hemos podido rechazar la hipótesis nula de que la población sea normal para ninguna población (mínimo $p=0.0028$). Por lo tanto asumimos que las poblaciones son normales.
-	
+
 	Hemos aplicado el test Bartlett para evaluar la homogeneidad de los datos y rechazamos la hipótesis nula ($p\approx 0$) de que los datos son homocedásticos. Por lo que asumimos que los datos son heteroscedásticos
-	
+
 	Dado que tenemos más de dos poblaciones, donde todas son normales pero heterocedásticas, usamos el test no paramétrico de Friedman como test \textit{omnibus} para determinar si hay alguna diferencia significativa entre las medias de las poblaciones. Utilizamos el test de Nemenyi como \textit{post-hoc} para saber que diferencias son significativas. Mostramos, en la tabla \ref{tab:stat_results_fft}, la media $(M)$, la desviación estándar $(SD)$, y el ranking medio $(MR)$ de cada modelo a partir de todas las muestras. Consideraremos significativas la diferencias entre modelos si la diferencia entre rankings medios es mayor que la distancia crítica de $CD=3.807$ dada por el test de Nemenyi.
-	
+
 	Rechazamos la hipótesis nula $(p=5.91\times 10^{-102})$ del test de Friedman de que no hay diferencia entre las medidas de tendencia central de los modelos. Por lo que asumimos que hay una diferencia estadísticamente significativa entre las medianas de las poblaciones.
-	
+
 	\begin{table}[h]
 		\centering
 		\begin{tabular}{lrrrlll}
@@ -213,37 +213,37 @@
 		\caption{Comparativa del ROC AUC de los modelos con el dataset FFT}
 		\label{tab:stat_results_fft}
 	\end{table}
-	
+
 	Basándonos en el test \textit{post-hoc} de Nemenyi, asumimos que no hay diferencia significativa dentro de los siguientes grupos:
-	
+
 	\begin{itemize}
 		\item DUMMY, whole + SVC, PCA + SVC, whole + LR y PLS + KNNSScaler
-		
+
 		\item PCA + SVC, whole + LR, PLS + KNNSScaler, mRMR + KNN y whole + KNN
-		
+
 		\item whole + LR, PLS + KNNSScaler, mRMR + KNN, whole + KNN, PCA + KNN, mRMR + KNNSScaler y PCA + KNNSScaler
-		
+
 		\item PLS + KNNSScaler, mRMR + KNN, whole + KNN, PCA + KNN, mRMR + KNNSScaler, PCA + KNNSScaler, PLS + KNN, PCA + LRSScaler, PLS + SVCSScaler y mRMR + SVC
 
 		\item mRMR + KNN, whole + KNN, PCA + KNN, mRMR + KNNSScaler, PCA + KNNSScaler, PLS + KNN, PCA + LRSScaler, PLS + SVCSScaler, mRMR + SVC, PCA + LR y whole + KNNSScaler
-		
+
 		\item whole + KNN, PCA + KNN, mRMR + KNNSScaler, PCA + KNNSScaler, PLS + KNN, PCA + LRSScaler, PLS + SVCSScaler, mRMR + SVC, PCA + LR, whole + KNNSScaler y PLS + SVC
-		
+
 		\item PCA + KNN, mRMR + KNNSScaler, PCA + KNNSScaler, PLS + KNN, PCA + LRSScaler, PLS + SVCSScaler, mRMR + SVC, PCA + LR, whole + KNNSScaler, PLS + SVC, PLS + LRSScaler, whole + LRSScaler, PLS + LR y PCA + SVCSScaler
-		
+
 		\item PCA + LR, whole + KNNSScaler, PLS + SVC, PLS + LRSScaler, whole + LRSScaler, PLS + LR, PCA + SVCSScaler y mRMR + SVCSScaler
-		
+
 		\item PLS + SVC, PLS + LRSScaler, whole + LRSScaler, PLS + LR, PCA + SVCSScaler, mRMR + SVCSScaler y mRMR + LRSScaler
-		
+
 		\item PLS + LRSScaler, whole + LRSScaler, PLS + LR, PCA + SVCSScaler, mRMR + SVCSScaler, mRMR + LRSScaler y mRMR + LR
-		
-		\item PCA + SVCSScaler, mRMR + SVCSScaler, mRMR + LRSScaler, mRMR + LR y whole + SVCSScaler. 
-		
+
+		\item PCA + SVCSScaler, mRMR + SVCSScaler, mRMR + LRSScaler, mRMR + LR y whole + SVCSScaler.
+
 	\end{itemize}
-	
+
 	Todas las demás diferencias son significativas.
-	
-	
+
+
 	\begin{figure}[h]
 		\includegraphics[width=\linewidth]{stat_results_fft.pdf}
 		\caption{El diagrama CD representa los resultados del test Nemenyi para el ranking basado en el ROC AUC de ls modelos con el dataset FFT. Las lineas horizontales representan diferencias no significativas}

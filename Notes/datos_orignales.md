@@ -7,4 +7,3 @@ coo válidos, estos son para la frecuencia cardiaca los que esten por encima de 
 cero o menos y los tramos en los que la curva permanezca constante durante más de 5 segundos (20 puntos a 4Hz.)
 
 ![Mean by class clean data](../Plots/Original_Data/Means_plots_clean.png)
-

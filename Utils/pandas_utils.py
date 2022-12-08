@@ -17,9 +17,15 @@ def constant_size(signal_values: np.ndarray, threshold: int = 1) -> int:
     :return: the len of the sum of all constant parts on signal
     """
     # noinspection PyTypeChecker
-    return np.sum([x.size
-                   for x in np.split(signal_values, np.where(np.diff(signal_values) != 0)[0] + 1)
-                   if x.size > threshold])
+    return np.sum(
+        [
+            x.size
+            for x in np.split(
+                signal_values, np.where(np.diff(signal_values) != 0)[0] + 1
+            )
+            if x.size > threshold
+        ]
+    )
 
 
 def extract_dict(dict_string: str, key: Any) -> Any:
@@ -31,5 +37,7 @@ def extract_dict(dict_string: str, key: Any) -> Any:
     :return: value of the key in dictionary
     """
 
-    params_dict = json.loads(dict_string.replace("'", ";").replace('"', "'").replace(";", '"'))
+    params_dict = json.loads(
+        dict_string.replace("'", ";").replace('"', "'").replace(";", '"')
+    )
     return params_dict[key]

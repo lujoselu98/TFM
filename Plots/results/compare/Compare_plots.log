@@ -166,7 +166,7 @@ Package pdftex.def Info: FFT_compare.pdf  used on input line 38.
 (pdftex.def)             Requested size: 591.81868pt x 205.86707pt.
 
 
-pdfTeX warning: pdflatex.exe (file ./boxplot_legend.pdf): PDF inclusion: found 
+pdfTeX warning: pdflatex.exe (file ./boxplot_legend.pdf): PDF inclusion: found
 PDF version <1.7>, but at most version <1.5> allowed
 <boxplot_legend.pdf, id=4, 848.25378pt x 74.71983pt>
 File: boxplot_legend.pdf Graphic file (type pdf)
@@ -182,7 +182,7 @@ pdfTeX warning: pdflatex.exe (file ./DCOR_compare.pdf): PDF inclusion: multiple
  pdfs with page group included in a single page
 > <./FFT_compare.pdf
 
-pdfTeX warning: pdflatex.exe (file ./FFT_compare.pdf): PDF inclusion: multiple 
+pdfTeX warning: pdflatex.exe (file ./FFT_compare.pdf): PDF inclusion: multiple
 pdfs with page group included in a single page
 > <./boxplot_legend.pdf>]
 <boxplot_AUC_SCORE_base.pdf, id=132, 2160.79463pt x 715.53572pt>
@@ -216,13 +216,13 @@ pdfTeX warning: pdflatex.exe (file ./boxplot_AUC_SCORE_easy.pdf): PDF inclusion
 >]
 <../../../Experiments/Latex/Rank_reports/stat_results_cc.pdf, id=244, 832.7957p
 t x 299.92049pt>
-File: ../../../Experiments/Latex/Rank_reports/stat_results_cc.pdf Graphic file 
+File: ../../../Experiments/Latex/Rank_reports/stat_results_cc.pdf Graphic file
 (type pdf)
 <use ../../../Experiments/Latex/Rank_reports/stat_results_cc.pdf>
 Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports/stat_results_c
 c.pdf  used on input line 83.
 (pdftex.def)             Requested size: 591.81868pt x 213.14638pt.
-<../../../Experiments/Latex/Rank_reports_filtered/stat_results_cc.pdf, id=245, 
+<../../../Experiments/Latex/Rank_reports_filtered/stat_results_cc.pdf, id=245,
 831.4626pt x 292.69351pt>
 File: ../../../Experiments/Latex/Rank_reports_filtered/stat_results_cc.pdf Grap
 hic file (type pdf)
@@ -232,7 +232,7 @@ results_cc.pdf  used on input line 92.
 (pdftex.def)             Requested size: 591.81868pt x 208.33638pt.
 <../../../Experiments/Latex/Rank_reports_easy/stat_results_cc.pdf, id=246, 832.
 7957pt x 299.92049pt>
-File: ../../../Experiments/Latex/Rank_reports_easy/stat_results_cc.pdf Graphic 
+File: ../../../Experiments/Latex/Rank_reports_easy/stat_results_cc.pdf Graphic
 file (type pdf)
 <use ../../../Experiments/Latex/Rank_reports_easy/stat_results_cc.pdf>
 Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports_easy/stat_resu
@@ -283,7 +283,7 @@ ded in a single page
 > <../../../Experiments/Latex/Rank_reports_easy/stat_results_dcor.pdf
 
 pdfTeX warning: pdflatex.exe (file ../../../Experiments/Latex/Rank_reports_easy
-/stat_results_dcor.pdf): PDF inclusion: multiple pdfs with page group included 
+/stat_results_dcor.pdf): PDF inclusion: multiple pdfs with page group included
 in a single page
 >]
 <../../../Experiments/Latex/Rank_reports/stat_results_FFT.pdf, id=492, 832.7957
@@ -322,7 +322,7 @@ pdfTeX warning: pdflatex.exe (file ../../../Experiments/Latex/Rank_reports_easy
 /stat_results_fft.pdf): PDF inclusion: multiple pdfs with page group included i
 n a single page
 >]
-File: ../../../Experiments/Latex/Rank_reports/stat_results_cc.pdf Graphic file 
+File: ../../../Experiments/Latex/Rank_reports/stat_results_cc.pdf Graphic file
 (type pdf)
 <use ../../../Experiments/Latex/Rank_reports/stat_results_cc.pdf>
 Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports/stat_results_c
@@ -380,7 +380,7 @@ pdfTeX warning: pdflatex.exe (file ../../../Experiments/Latex/Rank_reports_filt
 ered/stat_results_fft.pdf): PDF inclusion: multiple pdfs with page group includ
 ed in a single page
 >]
-File: ../../../Experiments/Latex/Rank_reports_easy/stat_results_cc.pdf Graphic 
+File: ../../../Experiments/Latex/Rank_reports_easy/stat_results_cc.pdf Graphic
 file (type pdf)
 <use ../../../Experiments/Latex/Rank_reports_easy/stat_results_cc.pdf>
 Package pdftex.def Info: ../../../Experiments/Latex/Rank_reports_easy/stat_resu
@@ -411,7 +411,7 @@ n a single page
 >] (./Compare_plots.aux
 LaTeX Info: Redefining \. on input line 8.
 LaTeX Info: Redefining \% on input line 8.
-) ) 
+) )
 Here is how much of TeX's memory you used:
  4154 strings out of 478276
  79058 string characters out of 5850490
@@ -427,4 +427,3 @@ PDF statistics:
  138 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  111 words of extra memory for PDF output out of 10000 (max. 10000000)
-

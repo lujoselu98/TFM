@@ -2,35 +2,40 @@
     Functions to parse results and to make Latex code
 """
 import itertools
-from typing import Optional, List, Dict
+from typing import Dict, List, Optional
 
 import matplotlib
 import numpy as np
 import pandas as pd
 import sklearn
-from pylatex import Document, Command, Tabular, MultiColumn, MultiRow, Package, Table
+from pylatex import (Command, Document, MultiColumn, MultiRow, Package, Table,
+                     Tabular)
 from pylatex.base_classes import ContainerCommand
 from pylatex.utils import NoEscape, bold
 from scipy import stats
 from tqdm import tqdm
 
-from Utils import paths, pandas_utils, fixed_values
+from Utils import fixed_values, pandas_utils, paths
 
 
 def old_main() -> None:
     """
-        Main function to generate all posible exported latex documents formats
+    Main function to generate all posible exported latex documents formats
     """
-    file = '28_02_22_results_main_experiment.csv'
-    progress_bar = tqdm(['classifiers', 'datasets'], total=4)
+    file = "28_02_22_results_main_experiment.csv"
+    progress_bar = tqdm(["classifiers", "datasets"], total=4)
     for out in progress_bar:
         progress_bar.set_description(f"Generating latex by {out}")
         for mark_rows in [True, False]:
 
-            progress_bar.set_postfix({'mark': f"{'row' if mark_rows else 'col'}"})
+            progress_bar.set_postfix({"mark": f"{'row' if mark_rows else 'col'}"})
 
-            out_file = f"{paths.LATEX_PATH}/results_by_{out}_{'row' if mark_rows else 'col'}"
-            create_latex_document(csv_file=file, out_file=out_file, out=out, mark_rows=mark_rows)
+            out_file = (
+                f"{paths.LATEX_PATH}/results_by_{out}_{'row' if mark_rows else 'col'}"
+            )
+            create_latex_document(
+                csv_file=file, out_file=out_file, out=out, mark_rows=mark_rows
+            )
 
             if progress_bar.last_print_n < progress_bar.total:
                 progress_bar.update(1)
@@ -40,25 +45,30 @@ def old_main() -> None:
 
 def main() -> None:
     """
-        Main function to export latex colors
+    Main function to export latex colors
     """
 
     in_out_dict = {
         # '28_02_22_results_main_experiment.csv': 'new_new_base_color_map',
         # '28_03_22_results_main_experiment_filtered.csv': 'new_new_filtered_color_map',
         # '21_04_22_results_main_experiment_easy.csv': 'new_new_easy_color_map',
-        '27_05_22_results_main_experiment_705easy.csv': '705_easy_color_map'
+        "27_05_22_results_main_experiment_705easy.csv": "705_easy_color_map"
     }
 
     for file, out_file in in_out_dict.items():
-        print(f'Exporting {file} to latex as {out_file}...')
+        print(f"Exporting {file} to latex as {out_file}...")
         out_file = f"{paths.LATEX_PATH}/{out_file}"
-        create_latex_color_document(file, out_file, color_map='YlGn')
-        print('----- FINISHED -----')
+        create_latex_color_document(file, out_file, color_map="YlGn")
+        print("----- FINISHED -----")
 
 
-def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers', mark_rows: Optional[bool] = True,
-                          clean_tex: Optional[bool] = False) -> None:
+def create_latex_document(
+    csv_file: str,
+    out_file: str,
+    out: str = "classifiers",
+    mark_rows: Optional[bool] = True,
+    clean_tex: Optional[bool] = False,
+) -> None:
     """
 
     Export results from csv to Latex in different formats
@@ -69,8 +79,8 @@ def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers'
     :param mark_rows: true to mark by rows, false to mark columns by block
     :param clean_tex: true to clean tex after pdf generation, default is False
     """
-    assert csv_file.endswith('csv')
-    assert out in ['classifiers', 'datasets']
+    assert csv_file.endswith("csv")
+    assert out in ["classifiers", "datasets"]
 
     doc = _latex_preamble()
 
@@ -80,17 +90,17 @@ def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers'
         classifiers = data.index.get_level_values(0).unique()
         datasets = data.index.get_level_values(1).unique()
 
-        size_box = ContainerCommand(arguments=[NoEscape(r'\textwidth'), '!'])
-        size_box.latex_name = 'resizebox'
+        size_box = ContainerCommand(arguments=[NoEscape(r"\textwidth"), "!"])
+        size_box.latex_name = "resizebox"
 
         table = Table()
 
-        tabular = Tabular('cc|c|c|c|c')
-        blank_columns = ['' for _ in range(tabular.width - len(preprocesses))]
+        tabular = Tabular("cc|c|c|c|c")
+        blank_columns = ["" for _ in range(tabular.width - len(preprocesses))]
         tabular.add_row((*blank_columns, *preprocesses))
-        tabular.append(Command('specialrule', arguments=['.2em', '.1em', '.1em']))
+        tabular.append(Command("specialrule", arguments=[".2em", ".1em", ".1em"]))
 
-        if out == 'classifiers':
+        if out == "classifiers":
             first_level = classifiers
             second_level = datasets
         else:
@@ -99,17 +109,17 @@ def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers'
 
         best_datas = dict()
         for classifier in classifiers:
-            classifier_results = data.loc[classifier]['mean']
+            classifier_results = data.loc[classifier]["mean"]
             best_datas[classifier] = classifier_results.idxmax()
 
         best_classifiers = dict()
         for dataset in datasets:
-            dataset_results = data.swaplevel(1, 0).loc[dataset]['mean']
+            dataset_results = data.swaplevel(1, 0).loc[dataset]["mean"]
             best_classifiers[dataset] = dataset_results.idxmax()
 
         for it_first_level in first_level:
 
-            if out == 'classifiers':
+            if out == "classifiers":
                 list_of_best = best_datas[it_first_level]
             else:
                 list_of_best = best_classifiers[it_first_level]
@@ -121,8 +131,12 @@ def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers'
                     if mark_rows:
                         row_data = _create_latex_row(row_data)
                     else:
-                        row_data = _create_latex_row(row_data,
-                                                     list_of_best[list_of_best == it_second_level].index.to_list())
+                        row_data = _create_latex_row(
+                            row_data,
+                            list_of_best[
+                                list_of_best == it_second_level
+                            ].index.to_list(),
+                        )
 
                 # it_first_level == datasets, it_second_level == classifier, list_of_best == best_datas
                 elif (it_first_level, it_second_level) in data.index:
@@ -130,39 +144,52 @@ def create_latex_document(csv_file: str, out_file: str, out: str = 'classifiers'
                     if mark_rows:
                         row_data = _create_latex_row(row_data)
                     else:
-                        row_data = _create_latex_row(row_data,
-                                                     list_of_best[list_of_best == it_second_level].index.to_list())
+                        row_data = _create_latex_row(
+                            row_data,
+                            list_of_best[
+                                list_of_best == it_second_level
+                            ].index.to_list(),
+                        )
 
                 else:
-                    if out == 'datasets':
+                    if out == "datasets":
                         continue
-                    row_data = ['No converge' for _ in range(len(preprocesses))]
+                    row_data = ["No converge" for _ in range(len(preprocesses))]
                 if i == 0:
                     tabular.add_row(
                         (
-                            MultiColumn(1, align='c|', data=MultiRow(3, data=it_first_level)),
-                            it_second_level, *row_data
+                            MultiColumn(
+                                1, align="c|", data=MultiRow(3, data=it_first_level)
+                            ),
+                            it_second_level,
+                            *row_data,
                         )
                     )
                 else:
                     tabular.add_row(
                         (
-                            MultiColumn(1, align='c|', data=''),
-                            it_second_level, *row_data
+                            MultiColumn(1, align="c|", data=""),
+                            it_second_level,
+                            *row_data,
                         )
                     )
                 if i != len(second_level) - 1:
                     tabular.add_hline(start=2, end=len(preprocesses) + 2)
                 else:
-                    tabular.append(Command('specialrule', arguments=['.2em', '.1em', '.1em']))
+                    tabular.append(
+                        Command("specialrule", arguments=[".2em", ".1em", ".1em"])
+                    )
 
-        caption = Command('caption', f"Tabla comparativa en {fixed_values.EVALUATION_METRICS[metric]['name']}")
+        caption = Command(
+            "caption",
+            f"Tabla comparativa en {fixed_values.EVALUATION_METRICS[metric]['name']}",
+        )
 
         size_box.append(tabular)
         table.append(size_box)
         table.append(caption)
         doc.append(table)
-    doc.generate_pdf(out_file, compiler='pdflatex', clean_tex=clean_tex)
+    doc.generate_pdf(out_file, compiler="pdflatex", clean_tex=clean_tex)
     # doc.generate_tex(f"{paths.LATEX_PATH}/test_pyLatex")
     # print(doc.dumps())
 
@@ -179,26 +206,32 @@ def _get_colors(csv_file: str, color_map: str, metric: str) -> pd.DataFrame:
     """
     cmap = matplotlib.cm.get_cmap(color_map)
 
-    results_data = pd.read_csv(f"{csv_file}", sep=';')
-    results_data[metric] = results_data['METRICS_DICT'].apply(lambda x: pandas_utils.extract_dict(x, metric))
-    results_data = results_data[['DATASET', 'CLASSIFIER_NAME', 'PREPROCESS', metric]]
-    results_data = results_data[['CLASSIFIER_NAME', 'DATASET', 'PREPROCESS'] + [metric]]
+    results_data = pd.read_csv(f"{csv_file}", sep=";")
+    results_data[metric] = results_data["METRICS_DICT"].apply(
+        lambda x: pandas_utils.extract_dict(x, metric)
+    )
+    results_data = results_data[["DATASET", "CLASSIFIER_NAME", "PREPROCESS", metric]]
+    results_data = results_data[["CLASSIFIER_NAME", "DATASET", "PREPROCESS"] + [metric]]
 
-    color_metric_df = results_data.groupby(['DATASET', 'CLASSIFIER_NAME', 'PREPROCESS']).mean()
+    color_metric_df = results_data.groupby(
+        ["DATASET", "CLASSIFIER_NAME", "PREPROCESS"]
+    ).mean()
 
     color_metric_values = color_metric_df.values
 
     scaler = sklearn.preprocessing.MinMaxScaler(feature_range=(0.1, 0.9))
     # scaled_color_metric_values = scaler.fit_transform(color_metric_values).reshape((88,))
-    scaled_color_metric_values = scaler.fit_transform(color_metric_values).reshape((64,))
+    scaled_color_metric_values = scaler.fit_transform(color_metric_values).reshape(
+        (64,)
+    )
 
     colors = cmap(scaled_color_metric_values)[:, :3]
 
-    colors_df = pd.DataFrame(index=color_metric_df.index, columns=['R', 'G', 'B'])
+    colors_df = pd.DataFrame(index=color_metric_df.index, columns=["R", "G", "B"])
 
-    colors_df['R'] = colors[:, 0]
-    colors_df['G'] = colors[:, 1]
-    colors_df['B'] = colors[:, 2]
+    colors_df["R"] = colors[:, 0]
+    colors_df["G"] = colors[:, 1]
+    colors_df["B"] = colors[:, 2]
 
     return colors_df
 
@@ -206,14 +239,18 @@ def _get_colors(csv_file: str, color_map: str, metric: str) -> pd.DataFrame:
 def _get_color_name(metric: str, idx: tuple) -> str:
     """
 
-        Auxiliar function to make color name
+    Auxiliar function to make color name
 
     """
     return f"{metric}_{idx[0]}_{idx[1]}_{idx[2]}"
 
 
-def old_create_latex_color_document(csv_file: str, out_file: str, clean_tex: Optional[bool] = False,
-                                    color_map: Optional[str] = 'YlGn') -> None:
+def old_create_latex_color_document(
+    csv_file: str,
+    out_file: str,
+    clean_tex: Optional[bool] = False,
+    color_map: Optional[str] = "YlGn",
+) -> None:
     """
 
     Export results from csv to Latex in different formats
@@ -223,25 +260,49 @@ def old_create_latex_color_document(csv_file: str, out_file: str, clean_tex: Opt
     :param out_file: pdf file to generate
     :param clean_tex: true to clean tex after pdf generation, default is False
     """
-    assert csv_file.endswith('csv')
+    assert csv_file.endswith("csv")
 
     doc = _latex_preamble()
 
     cmap = matplotlib.cm.get_cmap(color_map)
     # rgb_colors_24 = cmap([i / 24 for i in range(24)])  # 24 for FFT 4 pre x 6 clf
-    rgb_colors_24 = cmap([i * (0.9 - 0.1) / 24 for i in range(24)])  # 24 for FFT 4 pre x 6 clf
+    rgb_colors_24 = cmap(
+        [i * (0.9 - 0.1) / 24 for i in range(24)]
+    )  # 24 for FFT 4 pre x 6 clf
     # rgb_colors_20 = cmap([i / 20 for i in range(20)])  # 12 for CC and DCOR 4 pre x 6 clf
-    rgb_colors_20 = cmap([i * (0.9 - 0.1) / 20 for i in range(20)])  # 12 for CC and DCOR 4 pre x 6 clf
+    rgb_colors_20 = cmap(
+        [i * (0.9 - 0.1) / 20 for i in range(20)]
+    )  # 12 for CC and DCOR 4 pre x 6 clf
 
     for i, color in enumerate(rgb_colors_24[::-1]):
-        doc.preamble.append(NoEscape(r"\definecolor{green_" + str(i) + "}{rgb}{"
-                                     + str(color[0]) + "," + str(color[1]) + "," + str(color[2]) +
-                                     "}"))
+        doc.preamble.append(
+            NoEscape(
+                r"\definecolor{green_"
+                + str(i)
+                + "}{rgb}{"
+                + str(color[0])
+                + ","
+                + str(color[1])
+                + ","
+                + str(color[2])
+                + "}"
+            )
+        )
 
     for i, color in enumerate(rgb_colors_20[::-1]):
-        doc.preamble.append(NoEscape(r"\definecolor{green_20_" + str(i) + "}{rgb}{"
-                                     + str(color[0]) + "," + str(color[1]) + "," + str(color[2]) +
-                                     "}"))
+        doc.preamble.append(
+            NoEscape(
+                r"\definecolor{green_20_"
+                + str(i)
+                + "}{rgb}{"
+                + str(color[0])
+                + ","
+                + str(color[1])
+                + ","
+                + str(color[2])
+                + "}"
+            )
+        )
 
     for metric in fixed_values.EVALUATION_METRICS:
         data = _get_data_from_csv(f"{paths.RESULTS_PATH}/{csv_file}", metric)
@@ -250,27 +311,33 @@ def old_create_latex_color_document(csv_file: str, out_file: str, clean_tex: Opt
 
         classifiers = dict()
         for dataset in datasets:
-            classifiers[dataset] = data.loc[pd.IndexSlice[:, dataset], :].index.get_level_values(0)
+            classifiers[dataset] = data.loc[
+                pd.IndexSlice[:, dataset], :
+            ].index.get_level_values(0)
 
-        size_box = ContainerCommand(arguments=[NoEscape(r'\textwidth'), '!'])
-        size_box.latex_name = 'resizebox'
+        size_box = ContainerCommand(arguments=[NoEscape(r"\textwidth"), "!"])
+        size_box.latex_name = "resizebox"
 
         table = Table()
 
-        tabular = Tabular('cc|c|c|c|c')
-        blank_columns = ['' for _ in range(tabular.width - len(preprocesses))]
+        tabular = Tabular("cc|c|c|c|c")
+        blank_columns = ["" for _ in range(tabular.width - len(preprocesses))]
         tabular.add_row((*blank_columns, *preprocesses))
-        tabular.append(Command('specialrule', arguments=['.2em', '.1em', '.1em']))
+        tabular.append(Command("specialrule", arguments=[".2em", ".1em", ".1em"]))
 
         colors_order = dict()
         for dataset in datasets:
-            if dataset == 'FFT':
-                colors = np.array([f'green_{i}' for i in range(24)]).reshape(
-                    (len(classifiers[dataset]), len(preprocesses)))
+            if dataset == "FFT":
+                colors = np.array([f"green_{i}" for i in range(24)]).reshape(
+                    (len(classifiers[dataset]), len(preprocesses))
+                )
             else:
-                colors = np.array([f'green_20_{i}' for i in range(20)]).reshape(
-                    (len(classifiers[dataset]), len(preprocesses)))
-            colors_order[dataset] = _get_color_matrix(data.loc[pd.IndexSlice[:, dataset], :]['mean'], colors)
+                colors = np.array([f"green_20_{i}" for i in range(20)]).reshape(
+                    (len(classifiers[dataset]), len(preprocesses))
+                )
+            colors_order[dataset] = _get_color_matrix(
+                data.loc[pd.IndexSlice[:, dataset], :]["mean"], colors
+            )
         for block, dataset in enumerate(datasets):
             for row, classifier in enumerate(classifiers[dataset]):
                 # Hay classifiers que no se usan para todos los classifiers
@@ -282,44 +349,51 @@ def old_create_latex_color_document(csv_file: str, out_file: str, clean_tex: Opt
 
                     row_colors = colors_order[dataset][row]
                     row_data = [
-                        NoEscape(f" \cellcolor{start_brace}{row_colors[i]}{end_brace}"
-                                 f"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}")
-                        for i, preprocess in enumerate(preprocesses)]
+                        NoEscape(
+                            rf" \cellcolor{start_brace}{row_colors[i]}{end_brace}"
+                            rf"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}"
+                        )
+                        for i, preprocess in enumerate(preprocesses)
+                    ]
                 else:
                     continue
 
                 if row == 0:
                     tabular.add_row(
                         (
-                            MultiColumn(1, align='c|', data=MultiRow(3, data=dataset)),
-                            classifier, *row_data
+                            MultiColumn(1, align="c|", data=MultiRow(3, data=dataset)),
+                            classifier,
+                            *row_data,
                         )
                     )
                 else:
                     tabular.add_row(
-                        (
-                            MultiColumn(1, align='c|', data=''),
-                            classifier, *row_data
-                        )
+                        (MultiColumn(1, align="c|", data=""), classifier, *row_data)
                     )
 
                 if row != len(classifiers[dataset]) - 1:
                     tabular.add_hline(start=2, end=len(preprocesses) + 2)
                 else:
-                    tabular.append(Command('specialrule', arguments=['.2em', '.1em', '.1em']))
+                    tabular.append(
+                        Command("specialrule", arguments=[".2em", ".1em", ".1em"])
+                    )
 
-        caption = Command('caption', f"Tabla comparativa en {fixed_values.EVALUATION_METRICS[metric]['name']}")
+        caption = Command(
+            "caption",
+            f"Tabla comparativa en {fixed_values.EVALUATION_METRICS[metric]['name']}",
+        )
         size_box.append(tabular)
         table.append(size_box)
         table.append(caption)
         doc.append(table)
-    doc.generate_pdf(out_file, compiler='pdflatex', clean_tex=clean_tex)
+    doc.generate_pdf(out_file, compiler="pdflatex", clean_tex=clean_tex)
     # doc.generate_tex(out_file)
     # print(doc.dumps())
 
 
-def create_latex_color_document(csv_file: str, out_file: str, color_map: str,
-                                clean_tex: Optional[bool] = False) -> None:
+def create_latex_color_document(
+    csv_file: str, out_file: str, color_map: str, clean_tex: Optional[bool] = False
+) -> None:
     """
     https://gist.github.com/lujoselu98/80b12a4635276a926d1443d7d7ac23a3
 
@@ -330,7 +404,7 @@ def create_latex_color_document(csv_file: str, out_file: str, color_map: str,
     :param out_file: pdf file to generate
     :param clean_tex: true to clean tex after pdf generation, default is False
     """
-    assert csv_file.endswith('csv')
+    assert csv_file.endswith("csv")
     doc = _latex_preamble()
 
     colors_dict = dict()
@@ -340,9 +414,19 @@ def create_latex_color_document(csv_file: str, out_file: str, color_map: str,
 
         for idx, color in colors_df.iterrows():
             # noinspection PyTypeChecker
-            doc.preamble.append(NoEscape(r"\definecolor{" + _get_color_name(metric, idx) + "}{rgb}{"
-                                         + str(color['R']) + ", " + str(color['G']) + ", " + str(color['B']) + "}"
-                                         ))
+            doc.preamble.append(
+                NoEscape(
+                    r"\definecolor{"
+                    + _get_color_name(metric, idx)
+                    + "}{rgb}{"
+                    + str(color["R"])
+                    + ", "
+                    + str(color["G"])
+                    + ", "
+                    + str(color["B"])
+                    + "}"
+                )
+            )
 
     for metric in fixed_values.EVALUATION_METRICS:
         data = _get_data_from_csv(csv_file, metric)
@@ -351,17 +435,19 @@ def create_latex_color_document(csv_file: str, out_file: str, color_map: str,
 
         classifiers = dict()
         for dataset in datasets:
-            classifiers[dataset] = data.loc[pd.IndexSlice[:, dataset], :].index.get_level_values(0)
+            classifiers[dataset] = data.loc[
+                pd.IndexSlice[:, dataset], :
+            ].index.get_level_values(0)
 
-        size_box = ContainerCommand(arguments=[NoEscape(r'\textwidth'), '!'])
-        size_box.latex_name = 'resizebox'
+        size_box = ContainerCommand(arguments=[NoEscape(r"\textwidth"), "!"])
+        size_box.latex_name = "resizebox"
 
         table = Table()
 
-        tabular = Tabular('cc|c|c|c|c')
-        blank_columns = ['' for _ in range(tabular.width - len(preprocesses))]
+        tabular = Tabular("cc|c|c|c|c")
+        blank_columns = ["" for _ in range(tabular.width - len(preprocesses))]
         tabular.add_row((*blank_columns, *preprocesses))
-        tabular.append(Command('specialrule', arguments=['.2em', '.1em', '.1em']))
+        tabular.append(Command("specialrule", arguments=[".2em", ".1em", ".1em"]))
 
         for block, dataset in enumerate(datasets):
             for row, classifier in enumerate(classifiers[dataset]):
@@ -372,40 +458,46 @@ def create_latex_color_document(csv_file: str, out_file: str, color_map: str,
                     end_brace = "}"
 
                     row_data = [
-                        NoEscape(f" \cellcolor{start_brace}"
-                                 f"{_get_color_name(metric, (dataset, classifier, preprocess))}"
-                                 f"{end_brace}"
-                                 f"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}")
-                        for i, preprocess in enumerate(preprocesses)]
+                        NoEscape(
+                            rf" \cellcolor{start_brace}"
+                            f"{_get_color_name(metric, (dataset, classifier, preprocess))}"
+                            f"{end_brace}"
+                            rf"{row_data[('mean', preprocess)]:.3f} $\pm$ {row_data[('std', preprocess)]:.3f}"
+                        )
+                        for i, preprocess in enumerate(preprocesses)
+                    ]
                 else:
                     continue
 
                 if row == 0:
                     tabular.add_row(
                         (
-                            MultiColumn(1, align='c|', data=MultiRow(3, data=dataset)),
-                            classifier, *row_data
+                            MultiColumn(1, align="c|", data=MultiRow(3, data=dataset)),
+                            classifier,
+                            *row_data,
                         )
                     )
                 else:
                     tabular.add_row(
-                        (
-                            MultiColumn(1, align='c|', data=''),
-                            classifier, *row_data
-                        )
+                        (MultiColumn(1, align="c|", data=""), classifier, *row_data)
                     )
 
                 if row != len(classifiers[dataset]) - 1:
                     tabular.add_hline(start=2, end=len(preprocesses) + 2)
                 else:
-                    tabular.append(Command('specialrule', arguments=['.2em', '.1em', '.1em']))
+                    tabular.append(
+                        Command("specialrule", arguments=[".2em", ".1em", ".1em"])
+                    )
 
-        caption = Command('caption', f"Tabla comparativa en {fixed_values.EVALUATION_METRICS[metric]['name']}")
+        caption = Command(
+            "caption",
+            f"Tabla comparativa en {fixed_values.EVALUATION_METRICS[metric]['name']}",
+        )
         size_box.append(tabular)
         table.append(size_box)
         table.append(caption)
         doc.append(table)
-    doc.generate_pdf(out_file, compiler='pdflatex', clean_tex=clean_tex)
+    doc.generate_pdf(out_file, compiler="pdflatex", clean_tex=clean_tex)
 
 
 def _get_color_matrix(data: pd.DataFrame, colors: np.ndarray) -> np.ndarray:
@@ -421,7 +513,7 @@ def _get_color_matrix(data: pd.DataFrame, colors: np.ndarray) -> np.ndarray:
                 row_order.append(index_list.index(data.index[data[col] == value]))
                 col_order.append(columns_list.index(col))
 
-    colors_order = np.empty(dtype='<U12', shape=(len(index_list), len(columns_list)))
+    colors_order = np.empty(dtype="<U12", shape=(len(index_list), len(columns_list)))
     order = [(r, c) for r, c in zip(row_order, col_order)]
     counter = 0
     for row in range(colors_order.shape[0]):
@@ -434,19 +526,19 @@ def _get_color_matrix(data: pd.DataFrame, colors: np.ndarray) -> np.ndarray:
 
 def _latex_preamble() -> Document:
     """
-        Create doc of latex and preamble
+    Create doc of latex and preamble
     """
-    doc = Document('multirow', documentclass='report')
+    doc = Document("multirow", documentclass="report")
 
-    doc.packages.append(Package('multirow'))
-    doc.packages.append(Package('adjustbox'))
-    doc.packages.append(Package('ctable'))
-    doc.packages.append(Package('xcolor'))
-    doc.packages.append(Package('colortbl'))
+    doc.packages.append(Package("multirow"))
+    doc.packages.append(Package("adjustbox"))
+    doc.packages.append(Package("ctable"))
+    doc.packages.append(Package("xcolor"))
+    doc.packages.append(Package("colortbl"))
 
-    doc.preamble.append(Command('title', 'Resultados Experimentos DAHFI'))
-    doc.preamble.append(Command('author', 'Jose Luis Lavado'))
-    doc.preamble.append(Command('date', NoEscape(r'\today')))
+    doc.preamble.append(Command("title", "Resultados Experimentos DAHFI"))
+    doc.preamble.append(Command("author", "Jose Luis Lavado"))
+    doc.preamble.append(Command("date", NoEscape(r"\today")))
 
     doc.preamble.append(NoEscape(r"\textwidth = 16truecm"))
     doc.preamble.append(NoEscape(r"\textheight = 25truecm"))
@@ -454,13 +546,15 @@ def _latex_preamble() -> Document:
     doc.preamble.append(NoEscape(r"\evensidemargin = 5pt"))
     doc.preamble.append(NoEscape(r"\topmargin = -2truecm"))
 
-    doc.append(NoEscape(r'\maketitle'))
-    doc.append(NoEscape(r'\renewcommand{\arraystretch}{1.2}'))
+    doc.append(NoEscape(r"\maketitle"))
+    doc.append(NoEscape(r"\renewcommand{\arraystretch}{1.2}"))
 
     return doc
 
 
-def _create_latex_row(data: pd.DataFrame, mark_preprocess: Optional[List] = None) -> List:
+def _create_latex_row(
+    data: pd.DataFrame, mark_preprocess: Optional[list] = None
+) -> list:
     """
 
     Auxiliar function to create each row of latex table with the bold mark
@@ -471,21 +565,31 @@ def _create_latex_row(data: pd.DataFrame, mark_preprocess: Optional[List] = None
     preprocesses = data.index.get_level_values(1).unique()
 
     if mark_preprocess is None:
-        mark_preprocess = [data['mean'].idxmax()]
+        mark_preprocess = [data["mean"].idxmax()]
 
     row_latex_data = []
 
     for preprocess in preprocesses:
         if preprocess in mark_preprocess:
-            row_latex_data.append(bold(NoEscape(
-                f"{data[('mean', preprocess)]:.3f} $\pm$ {data[('std', preprocess)]:.3f}")))
+            row_latex_data.append(
+                bold(
+                    NoEscape(
+                        rf"{data[('mean', preprocess)]:.3f} $\pm$ {data[('std', preprocess)]:.3f}"
+                    )
+                )
+            )
         else:
             row_latex_data.append(
-                NoEscape(f"{data[('mean', preprocess)]:.3f} $\pm$ {data[('std', preprocess)]:.3f}"))
+                NoEscape(
+                    rf"{data[('mean', preprocess)]:.3f} $\pm$ {data[('std', preprocess)]:.3f}"
+                )
+            )
     return row_latex_data
 
 
-def _get_significant_order(csv_file: str, dataset: str, metric: str, alpha: Optional[float] = 0.01) -> Dict[int, List]:
+def _get_significant_order(
+    csv_file: str, dataset: str, metric: str, alpha: Optional[float] = 0.01
+) -> dict[int, list]:
     """
 
     Method for calculate the stadistically significant rank of models using Wilcoxon, one dataset and one metric
@@ -496,17 +600,23 @@ def _get_significant_order(csv_file: str, dataset: str, metric: str, alpha: Opti
     :param alpha: significant level
     :return: rank dict (rank, models)
     """
-    results_data = pd.read_csv(csv_file, sep=';')
-    results_data[metric] = results_data['METRICS_DICT'].apply(lambda x: pandas_utils.extract_dict(x, metric))
-    results_data['MODEL_NAME'] = results_data['PREPROCESS'] + " + " + results_data['CLASSIFIER_NAME']
-    results_data = results_data[results_data['CLASSIFIER_NAME'] != 'LRSScaler']
-    results_data = results_data[['DATASET', 'MODEL_NAME', metric]]
-    dataset_results = results_data[results_data['DATASET'] == dataset]
+    results_data = pd.read_csv(csv_file, sep=";")
+    results_data[metric] = results_data["METRICS_DICT"].apply(
+        lambda x: pandas_utils.extract_dict(x, metric)
+    )
+    results_data["MODEL_NAME"] = (
+        results_data["PREPROCESS"] + " + " + results_data["CLASSIFIER_NAME"]
+    )
+    results_data = results_data[results_data["CLASSIFIER_NAME"] != "LRSScaler"]
+    results_data = results_data[["DATASET", "MODEL_NAME", metric]]
+    dataset_results = results_data[results_data["DATASET"] == dataset]
 
     # Rank all models
     dataset_metrics = np.zeros(len(dataset_results.MODEL_NAME.unique()))
     for i, model in enumerate(dataset_results.MODEL_NAME.unique()):
-        dataset_model_results = dataset_results[dataset_results['MODEL_NAME'] == model][metric]
+        dataset_model_results = dataset_results[dataset_results["MODEL_NAME"] == model][
+            metric
+        ]
         dataset_metrics[i] = dataset_model_results.mean()
     if any(np.diff(dataset_metrics) == 0):
         raise ValueError(f"Ties on dataset {dataset} with metric {metric}")
@@ -522,11 +632,13 @@ def _get_significant_order(csv_file: str, dataset: str, metric: str, alpha: Opti
     for model_1, model_2 in itertools.permutations(models, 2):
         results_model_1 = dataset_results[dataset_results.MODEL_NAME == model_1][metric]
         results_model_2 = dataset_results[dataset_results.MODEL_NAME == model_2][metric]
-        p_values.loc[model_1, model_2] = stats.wilcoxon(results_model_1.values, results_model_2.values)[1]
+        p_values.loc[model_1, model_2] = stats.wilcoxon(
+            results_model_1.values, results_model_2.values
+        )[1]
 
     p_values = p_values.loc[model_ranks, model_ranks]
 
-    p_values.to_excel(f'p_values_{dataset}_{metric}.xls')
+    p_values.to_excel(f"p_values_{dataset}_{metric}.xls")
 
     # Finally rank the models
     returned_rank = dict()
@@ -557,14 +669,18 @@ def _get_data_from_csv(csv_file: str, metric: str) -> pd.DataFrame:
     assert csv_file.endswith(".csv")
     assert metric in fixed_values.EVALUATION_METRICS
 
-    results_data = pd.read_csv(csv_file, sep=';')
-    results_data[metric] = results_data['METRICS_DICT'].apply(lambda x: pandas_utils.extract_dict(x, metric))
-    results_data = results_data[['DATASET', 'CLASSIFIER_NAME', 'PREPROCESS', metric]]
+    results_data = pd.read_csv(csv_file, sep=";")
+    results_data[metric] = results_data["METRICS_DICT"].apply(
+        lambda x: pandas_utils.extract_dict(x, metric)
+    )
+    results_data = results_data[["DATASET", "CLASSIFIER_NAME", "PREPROCESS", metric]]
 
     results_pivot_table = pd.pivot_table(
         results_data,
-        values=metric, index=['CLASSIFIER_NAME', 'DATASET'], columns=['PREPROCESS'],
-        aggfunc=['mean', 'std']
+        values=metric,
+        index=["CLASSIFIER_NAME", "DATASET"],
+        columns=["PREPROCESS"],
+        aggfunc=["mean", "std"],
     )
 
     return results_pivot_table
@@ -573,13 +689,15 @@ def _get_data_from_csv(csv_file: str, metric: str) -> pd.DataFrame:
 def test_significance_ranking_main() -> None:
     for dataset in fixed_values.DATASETS:
         for metric in fixed_values.EVALUATION_METRICS:
-            ranking = _get_significant_order('28_02_22_results_main_experiment.csv', dataset, metric, alpha=0.01)
+            ranking = _get_significant_order(
+                "28_02_22_results_main_experiment.csv", dataset, metric, alpha=0.01
+            )
             print(f"{dataset} {metric}")
             for rank, models in ranking.items():
                 print(rank, models)
             print("*" * 10)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
     # test_significance_ranking_main()

@@ -7,10 +7,10 @@ from typing import List
 import joblib
 import numpy as np
 import pandas as pd
-from dcor import distance_correlation, DistanceCovarianceMethod
+from dcor import DistanceCovarianceMethod, distance_correlation
 
 
-def calc_lags(minutes: int = 5) -> List[int]:
+def calc_lags(minutes: int = 5) -> list[int]:
     """
 
     Returns the lag for a given number of minutes
@@ -71,10 +71,10 @@ def get_freqs(N: int, sample_freq: float = 4) -> np.ndarray:
     :return: array of freqs
     """
 
-    return np.fft.rfftfreq(N, d=1. / sample_freq)
+    return np.fft.rfftfreq(N, d=1.0 / sample_freq)
 
 
-def nan_save_fft(signal: pd.Series, freqs: np.ndarray) -> List[float]:
+def nan_save_fft(signal: pd.Series, freqs: np.ndarray) -> list[float]:
     """
         Nan save fft implementation
     :param signal: given signal data
@@ -88,9 +88,11 @@ def nan_save_fft(signal: pd.Series, freqs: np.ndarray) -> List[float]:
     nan_signal = np.isnan(signal)
     signal_nans = signal[~nan_signal]
 
-    def parrallel_k(p_k: int, p_nan_signal: np.ndarray, p_signal_nans: pd.Series) -> np.ndarray:
+    def parrallel_k(
+        p_k: int, p_nan_signal: np.ndarray, p_signal_nans: pd.Series
+    ) -> np.ndarray:
         """
-            parallel part of function
+        parallel part of function
         """
         nan_exp = np.exp(-2j * np.pi * p_k * n / N)[~p_nan_signal]
         return np.sum(p_signal_nans * nan_exp)
