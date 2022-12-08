@@ -6,19 +6,72 @@ from collections import Counter
 from typing import Dict, List, Optional, cast
 
 import joblib
+import sklearn
 from tqdm import tqdm
 
+from Preprocessing.FPCA import FPCA
 from Preprocessing.mRMR import mRMR
+from Preprocessing.PLS import PLS
 from Utils import common_functions, fixed_values, paths
 
 
 def parallel_param_validation(
-        X, y, tt, idx_internal,
+        X, y, tt,
+        idx_external, idx_internal,
         clf_to_val,
         preprocess,
         features_number,
-        param):
-    pass
+        params) -> float:
+    """
+    Function to parallelize the parameter validation
+    :param X: Data matrix
+    :param y: Labels vector
+    :param tt: Indexes of the time series
+    :param idx_external: Index of the external validation
+    :param idx_internal: index of the internal validation
+    :param clf_to_val: classifier to validate
+    :param preprocess: preprocess to apply
+    :param features_number: features number after preprocessing
+    :param params: params for classifier to validate
+    :return: metric of the model
+    """
+
+    X_train, X_test, y_train, y_test = common_functions.get_fold(X=X,
+                                                                 y=y,
+                                                                 idx_external=idx_external,
+                                                                 idx_internal=idx_internal,
+                                                                 strategy='randomsplit')
+    if preprocess == 'mRMR':
+        indexes = mRMR.calculate_mRMR_skfda(X_train=X_train,
+                                            tt=tt,
+                                            y_train=y_train,
+                                            features_number=features_number)
+        X_train = X_train[:, indexes]
+        X_test = X_test[:, indexes]
+    elif preprocess == 'PCA':
+        X_train, X_test = FPCA.calculate_FPCA(X_train=X_train,
+                                              X_test=X_test,
+                                              tt=tt,
+                                              n_components=features_number)
+    elif preprocess == 'PLS':
+        X_train, X_test = PLS.calculate_PLS(X_train=X_train,
+                                            X_test=X_test,
+                                            y_train=y_train,
+                                            n_components=features_number)
+    # Reset classifier
+    clf = sklearn.clone(clf_to_val)
+
+    # Set params
+    clf.set_params(**params)
+
+    # Train
+    clf.fit(X_train, y_train)
+
+    # Evaluate
+    y_pred = clf.predict(X_test)
+    metric_test = fixed_values.VALIDATION_METRIC(y_test, y_pred)
+
+    return metric_test
 
 
 def main() -> None:
@@ -82,8 +135,6 @@ def main() -> None:
                         progress_bar.set_postfix(
                             {"feat": features_number, "params": params}
                         )
-
-
 
                 if progress_bar.last_print_n < progress_bar.total:
                     progress_bar.update(1)
