@@ -129,6 +129,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Experiments\Results\results_1670524793.6828883_ECG_200_experiment.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

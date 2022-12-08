@@ -19,7 +19,7 @@ from Utils import common_functions, fixed_values, paths
 
 def calculate_mRMR_skfda(
     X_train: pd.DataFrame, tt: pd.Series, y_train: pd.Series, features_number: int
-) -> list[int]:
+) -> List[int]:
     """
 
     :param X_train: Data matrix (features as columns, patterns as rows)
@@ -46,7 +46,7 @@ def calculate_mRMR(
     use_tqdm: Optional[bool] = False,
     tqdm_desc: Optional[str] = "",
     is_notebook: Optional[bool] = False,
-) -> list[int]:
+) -> List[int]:
     """
 
     :param X_train: Data matrix (features as columns, patterns as rows)
@@ -123,7 +123,7 @@ def parallel_external_code(
     idx_external: int,
     strategy: Optional[str] = "kfold",
     remove_outliers_dataset: Optional[str] = None,
-) -> list[int]:
+) -> List[int]:
     """
     Function to parallelize outer loop
     """
@@ -147,7 +147,7 @@ def smoothed_parallel_external_code(
     idx_external: int,
     filter_data: Optional[bool] = False,
     easy_data: Optional[bool] = False,
-) -> list[int]:
+) -> List[int]:
     """
     Function to parallelize outer loop
     """
@@ -171,7 +171,7 @@ def parallel_internal_code(
     idx_internal: int,
     strategy: Optional[str] = "kfold",
     remove_outliers_dataset: Optional[str] = None,
-) -> list[int]:
+) -> List[int]:
     """
     Function to parallelize inner loop
     """
@@ -197,7 +197,7 @@ def smoothed_parallel_internal_code(
     idx_internal: int,
     filter_data: Optional[bool] = False,
     easy_data: Optional[bool] = False,
-) -> list[int]:
+) -> List[int]:
     """
     Function to parallelize inner loop
     """
@@ -363,7 +363,7 @@ def load_mRMR_indexes(
     filter_data: Optional[bool] = False,
     remove_dataset_outliers: Optional[bool] = False,
     easy_data: Optional[bool] = False,
-) -> list[int]:
+) -> List[int]:
     """
         Load indexes from .txt file, used to save the real values needed for experiments
     :param dataset: Dataset to load
@@ -404,7 +404,7 @@ def load_mRMR_indexes(
 
     with open(f"{mRMR_indexes_file}") as f:
         line = f.readline()
-        mRMR_indexes: list[Any] = (
+        mRMR_indexes: List[Any] = (
             line.strip().replace("]", "").replace("[", "").replace("'", "").split(", ")
         )
         if dataset != "FFT":
@@ -453,7 +453,7 @@ def smoothed_load_mRMR_indexes(
 
     with open(f"{mRMR_indexes_file}") as f:
         line = f.readline()
-        mRMR_indexes: list[Any] = (
+        mRMR_indexes: List[Any] = (
             line.strip().replace("]", "").replace("[", "").replace("'", "").split(", ")
         )
         mRMR_indexes = [float(x) for x in mRMR_indexes]
@@ -516,7 +516,7 @@ def save_mRMR(
         X_train, X_test, y_train, y_test = common_functions.get_fold(
             X, y, idx_external, strategy=strategy
         )
-        mRMR_indexes: list[Any] = load_mRMR_indexes(
+        mRMR_indexes: List[Any] = load_mRMR_indexes(
             dataset,
             idx_external,
             remove_outliers=remove_outliers,
@@ -591,7 +591,7 @@ def smoothed_save_mRMR(
         tt, X_train, X_test, y_train, y_test = common_functions.load_smoothed_data(
             idx_external, filter_data=filter_data, easy_data=easy_data
         )
-        mRMR_indexes: list[Any] = smoothed_load_mRMR_indexes(
+        mRMR_indexes: List[Any] = smoothed_load_mRMR_indexes(
             idx_external, filter_data=filter_data, easy_data=easy_data
         )
         mRMR_indexes = list(map(str, mRMR_indexes))
