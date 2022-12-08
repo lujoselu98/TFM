@@ -7,9 +7,14 @@ from typing import List, Optional
 import numpy as np
 from sklearn.dummy import DummyClassifier
 from sklearn.ensemble import BaggingClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (balanced_accuracy_score, confusion_matrix,
                              matthews_corrcoef, precision_score, recall_score,
                              roc_auc_score)
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 
 DATASETS = ["CC", "DCOR", "FFT"]
@@ -205,64 +210,64 @@ MAX_DIMENSION = max(DIMENSION_GRID)
 
 # Slower to faster
 CLASSIFIERS = {
-    # 'SVC': {
-    #     'clf': SVC(kernel='rbf', random_state=0, class_weight='balanced'),
-    #     'param_grid': {
-    #         'gamma': np.logspace(-3, 3, 7),
-    #         'C': np.logspace(-3, 3, 7),
-    #     },
-    #     'evaluate_score': 'decision_function',
-    #     'datasets': DATASETS
-    # },
-    # 'SVCSScaler': {
-    #     'clf': make_pipeline(StandardScaler(), SVC(kernel='rbf',
-    #                                                random_state=0,
-    #                                                class_weight='balanced')),
-    #     'param_grid': {
-    #         'svc__gamma': np.logspace(-3, 3, 7),
-    #         'svc__C': np.logspace(-3, 3, 7),
-    #     },
-    #     'evaluate_score': 'decision_function',
-    #     'datasets': DATASETS
-    # },
-    # 'LR': {
-    #     'clf': LogisticRegression(penalty='l1',
-    #                               solver='liblinear',
-    #                               random_state=0,
-    #                               class_weight='balanced',
-    #                               max_iter=1000),
-    #     'param_grid': {
-    #         'C': np.logspace(-3, 2, 6)
-    #     },
-    #     'evaluate_score': 'predict_proba',
-    #     'datasets': DATASETS
-    # },
-    # 'LRSScaler': {
-    #     'clf': make_pipeline(StandardScaler(), LogisticRegression(penalty='l1', solver='liblinear', random_state=0,
-    #                                                               class_weight='balanced',
-    #                                                               max_iter=1000)),
-    #     'param_grid': {
-    #         'logisticregression__C': np.logspace(-3, 2, 6)
-    #     },
-    #     'evaluate_score': 'predict_proba',
-    #     'datasets': ['FFT']
-    # },
-    # 'KNN': {
-    #     'clf': KNeighborsClassifier(),
-    #     'param_grid': {
-    #         'n_neighbors': np.arange(3, 30, 2),
-    #     },
-    #     'evaluate_score': 'predict_proba',
-    #     'datasets': DATASETS
-    # },
-    # 'KNNSScaler': {
-    #     'clf': make_pipeline(StandardScaler(), KNeighborsClassifier()),
-    #     'param_grid': {
-    #         'kneighborsclassifier__n_neighbors': np.arange(3, 30, 2),
-    #     },
-    #     'evaluate_score': 'predict_proba',
-    #     'datasets': DATASETS
-    # },
+    'SVC': {
+        'clf': SVC(kernel='rbf', random_state=0, class_weight='balanced'),
+        'param_grid': {
+            'gamma': np.logspace(-3, 3, 7),
+            'C': np.logspace(-3, 3, 7),
+        },
+        'evaluate_score': 'decision_function',
+        'datasets': DATASETS
+    },
+    'SVCSScaler': {
+        'clf': make_pipeline(StandardScaler(), SVC(kernel='rbf',
+                                                   random_state=0,
+                                                   class_weight='balanced')),
+        'param_grid': {
+            'svc__gamma': np.logspace(-3, 3, 7),
+            'svc__C': np.logspace(-3, 3, 7),
+        },
+        'evaluate_score': 'decision_function',
+        'datasets': DATASETS
+    },
+    'LR': {
+        'clf': LogisticRegression(penalty='l1',
+                                  solver='liblinear',
+                                  random_state=0,
+                                  class_weight='balanced',
+                                  max_iter=1000),
+        'param_grid': {
+            'C': np.logspace(-3, 2, 6)
+        },
+        'evaluate_score': 'predict_proba',
+        'datasets': DATASETS
+    },
+    'LRSScaler': {
+        'clf': make_pipeline(StandardScaler(), LogisticRegression(penalty='l1', solver='liblinear', random_state=0,
+                                                                  class_weight='balanced',
+                                                                  max_iter=1000)),
+        'param_grid': {
+            'logisticregression__C': np.logspace(-3, 2, 6)
+        },
+        'evaluate_score': 'predict_proba',
+        'datasets': ['FFT']
+    },
+    'KNN': {
+        'clf': KNeighborsClassifier(),
+        'param_grid': {
+            'n_neighbors': np.arange(3, 30, 2),
+        },
+        'evaluate_score': 'predict_proba',
+        'datasets': DATASETS
+    },
+    'KNNSScaler': {
+        'clf': make_pipeline(StandardScaler(), KNeighborsClassifier()),
+        'param_grid': {
+            'kneighborsclassifier__n_neighbors': np.arange(3, 30, 2),
+        },
+        'evaluate_score': 'predict_proba',
+        'datasets': DATASETS
+    },
     # 'RandomForest': {
     #     'clf': RandomForestClassifier(random_state=0, class_weight='balanced', n_estimators=100),
     #     'param_grid': {
@@ -273,16 +278,16 @@ CLASSIFIERS = {
     #     'evaluate_score': 'predict_proba',
     #     'datasets': DATASETS
     # },
-    "Bagging": {
-        "clf": BaggingClassifier(DecisionTreeClassifier(), random_state=0),
-        "param_grid": {
-            "base_estimator__max_depth": np.arange(3, 10),
-            "n_estimators": [10, 100],
-            "max_samples": [0.1, 0.2, 0.5],
-        },
-        "evaluate_score": "predict_proba",
-        "datasets": DATASETS,
-    }
+    # "Bagging": {
+    #     "clf": BaggingClassifier(DecisionTreeClassifier(), random_state=0),
+    #     "param_grid": {
+    #         "base_estimator__max_depth": np.arange(3, 10),
+    #         "n_estimators": [10, 100],
+    #         "max_samples": [0.1, 0.2, 0.5],
+    #     },
+    #     "evaluate_score": "predict_proba",
+    #     "datasets": DATASETS,
+    # }
 }
 
 DUMMY_CLASSIFIER = {

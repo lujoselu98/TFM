@@ -14,7 +14,7 @@ def load_data(
     remove_outliers: Optional[bool] = False,
     filter_data: Optional[bool] = False,
     easy_data: Optional[bool] = False,
-) -> tuple[np.ndarray, pd.DataFrame, pd.Series]:
+) -> Tuple[np.ndarray, pd.DataFrame, pd.Series]:
     """
     Function to load data
     :param dataset: dataset identifier [CC, CDCOR, FFT]
@@ -57,12 +57,12 @@ def load_data(
     return tt, X, y
 
 
-def load_ucr_ECG_200_data() -> tuple[np.ndarray, pd.DataFrame, pd.Series]:
+def load_ucr_ECG_200_data() -> Tuple[np.ndarray, pd.DataFrame, pd.Series]:
     bad_train_x, train_y = load_from_tsfile_to_dataframe(
         f"{paths.ECG200_DATA_PATH}/ECG200_TRAIN.ts"
     )
     bad_test_x, test_y = load_from_tsfile_to_dataframe(
-        f"{paths.ECG200_DATA_PATH}/ECG200/ECG200_TRAIN.ts"
+        f"{paths.ECG200_DATA_PATH}/ECG200_TEST.ts"
     )
 
     X_train = pd.DataFrame(columns=[i for i in range(96)])
@@ -75,8 +75,6 @@ def load_ucr_ECG_200_data() -> tuple[np.ndarray, pd.DataFrame, pd.Series]:
     for idx, row in bad_test_x.iterrows():
         X_test.loc[idx] = row.values[0].values
 
-    X_train = pd.DataFrame(columns=[i for i in range(96)])
-
     X = pd.concat([X_train, X_test])
 
     tt = X.columns.values
@@ -84,7 +82,7 @@ def load_ucr_ECG_200_data() -> tuple[np.ndarray, pd.DataFrame, pd.Series]:
     y_train = train_y.astype("int")
     y_test = test_y.astype("int")
 
-    y = np.concat((y_train, y_test))
+    y = pd.Series(np.concatenate((y_train, y_test)))
 
     return tt, X, y
 
@@ -94,7 +92,7 @@ def load_smoothed_data(
     idx_internal: Optional[int] = None,
     filter_data: Optional[bool] = False,
     easy_data: Optional[bool] = False,
-) -> tuple[np.ndarray, pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
+) -> Tuple[np.ndarray, pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """
         Function to load FFT data already smoothed
 
@@ -136,8 +134,8 @@ def load_smoothed_data(
         n_splits=fixed_values.INTERNAL_SPLITS, shuffle=True, random_state=idx_external
     )
 
-    split_iterator = internal_cv.split(X_train, y_train), idx_internal
-    indexes = next(itertools.islice(split_iterator, None), None)
+    split_iterator = internal_cv.split(X_train, y_train)
+    indexes = next(itertools.islice(split_iterator, idx_internal, None), None)
     if indexes is not None:
         index_train, index_test = indexes
 
@@ -157,7 +155,7 @@ def get_fold(
     idx_internal: Optional[int] = None,
     strategy: Optional[str] = "kfold",
     outliers_remove_train: Optional[str] = None,
-) -> tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """
     Get X_train, X_test, y_train, y_test corresponding to the fold
     :param X: Whole data matrix
@@ -184,10 +182,12 @@ def get_fold(
             random_state=0,
         )
 
-    split_iterator = external_cv.split(X, y), idx_external
-    indexes = next(itertools.islice(split_iterator, None), None)
+    split_iterator = external_cv.split(X, y)
+    indexes = next(itertools.islice(split_iterator, idx_external, None), None)
     if indexes is not None:
         index_train, index_test = indexes
+
+
 
     # Remove outliers of dataset from train if they are on the fold
     X_train, X_test, y_train, y_test = (
@@ -215,8 +215,8 @@ def get_fold(
             random_state=idx_external,
         )
 
-        split_iterator = internal_cv.split(X_int, y_int), idx_internal
-        indexes = next(itertools.islice(split_iterator, None), None)
+        split_iterator = internal_cv.split(X_int, y_int)
+        indexes = next(itertools.islice(split_iterator, idx_internal, None), None)
         if indexes is not None:
             index_train, index_test = indexes
 
@@ -228,7 +228,7 @@ def get_fold(
         )
 
 
-def get_all_permutations(dictionary: dict) -> list[dict]:
+def get_all_permutations(dictionary: Dict) -> List[Dict]:
     """
     Return all posible combinations of (key,value) from a dict
 
@@ -245,6 +245,7 @@ def filter_patterns(
     nan_percentage_threshold: Optional[int] = 30,
 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series]:
     """
+    Filter patterns with less than mins_cut minutes of data and with more than nan_percentage_threshold of NaNs
 
     :param fhr: FHR data
     :param uc: UC data

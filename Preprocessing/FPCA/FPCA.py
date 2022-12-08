@@ -15,7 +15,7 @@ from Utils import common_functions, fixed_values, paths
 
 def calculate_FPCA(
     X_train: pd.DataFrame, X_test: pd.DataFrame, tt: np.ndarray, n_components: int
-) -> tuple[np.ndarray, np.ndarray]:
+) -> Tuple[np.ndarray, np.ndarray]:
     """
         Calculate FPCA and return the transform of X_train and X_test
 

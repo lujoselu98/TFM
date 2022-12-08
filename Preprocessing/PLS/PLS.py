@@ -14,7 +14,7 @@ from Utils import common_functions, fixed_values, paths
 
 def calculate_PLS(
     X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame, n_components: int
-) -> tuple[np.ndarray, np.ndarray]:
+) -> Tuple[np.ndarray, np.ndarray]:
     """
 
     Culate the projection by PLS for Train and Test patterns

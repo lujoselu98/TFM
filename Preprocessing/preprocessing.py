@@ -2,7 +2,7 @@
     Functions to use during experiments to load preprocessin data from files
 """
 import pickle
-from typing import Optional
+from typing import Optional, Tuple
 
 import numpy as np
 
@@ -17,7 +17,7 @@ def load_preprocess(
     remove_outliers: Optional[bool] = False,
     filter_data: Optional[bool] = False,
     easy_data: Optional[bool] = False,
-) -> tuple[np.ndarray, np.ndarray]:
+) -> Tuple[np.ndarray, np.ndarray]:
     """
 
     Function to load a preprocessed dataset
@@ -95,7 +95,7 @@ def smoothed_load_preprocess(
     idx_internal: Optional[int] = None,
     filter_data: Optional[bool] = False,
     easy_data: Optional[bool] = False,
-) -> tuple[np.ndarray, np.ndarray]:
+) -> Tuple[np.ndarray, np.ndarray]:
     """
     Function to load a preprocessed dataset
 
@@ -149,7 +149,7 @@ def get_features(
     X_train_pre: np.ndarray,
     X_test_pre: np.ndarray,
     features_number: Optional[int] = fixed_values.MAX_DIMENSION,
-) -> tuple[np.ndarray, np.ndarray]:
+) -> Tuple[np.ndarray, np.ndarray]:
     """
     Selected a fixed number of features from X_train and X_test
 
