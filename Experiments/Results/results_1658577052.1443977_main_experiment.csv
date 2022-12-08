@@ -1,0 +1,5 @@
+DATASET;PREPROCESS;CLASSIFIER_NAME;IDX_EXTERNAL;FEATURES_NUMBER;PARAMS;METRICS_DICT
+CC;mRMR;Bagging;0;2;{'base_estimator__max_depth': 6, 'n_estimators': 10, 'max_samples': 0.5};{'BAL_ACC': 0.4442401960784314, 'AUC_SCORE': 0.38786764705882354, 'PRECISION': 0.15384615384615385, 'RECALL': 0.11764705882352941, 'MCC': -0.12252450735245085, 'Confusion': array([[37, 11],
+       [15,  2]], dtype=int64)}
+CC;mRMR;Bagging;1;2;{'base_estimator__max_depth': 5, 'n_estimators': 10, 'max_samples': 0.5};{'BAL_ACC': 0.5, 'AUC_SCORE': 0.5367647058823529, 'PRECISION': 0.0, 'RECALL': 0.0, 'MCC': 0.0, 'Confusion': array([[48,  0],
+       [17,  0]], dtype=int64)}

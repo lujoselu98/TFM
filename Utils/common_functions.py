@@ -4,6 +4,7 @@ from typing import Tuple, Optional, Dict, List
 import numpy as np
 import pandas as pd
 import sklearn.model_selection
+from sktime.datasets import load_from_tsfile_to_dataframe
 
 from Utils import fixed_values
 from Utils import paths
@@ -47,6 +48,38 @@ def load_data(dataset: str, remove_outliers: Optional[bool] = False, filter_data
 
     if dataset == 'FFT':
         X.columns = X.columns.astype('str')
+
+    return tt, X, y
+
+
+def load_ucr_ECG_200_data() -> Tuple[np.ndarray, pd.DataFrame, pd.Series]:
+    bad_train_x, train_y = load_from_tsfile_to_dataframe(
+        f"{paths.ECG200_DATA_PATH}/ECG200_TRAIN.ts"
+    )
+    bad_test_x, test_y = load_from_tsfile_to_dataframe(
+        f"{paths.ECG200_DATA_PATH}/ECG200/ECG200_TRAIN.ts"
+    )
+
+    X_train = pd.DataFrame(columns=[i for i in range(96)])
+
+    for idx, row in bad_train_x.iterrows():
+        X_train.loc[idx] = row.values[0].values
+
+    X_test = pd.DataFrame(columns=[i for i in range(96)])
+
+    for idx, row in bad_test_x.iterrows():
+        X_test.loc[idx] = row.values[0].values
+
+    X_train = pd.DataFrame(columns=[i for i in range(96)])
+
+    X = pd.concat([X_train, X_test])
+
+    tt = X.columns.values
+
+    y_train = train_y.astype('int')
+    y_test = test_y.astype('int')
+
+    y = np.concat((y_train, y_test))
 
     return tt, X, y
 

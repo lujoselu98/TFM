@@ -5,13 +5,10 @@ from enum import Enum, auto
 
 import numpy as np
 from sklearn.dummy import DummyClassifier
-from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import BaggingClassifier
 from sklearn.metrics import balanced_accuracy_score, roc_auc_score, precision_score, recall_score, matthews_corrcoef, \
     confusion_matrix
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 
 DATASETS = ['CC', 'DCOR', 'FFT']
 
@@ -71,64 +68,84 @@ MAX_DIMENSION = max(DIMENSION_GRID)
 
 # Slower to faster
 CLASSIFIERS = {
-    'SVC': {
-        'clf': SVC(kernel='rbf', random_state=0, class_weight='balanced'),
+    # 'SVC': {
+    #     'clf': SVC(kernel='rbf', random_state=0, class_weight='balanced'),
+    #     'param_grid': {
+    #         'gamma': np.logspace(-3, 3, 7),
+    #         'C': np.logspace(-3, 3, 7),
+    #     },
+    #     'evaluate_score': 'decision_function',
+    #     'datasets': DATASETS
+    # },
+    # 'SVCSScaler': {
+    #     'clf': make_pipeline(StandardScaler(), SVC(kernel='rbf',
+    #                                                random_state=0,
+    #                                                class_weight='balanced')),
+    #     'param_grid': {
+    #         'svc__gamma': np.logspace(-3, 3, 7),
+    #         'svc__C': np.logspace(-3, 3, 7),
+    #     },
+    #     'evaluate_score': 'decision_function',
+    #     'datasets': DATASETS
+    # },
+    # 'LR': {
+    #     'clf': LogisticRegression(penalty='l1',
+    #                               solver='liblinear',
+    #                               random_state=0,
+    #                               class_weight='balanced',
+    #                               max_iter=1000),
+    #     'param_grid': {
+    #         'C': np.logspace(-3, 2, 6)
+    #     },
+    #     'evaluate_score': 'predict_proba',
+    #     'datasets': DATASETS
+    # },
+    # 'LRSScaler': {
+    #     'clf': make_pipeline(StandardScaler(), LogisticRegression(penalty='l1', solver='liblinear', random_state=0,
+    #                                                               class_weight='balanced',
+    #                                                               max_iter=1000)),
+    #     'param_grid': {
+    #         'logisticregression__C': np.logspace(-3, 2, 6)
+    #     },
+    #     'evaluate_score': 'predict_proba',
+    #     'datasets': ['FFT']
+    # },
+    # 'KNN': {
+    #     'clf': KNeighborsClassifier(),
+    #     'param_grid': {
+    #         'n_neighbors': np.arange(3, 30, 2),
+    #     },
+    #     'evaluate_score': 'predict_proba',
+    #     'datasets': DATASETS
+    # },
+    # 'KNNSScaler': {
+    #     'clf': make_pipeline(StandardScaler(), KNeighborsClassifier()),
+    #     'param_grid': {
+    #         'kneighborsclassifier__n_neighbors': np.arange(3, 30, 2),
+    #     },
+    #     'evaluate_score': 'predict_proba',
+    #     'datasets': DATASETS
+    # },
+    # 'RandomForest': {
+    #     'clf': RandomForestClassifier(random_state=0, class_weight='balanced', n_estimators=100),
+    #     'param_grid': {
+    #         'max_depth': np.arange(3, 10),
+    #         'max_features': ['sqrt', 'log2'],
+    #         'criterion': ['gini', 'entropy']
+    #     },
+    #     'evaluate_score': 'predict_proba',
+    #     'datasets': DATASETS
+    # },
+    'Bagging': {
+        'clf': BaggingClassifier(DecisionTreeClassifier(), random_state=0),
         'param_grid': {
-            'gamma': np.logspace(-3, 3, 7),
-            'C': np.logspace(-3, 3, 7),
-        },
-        'evaluate_score': 'decision_function',
-        'datasets': DATASETS
-    },
-    'SVCSScaler': {
-        'clf': make_pipeline(StandardScaler(), SVC(kernel='rbf',
-                                                   random_state=0,
-                                                   class_weight='balanced')),
-        'param_grid': {
-            'svc__gamma': np.logspace(-3, 3, 7),
-            'svc__C': np.logspace(-3, 3, 7),
-        },
-        'evaluate_score': 'decision_function',
-        'datasets': DATASETS
-    },
-    'LR': {
-        'clf': LogisticRegression(penalty='l1',
-                                  solver='liblinear',
-                                  random_state=0,
-                                  class_weight='balanced',
-                                  max_iter=1000),
-        'param_grid': {
-            'C': np.logspace(-3, 2, 6)
+            'base_estimator__max_depth': np.arange(3, 10),
+            'n_estimators': [10, 100],
+            'max_samples': [0.1, 0.2, 0.5]
         },
         'evaluate_score': 'predict_proba',
         'datasets': DATASETS
-    },
-    'LRSScaler': {
-        'clf': make_pipeline(StandardScaler(), LogisticRegression(penalty='l1', solver='liblinear', random_state=0,
-                                                                  class_weight='balanced',
-                                                                  max_iter=1000)),
-        'param_grid': {
-            'logisticregression__C': np.logspace(-3, 2, 6)
-        },
-        'evaluate_score': 'predict_proba',
-        'datasets': ['FFT']
-    },
-    'KNN': {
-        'clf': KNeighborsClassifier(),
-        'param_grid': {
-            'n_neighbors': np.arange(3, 30, 2),
-        },
-        'evaluate_score': 'predict_proba',
-        'datasets': DATASETS
-    },
-    'KNNSScaler': {
-        'clf': make_pipeline(StandardScaler(), KNeighborsClassifier()),
-        'param_grid': {
-            'kneighborsclassifier__n_neighbors': np.arange(3, 30, 2),
-        },
-        'evaluate_score': 'predict_proba',
-        'datasets': DATASETS
-    },
+    }
 }
 
 DUMMY_CLASSIFIER = {
@@ -150,26 +167,26 @@ EVALUATION_METRICS = {
         'values': 'scores',
         'name': 'Area bajo la curva roc',
     },
-    'PRECISION': {
-        'function': precision_score,
-        'values': 'predictions',
-        'name': 'precision',
-    },
-    'RECALL': {
-        'function': recall_score,
-        'values': 'predictions',
-        'name': 'recall'
-    },
-    'MCC': {
-        'function': matthews_corrcoef,
-        'values': 'predictions',
-        'name': 'MCC'
-    },
-    'Confusion':{
-        'function': confusion_matrix,
-        'values': 'predictions',
-        'name': 'conf_matrix',
-    },
+    # 'PRECISION': {
+    #     'function': precision_score,
+    #     'values': 'predictions',
+    #     'name': 'precision',
+    # },
+    # 'RECALL': {
+    #     'function': recall_score,
+    #     'values': 'predictions',
+    #     'name': 'recall'
+    # },
+    # 'MCC': {
+    #     'function': matthews_corrcoef,
+    #     'values': 'predictions',
+    #     'name': 'MCC'
+    # },
+    # 'Confusion': {
+    #     'function': confusion_matrix,
+    #     'values': 'predictions',
+    #     'name': 'conf_matrix',
+    # },
 }
 
 

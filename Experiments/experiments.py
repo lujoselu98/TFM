@@ -70,19 +70,19 @@ def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: Optional
                 "IDX_EXTERNAL;FEATURES_NUMBER;PARAMS;"
                 "METRICS_DICT\n")
     for dataset in progress_bar:
-        if dataset != 'FFT':
-            continue
+        # if dataset != 'FFT':
+        #     continue
         _, X, y = common_functions.load_data(dataset, remove_outliers=remove_outliers, filter_data=filter_data,
                                              easy_data=easy_data)
         for classifier_name, classifier in fixed_values.CLASSIFIERS.items():
-            if classifier_name != 'LRSScaler':
-                continue
+            # if classifier_name != 'LRSScaler':
+            #     continue
             if dataset not in classifier['datasets']:
                 continue
             clf_to_val = classifier['clf']
             for preprocess in fixed_values.PREPROCESSES + ['whole']:
-                if preprocess != 'mRMR':
-                    continue
+                # if preprocess != 'mRMR':
+                #     continue
                 for idx_external in range(EXTERNAL_SPLITS):
 
                     tqdm_desc = f"Dataset: {dataset} " \
@@ -133,10 +133,9 @@ def main_experiment(strategy: Optional[str] = 'kfold', remove_outliers: Optional
                     for features_number in dimension_grid:
                         for params in param_permutations:
 
-                            # progress_bar.set_postfix(
-                            #     {'feat': features_number, 'params': params}
-                            # )
-
+                            progress_bar.set_postfix(
+                                {'feat': features_number, 'params': params}
+                            )
                             internal_results = joblib.Parallel(n_jobs=5)(
                                 joblib.delayed(parallel_param_validation)(
                                     X_train_pre_save[idx_internal], X_test_pre_save[idx_internal],
@@ -437,5 +436,5 @@ def dummy_classifier(strategy: Optional[str] = 'kfold', remove_outliers: Optiona
 
 if __name__ == '__main__':
     # dummy_classifier(strategy='randomsplit', remove_outliers=False, filter_data=False, easy_data=True)
-    # main_experiment(strategy='randomsplit', remove_outliers=False, filter_data=True, easy_data=False)
-    smoothed_data_experiment()
+    main_experiment(strategy='randomsplit', remove_outliers=False, filter_data=True, easy_data=False)
+    # smoothed_data_experiment()

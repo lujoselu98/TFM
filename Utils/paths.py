@@ -14,6 +14,7 @@ CLEAN_DATA_PATH: str = f"{DATA_PATH}/Clean_Data"
 CC_DATA_PATH: str = f"{DATA_PATH}/cc_data"
 CDCOR_DATA_PATH: str = f"{DATA_PATH}/cdcor_data"
 FFT_DATA_PATH: str = f"{DATA_PATH}/fft_Data"
+ECG200_DATA_PATH: str = f"{DATA_PATH}/ECG200"
 
 # Path for Plots
 PLOTS_PATH: str = f"{PROJECT_PATH}/Plots"

@@ -101,6 +101,11 @@ fabric.properties
 /Data/fft_Data/*.pickle
 /Data/fft_Data/**/*.pickle
 
+!/Data/ECG200
+/Data/ECG200/*.arff
+/Data/ECG200/*.txt
+/Data/ECG200/*.ts
+
 # pyc files
 *.pyc
 
